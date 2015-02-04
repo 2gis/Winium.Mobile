@@ -1,11 +1,11 @@
-Windows Phone Driver
-====================
+Windows Universal App Driver
+============================
 
-Selenium Driver for automated testing of Windows Phone 8.1 Silverlight applications.
+Selenium Driver for automated testing of Windows Universal applications.
 
-This repository hosts the code for the Windows Phone driver. You can use it for testing of native Windows Phone 8.1 applications. Currently it implements only limited subset of [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol) and supports testing only via an emulator (Windows phone 8.1).
+This repository hosts the code for the Windows Phone driver. You can use it for testing of native Windows Phone 8.1 applications. Currently it implements only limited subset of [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol) and supports testing only via an emulator (Windows Phone 8.1).
 
-Driver contains of two parts: Outer and Inner. To run tests you will need to add `WindowsPhoneDriver.InnerDriver` to the app you want to test and start `WindowsPhoneDriver.OuterDriver` (Remote WebDriver to send Json Wire Protocol commands to).
+Driver contains of two parts: Driver (selenium based) and InnerServer (for application). To run tests you will need to add `WindowsUniversalAppDriver.InnerServer` to the app you want to test and start `WindowsUniversalAppDriver` (Remote WebDriver to send Json Wire Protocol commands to).
 
 Requirements to run tests using Windows Phone driver
 ---------------------------------------------------
@@ -17,7 +17,7 @@ Requirements to run tests using Windows Phone driver
 Usage
 -----
 1. Build solution
-2. In tested app project, add reference to `WindowsPhoneDriver.InnerDriver`
+2. In tested app project, add reference to `WindowsUniversalAppDriver.InnerServer` (from https://www.nuget.org/packages/WindowsUniversalAppDriver.InnerServer)
 3. In your app’s source code locate place where `RootFrame` is set (usually in `PrepareApplication` if you use `Caliburn.Micro` or App.xaml.cs for vanilla app) and add
     
     ```cs
@@ -40,11 +40,11 @@ Usage
     self.driver = webdriver.Remote(
                 command_executor = 'http://localhost:9999',
                 desired_capabilities={
-                    "app": r"C:\testApp.xap"
+                    "app": r"C:\testApp.appx"
                 })
     ...
     # find all Textblock elements
     blocks= self.driver.find_elements_by_tag_name("System.Windows.Controls.TextBlock")
     ```
-5. Start WindowsPhoneDriver.OuterDriver.exe
+5. Start WindowsUniversalAppDriver.exe
 6. Run your tests
