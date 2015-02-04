@@ -5,7 +5,7 @@ Selenium Driver for automated testing of Windows Universal applications.
 
 This repository hosts the code for the Windows Phone driver. You can use it for testing of native Windows Phone 8.1 applications. Currently it implements only limited subset of [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol) and supports testing only via an emulator (Windows Phone 8.1).
 
-Driver contains of two parts: Driver (selenium based) and InnerServer (for application). To run tests you will need to add `WindowsUniversalAppDriver.InnerServer` to the app you want to test and start `WindowsUniversalAppDriver` (Remote WebDriver to send Json Wire Protocol commands to).
+Driver consists of two parts: the Driver (selenium based) and InnerServer (for application). To run tests you will need to add `WindowsUniversalAppDriver.InnerServer` to the app you want to test and start `WindowsUniversalAppDriver` (Remote WebDriver to send Json Wire Protocol commands to).
 
 Requirements to run tests using Windows Phone driver
 ---------------------------------------------------
@@ -34,7 +34,7 @@ Usage
     
     where `RootFrame` is visual root of application.
 
-4. Write your tests using you favorite language. In your test use `app` desired capability to set path to tested app's xap file (python example).
+4. Write your tests using you favorite language. In your test use `app` desired capability to set path to tested app's appx file (python example).
     ```python
     ...
     self.driver = webdriver.Remote(
