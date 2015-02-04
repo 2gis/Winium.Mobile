@@ -184,9 +184,14 @@
         {
             var factory = new XdeWmiFactory();
             var vm = factory.GetVirtualMachine(emulatorName + "." + Environment.UserName);
+            if (vm == null)
+            {
+                throw new XdeVirtualMachineException("Emulator not found.");
+            }
+
             if (vm.EnabledState != VirtualMachineEnabledState.Enabled)
             {
-                throw new XdeVirtualMachineException("Emulator is not running. ");
+                throw new XdeVirtualMachineException("Emulator is not running.");
             }
 
             return vm;
