@@ -45,7 +45,8 @@
             var content = string.Empty;
             if (hasContentLength)
             {
-                content = ReadContent(stream, Convert.ToInt32(contentLengthString, CultureInfo.InvariantCulture));
+                var contentLength = Convert.ToInt32(contentLengthString, CultureInfo.InvariantCulture);
+                content = contentLength == 0 ? string.Empty : ReadContent(stream, contentLength);
             }
 
             return content;
