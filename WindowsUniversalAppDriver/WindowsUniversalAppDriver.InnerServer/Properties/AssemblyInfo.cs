@@ -5,9 +5,9 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WindowsUniversalAppDriver.InnerServer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Inner server. Part of Windows Universal App Driver (Selenium Driver) for automated testing of Windows Universal applications.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("2gis")]
 [assembly: AssemblyProduct("WindowsUniversalAppDriver.InnerServer")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
@@ -24,5 +24,4 @@ using System.Reflection;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.1.*")]
