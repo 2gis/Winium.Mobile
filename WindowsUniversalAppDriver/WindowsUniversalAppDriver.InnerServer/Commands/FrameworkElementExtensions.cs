@@ -27,7 +27,7 @@
         {
             var point = element.TransformToVisual(visualRoot).TransformPoint(new Point(0, 0));
             var center = new Point(point.X + (int)(element.ActualWidth / 2), point.Y + (int)(element.ActualHeight / 2));
-            return center;
+            return ScreenCoordinatesHelper.LogicalPointToScreenPoint(center);
         }
 
         internal static Point GetCoordinatesInView(this FrameworkElement element, UIElement visualRoot)
@@ -38,7 +38,8 @@
             var boundsInView = new Rect(new Point(0, 0), visualRoot.RenderSize);
             boundsInView.Intersect(bounds);
 
-            return boundsInView.IsEmpty ? center : new Point(boundsInView.X + (int)(boundsInView.Width / 2), boundsInView.Y + (int)(boundsInView.Height / 2));
+            var result = boundsInView.IsEmpty ? center : new Point(boundsInView.X + (int)(boundsInView.Width / 2), boundsInView.Y + (int)(boundsInView.Height / 2));
+            return ScreenCoordinatesHelper.LogicalPointToScreenPoint(result);
         }
 
         internal static string GetText(this FrameworkElement element)
