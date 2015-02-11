@@ -39,11 +39,17 @@
 
         private static void TrySetText(TextBox textbox, string text)
         {
+            // TODO: why IValueProvider is null in UniApp?
             var peer = new TextBoxAutomationPeer(textbox);
             var valueProvider = peer.GetPattern(PatternInterface.Value) as IValueProvider;
             if (valueProvider != null)
             {
                 valueProvider.SetValue(text);
+            }
+            else
+            {
+                textbox.Text = text;
+                textbox.SelectionStart = text.Length;
             }
 
             // TODO: new parameter - FocusState
