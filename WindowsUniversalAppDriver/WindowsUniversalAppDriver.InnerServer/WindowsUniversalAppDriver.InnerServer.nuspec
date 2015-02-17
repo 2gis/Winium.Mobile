@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>WindowsUniversalAppDriver.InnerServer</id>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <authors>2GIS</authors>
     <owners>2GIS</owners>
     <projectUrl>https://github.com/2gis/windows-universal-app-driver</projectUrl>
