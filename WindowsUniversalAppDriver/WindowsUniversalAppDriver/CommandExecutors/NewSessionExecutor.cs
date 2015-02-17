@@ -88,10 +88,12 @@
         private string InitializeApplication(bool debugDoNotDeploy = false)
         {
             var appPath = this.Automator.ActualCapabilities.App;
-            this.Automator.Deployer = new Deployer81(this.Automator.ActualCapabilities.DeviceName);
+            this.Automator.Deployer = new Deployer81(this.Automator.ActualCapabilities.DeviceName, appPath);
             if (!debugDoNotDeploy)
             {
-                this.Automator.Deployer.Deploy(appPath);
+                this.Automator.Deployer.Install();
+                this.Automator.Deployer.SendFiles(this.Automator.ActualCapabilities.Files);
+                this.Automator.Deployer.Launch();
             }
 
             this.Automator.ActualCapabilities.DeviceName = this.Automator.Deployer.DeviceName;

@@ -1,5 +1,7 @@
 ﻿namespace WindowsUniversalAppDriver.Automator
 {
+    using System.Collections.Generic;
+
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
@@ -10,6 +12,7 @@
         internal Capabilities()
         {
             this.App = string.Empty;
+            this.Files = new Dictionary<string, string>();
             this.DeviceName = string.Empty;
             this.LaunchDelay = 0;
             this.LaunchTimeout = 10000;
@@ -32,6 +35,9 @@
 
         [JsonProperty("app")]
         public string App { get; set; }
+
+        [JsonProperty("files")]
+        public Dictionary<string, string> Files { get; set; }
 
         [JsonProperty("debugConnectToRunningApp")]
         public bool DebugConnectToRunningApp { get; set; }
