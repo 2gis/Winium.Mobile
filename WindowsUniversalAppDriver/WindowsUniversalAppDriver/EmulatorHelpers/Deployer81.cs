@@ -2,10 +2,15 @@
 namespace WindowsUniversalAppDriver.EmulatorHelpers
 {
     using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
 
     using Microsoft.Phone.Tools.Deploy;
+    using Microsoft.SmartDevice.Connectivity.Interface;
+    using Microsoft.SmartDevice.MultiTargeting.Connectivity;
 
     /// <summary>
     /// App Deploy for 8.1 or greater (uses  Microsoft.Phone.Tools.Deploy shipped with Microsoft SDKs\Windows Phone\v8.1\Tools\AppDeploy)
@@ -17,18 +22,29 @@ namespace WindowsUniversalAppDriver.EmulatorHelpers
 
         private readonly DeviceInfo deviceInfo;
 
+        private readonly ConnectableDevice connectableDevice;
+
+        private readonly string appPath;
+
         private IAppManifestInfo appManifestInfo;
+
+        private IRemoteApplication application;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public Deployer81(string desiredDevice)
+        public Deployer81(string desiredDevice, string appPath)
         {
+            this.appPath = appPath;
+
             var devices = Utils.GetDevices();
 
             this.deviceInfo =
-                devices.FirstOrDefault(x => x.ToString().StartsWith(desiredDevice, StringComparison.OrdinalIgnoreCase) && !x.ToString().Equals("Device"));
+                devices.FirstOrDefault(
+                    x =>
+                    x.ToString().StartsWith(desiredDevice, StringComparison.OrdinalIgnoreCase)
+                    && !x.ToString().Equals("Device"));
 
             // Exclude device
             if (this.deviceInfo == null)
@@ -37,6 +53,10 @@ namespace WindowsUniversalAppDriver.EmulatorHelpers
 
                 this.deviceInfo = devices.First(x => !x.ToString().Equals("Device"));
             }
+
+            var propertyInfo = deviceInfo.GetType().GetTypeInfo().GetDeclaredProperty("DeviceId");
+            var deviceId = (string)propertyInfo.GetValue(deviceInfo);
+            this.connectableDevice = new MultiTargetingConnectivity(CultureInfo.CurrentUICulture.LCID).GetConnectableDevice(deviceId);
 
             Logger.Info("Target emulator: {0}", this.DeviceName);
         }
@@ -49,7 +69,7 @@ namespace WindowsUniversalAppDriver.EmulatorHelpers
         {
             get
             {
-                return this.deviceInfo != null ? this.deviceInfo.ToString() : string.Empty;
+                return this.deviceInfo.ToString();
             }
         }
 
@@ -57,24 +77,58 @@ namespace WindowsUniversalAppDriver.EmulatorHelpers
 
         #region Public Methods and Operators
 
-        public void Deploy(string appPath)
+        public void Install()
         {
             this.appManifestInfo = Utils.ReadAppManifestInfoFromPackage(appPath);
-
-            GlobalOptions.LaunchAfterInstall = true;
+            
             Utils.InstallApplication(this.deviceInfo, this.appManifestInfo, DeploymentOptions.None, appPath);
 
+            var device = this.connectableDevice.Connect(true);
+            this.application = device.GetApplication(appManifestInfo.ProductId);
+            device.Activate();
+            
             Logger.Info("Successfully deployed using Microsoft.Phone.Tools.Deploy");
         }
 
-        public void Disconnect()
+        public void SendFiles(Dictionary<string, string> files)
         {
-            // FIXME Temporary solution using private UninstallApplication method
-            // Still using Microsoft.Phone.Tools.Deploy assembly is much easier than Smart Device connectivity
-            var uninstallApplication = typeof(Utils).GetMethod(
-                "UninstallApplication", 
-                BindingFlags.NonPublic | BindingFlags.Static);
-            uninstallApplication.Invoke(typeof(Utils), new object[] { this.deviceInfo, this.appManifestInfo.ProductId });
+            if (files == null || !files.Any())
+            {
+                return;
+            }
+
+            var isolatedStore = this.application.GetIsolatedStore("Local");
+            foreach (var file in files)
+            {
+                var phoneDirectoryName = Path.GetDirectoryName(file.Value);
+                var phoneFileName = Path.GetFileName(file.Value);
+                if (string.IsNullOrEmpty(phoneFileName))
+                {
+                    phoneFileName = Path.GetFileName(file.Key);
+                }
+
+                isolatedStore.SendFile(file.Key, Path.Combine(phoneDirectoryName, phoneFileName), true);
+            }
+        }
+
+        public void ReciveFiles(Dictionary<string, string> files)
+        {
+            throw new NotImplementedException("Deployer81.ReciveFiles");
+        }
+
+        public void Launch()
+        {
+            this.application.Launch();
+        }
+
+        public void Terminate()
+        {
+            throw new NotImplementedException("Deployer81.Terminate");
+        }
+
+        public void Uninstall()
+        {
+            this.application.Uninstall();
         }
 
         #endregion

@@ -6,7 +6,7 @@
 
         protected override string DoImpl()
         {
-            this.Automator.Deployer.Disconnect();
+            this.Automator.Deployer.Uninstall();
 
             return null;
         }

@@ -1,5 +1,7 @@
 ﻿namespace WindowsUniversalAppDriver.EmulatorHelpers
 {
+    using System.Collections.Generic;
+
     internal interface IDeployer
     {
         #region Public Properties
@@ -10,9 +12,17 @@
 
         #region Public Methods and Operators
 
-        void Deploy(string appPath);
+        void Install();
 
-        void Disconnect();
+        void SendFiles(Dictionary<string, string> files);
+
+        void ReciveFiles(Dictionary<string, string> files);
+
+        void Launch();
+
+        void Terminate();
+
+        void Uninstall();
 
         #endregion
     }
