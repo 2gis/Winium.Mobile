@@ -2,9 +2,12 @@
 {
     #region using
 
-    using WindowsUniversalAppDriver.CommandExecutors.Scripts;
+    using System.Windows.Forms;
+
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;
+
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -25,24 +28,50 @@
             }
             else
             {
+                ++index;
                 prefix = script.Substring(0, index);
                 command = script.Substring(index).Trim();
             }
 
-            IScript scriptExecutor;
             switch (prefix)
             {
                 case "mobile:":
-                    scriptExecutor = new MobileScript(this.Automator.EmulatorController);
+                    this.ExecuteMobileScript(command);
+                    break;
+                default:
+                    this.ForwardCommand();
+                    break;
+            }
+
+            return null;
+        }
+        
+        internal void ExecuteMobileScript(string command)
+        {
+            switch (command)
+            {
+                case "start":
+                    this.Automator.EmulatorController.TypeKey(Keys.F2);
+                    break;
+                case "search":
+                    this.Automator.EmulatorController.TypeKey(Keys.F3);
                     break;
                 default:
                     const string url = "https://github.com/2gis/winphonedriver/wiki/Command-Execute-Script";
-                    var msg = string.Format("Unknown script prefix '{0}'. See {1} for supported scripts.", prefix, url);
+                    var msg = string.Format("Unknown 'mobile:' script command '{0}'. See {1} for supported commands.",
+                                            command ?? string.Empty, url);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
+        }
 
-            scriptExecutor.Execute(command);
-            return null;
+        internal void ForwardCommand()
+        {
+            var responseBody = this.Automator.CommandForwarder.ForwardCommand(this.ExecutedCommand);
+            var deserializeObject = JsonConvert.DeserializeObject<JsonResponse>(responseBody);
+            if (deserializeObject.Status == ResponseStatus.JavaScriptError)
+            {
+                throw new AutomationException(deserializeObject.Value.ToString(), ResponseStatus.JavaScriptError);
+            }
         }
 
         #endregion
