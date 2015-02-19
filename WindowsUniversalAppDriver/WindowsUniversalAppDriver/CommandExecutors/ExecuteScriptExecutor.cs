@@ -57,6 +57,7 @@
                     this.Automator.EmulatorController.TypeKey(Keys.F3);
                     break;
                 default:
+                    // TODO: Need a more specific URL
                     const string url = "https://github.com/2gis/winphonedriver/wiki/Command-Execute-Script";
                     var msg = string.Format("Unknown 'mobile:' script command '{0}'. See {1} for supported commands.",
                                             command ?? string.Empty, url);
@@ -68,7 +69,7 @@
         {
             var responseBody = this.Automator.CommandForwarder.ForwardCommand(this.ExecutedCommand);
             var deserializeObject = JsonConvert.DeserializeObject<JsonResponse>(responseBody);
-            if (deserializeObject.Status == ResponseStatus.JavaScriptError)
+            if (deserializeObject.Status != ResponseStatus.Success)
             {
                 throw new AutomationException(deserializeObject.Value.ToString(), ResponseStatus.JavaScriptError);
             }

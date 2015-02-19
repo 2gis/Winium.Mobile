@@ -124,6 +124,10 @@
             {
                 commandToExecute = new GetElementAttributeCommand { ElementId = elementId };
             }
+            else if (command.Equals(DriverCommand.ExecuteScript))
+            {
+                commandToExecute = new ExecuteCommand();
+            }
             else
             {
                 throw new NotImplementedException("Not implemented: " + command);
