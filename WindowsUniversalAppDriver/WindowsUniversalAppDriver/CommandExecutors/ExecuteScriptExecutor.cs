@@ -57,8 +57,8 @@
                     this.Automator.EmulatorController.TypeKey(Keys.F3);
                     break;
                 default:
-                    // TODO: Need a more specific URL
-                    const string url = "https://github.com/2gis/winphonedriver/wiki/Command-Execute-Script";
+                    const string url =
+                        "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#press-hardware-button";
                     var msg = string.Format("Unknown 'mobile:' script command '{0}'. See {1} for supported commands.",
                                             command ?? string.Empty, url);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);

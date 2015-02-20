@@ -42,7 +42,8 @@
                     this.ExecuteAutomationScript(command);
                     break;
                 default:
-                    const string url = "https://github.com/2gis/winphonedriver/wiki/Command-Execute-Script";
+                    const string url =
+                        "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script";
                     var msg = string.Format("Unknown script prefix '{0}'. See {1} for supported scripts.", prefix, url);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
@@ -78,8 +79,8 @@
                     invokeProvider.Invoke();
                     break;
                 default:
-                    // TODO: Need a more specific URL
-                    const string url = "https://github.com/2gis/winphonedriver/wiki/Command-Execute-Script";
+                    const string url =
+                        "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#use-automationpeerspatterninterface-on-element";
                     var msg = string.Format("Unknown 'automation:' script command '{0}'. "
                                             + "See {1} for supported commands.", command ?? string.Empty, url);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
