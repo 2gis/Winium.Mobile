@@ -2,7 +2,6 @@
 {
     #region using
 
-    using System;
     using System.Collections.Generic;
 
     using Windows.UI.Xaml.Automation.Peers;
