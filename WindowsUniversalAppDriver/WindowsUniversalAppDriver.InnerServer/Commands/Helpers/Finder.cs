@@ -1,4 +1,4 @@
-﻿namespace WindowsUniversalAppDriver.InnerServer.Commands.FindByHelpers
+﻿namespace WindowsUniversalAppDriver.InnerServer.Commands.Helpers
 {
     using System;
     using System.Collections.Generic;

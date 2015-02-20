@@ -8,7 +8,7 @@
 
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;
-    using WindowsUniversalAppDriver.InnerServer.Commands.FindByHelpers;
+    using WindowsUniversalAppDriver.InnerServer.Commands.Helpers;
 
     internal class AlertTextCommand : CommandBase
     {
