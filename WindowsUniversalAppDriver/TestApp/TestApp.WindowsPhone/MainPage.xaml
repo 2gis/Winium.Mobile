@@ -11,27 +11,38 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         
-        <TextBox Name="TextBox" Grid.Row="0" Width="200" Height="100"
+        <TextBox Name="TextBox" Grid.Row="0" Width="300" Height="100"
                  VerticalAlignment="Center"
                  AutomationProperties.AutomationId="MyTextBox"/>
         <Button Content="Set 'CARAMBA' text to TextBox" Grid.Row="1"
                 HorizontalAlignment="Center"
                 Click="SetButtonOnClick"
                 AutomationProperties.AutomationId="SetButton"/>
+        <ListBox Name="ListBox" Height="200" Grid.Row="2" Width="300"
+                 AutomationProperties.AutomationId="MyListBox"/>
     </Grid>
 
     <Page.BottomAppBar>
-        <CommandBar IsSticky="False">
+        <CommandBar AutomationProperties.AutomationId="BottomAppBar">
             <CommandBar.PrimaryCommands>
                 <AppBarButton Icon="Go" IsCompact="True"
                               Click="GoAppBarButtonOnClick"
                               AutomationProperties.AutomationId="GoAppBarButton"/>
             </CommandBar.PrimaryCommands>
+            
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="First button"
+                              Click="FirstAppBarButtonOnClick"
+                              AutomationProperties.AutomationId="FirstAppBarButton"/>
+                <AppBarButton Label="Second button"
+                              Click="SecondAppBarButtonOnClick"
+                              AutomationProperties.AutomationId="SecondAppBarButton"/>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

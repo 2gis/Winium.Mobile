@@ -2,7 +2,10 @@
 
 namespace TestApp
 {
+    using System.Collections.Generic;
+
     using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Automation;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Navigation;
 
@@ -13,11 +16,49 @@ namespace TestApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private readonly List<string> _monthsList = new List<string>
+        {
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+            "Moses",
+            "Homer",
+            "Aristotle",
+            "Archimedes",
+            "Caesar",
+            "Saint Paul",
+            "Charlemagnev",
+            "Dante",
+            "Gutenberg",
+            "Shakespeare",
+            "Descartes",
+            "Frederick",
+            "Bichat"
+        };
+
         public MainPage()
         {
             this.InitializeComponent();
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
+
+            foreach (var month in _monthsList)
+            {
+                var textBlock = new TextBlock { Text = month };
+                textBlock.SetValue(AutomationProperties.NameProperty, month);
+
+                // ReSharper disable once PossibleNullReferenceException
+                this.ListBox.Items.Add(textBlock);
+            }
         }
 
         /// <summary>
@@ -48,7 +89,17 @@ namespace TestApp
 
         private void GoAppBarButtonOnClick(object sender, RoutedEventArgs e)
         {
-            TextBox.Text = "Clicked Go in AppBar";
+            TextBox.Text = "Clicked GoAppBarButton";
+        }
+
+        private void FirstAppBarButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            TextBox.Text = "Clicked FirstAppBarButton";
+        }
+
+        private void SecondAppBarButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            TextBox.Text = "Clicked SecondAppBarButton";
         }
     }
 }
