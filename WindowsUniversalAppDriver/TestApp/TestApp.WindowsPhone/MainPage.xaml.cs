@@ -45,5 +45,10 @@ namespace TestApp
         {
             AutomationServer.Instance.InitializeAndStart(Frame);
         }
+
+        private void GoAppBarButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            TextBox.Text = "Clicked Go in AppBar";
+        }
     }
 }

@@ -4,6 +4,7 @@
     using System.Linq;
 
     using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Media;
 
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.InnerServer.Commands.FindByHelpers;
@@ -31,6 +32,16 @@
             var searchStrategy = new By(searchPolicy, searchValue);
             var foundObjectsIdList = this.FindElementsBy(relativeElement, searchStrategy);
             result.AddRange(foundObjectsIdList.Select(foundObjectId => new JsonWebElementContent(foundObjectId)));
+
+            if (this.ElementId == null)
+            {
+                var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
+                foreach (var popupChild in popups.Select(popup => popup.Child))
+                {
+                    foundObjectsIdList = this.FindElementsBy(popupChild, searchStrategy);
+                    result.AddRange(foundObjectsIdList.Select(foundObjectId => new JsonWebElementContent(foundObjectId)));
+                }
+            }
 
             return this.JsonResponse(ResponseStatus.Success, result.ToArray());
         }

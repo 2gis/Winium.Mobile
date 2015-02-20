@@ -3,6 +3,7 @@
     using System.Linq;
 
     using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Media;
 
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;
@@ -29,6 +30,19 @@
 
             var searchStrategy = new By(searchPolicy, searchValue);
             var webObjectId = this.FindElementBy(relativeElement, searchStrategy);
+
+            if (webObjectId == null && this.ElementId == null)
+            {
+                var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
+                foreach (var popupChild in popups.Select(popup => popup.Child))
+                {
+                    webObjectId = this.FindElementBy(popupChild, searchStrategy);
+                    if (webObjectId != null)
+                    {
+                        break;
+                    }
+                }
+            }
 
             if (webObjectId == null)
             {

@@ -1,11 +1,15 @@
 ﻿namespace WindowsUniversalAppDriver.CommandExecutors
 {
-    using System;
-    using System.Globalization;
+    #region using
+
     using System.Windows.Forms;
 
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;
+
+    using Newtonsoft.Json;
+
+    #endregion
 
     internal class ExecuteScriptExecutor : CommandExecutorBase
     {
@@ -13,32 +17,62 @@
 
         protected override string DoImpl()
         {
-            const string MobileScriptPrefix = "mobile:";
+            string command;
+            var prefix = string.Empty;
+
             var script = this.ExecutedCommand.Parameters["script"].ToString();
-            if (!script.StartsWith(MobileScriptPrefix, StringComparison.OrdinalIgnoreCase))
+            var index = script.IndexOf(':');
+            if (index == -1)
             {
-                throw new NotImplementedException(
-                    "execute partially implemented, supports only mobile: prefixed commands");
-            }
-
-            var command = script.Split(':')[1].ToLower(CultureInfo.InvariantCulture).Trim();
-
-            if (command.Equals("start"))
-            {
-                this.Automator.EmulatorController.TypeKey(Keys.F2);
-            }
-            else if (command.Equals("search"))
-            {
-                this.Automator.EmulatorController.TypeKey(Keys.F3);
+                command = script;
             }
             else
             {
-                throw new AutomationException(
-                    "Unknown 'mobile:' script command. See https://github.com/2gis/winphonedriver/wiki/Command-Execute-Script for supported commands.", 
-                    ResponseStatus.JavaScriptError);
+                ++index;
+                prefix = script.Substring(0, index);
+                command = script.Substring(index).Trim();
+            }
+
+            switch (prefix)
+            {
+                case "mobile:":
+                    this.ExecuteMobileScript(command);
+                    break;
+                default:
+                    this.ForwardCommand();
+                    break;
             }
 
             return null;
+        }
+        
+        internal void ExecuteMobileScript(string command)
+        {
+            switch (command)
+            {
+                case "start":
+                    this.Automator.EmulatorController.TypeKey(Keys.F2);
+                    break;
+                case "search":
+                    this.Automator.EmulatorController.TypeKey(Keys.F3);
+                    break;
+                default:
+                    // TODO: Need a more specific URL
+                    const string url = "https://github.com/2gis/winphonedriver/wiki/Command-Execute-Script";
+                    var msg = string.Format("Unknown 'mobile:' script command '{0}'. See {1} for supported commands.",
+                                            command ?? string.Empty, url);
+                    throw new AutomationException(msg, ResponseStatus.JavaScriptError);
+            }
+        }
+
+        internal void ForwardCommand()
+        {
+            var responseBody = this.Automator.CommandForwarder.ForwardCommand(this.ExecutedCommand);
+            var deserializeObject = JsonConvert.DeserializeObject<JsonResponse>(responseBody);
+            if (deserializeObject.Status != ResponseStatus.Success)
+            {
+                throw new AutomationException(deserializeObject.Value.ToString(), ResponseStatus.JavaScriptError);
+            }
         }
 
         #endregion

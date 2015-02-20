@@ -24,4 +24,14 @@
                 Click="SetButtonOnClick"
                 AutomationProperties.AutomationId="SetButton"/>
     </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar IsSticky="False">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Icon="Go" IsCompact="True"
+                              Click="GoAppBarButtonOnClick"
+                              AutomationProperties.AutomationId="GoAppBarButton"/>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>
