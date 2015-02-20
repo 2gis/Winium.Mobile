@@ -4,13 +4,13 @@
 
     using System.Collections.Generic;
 
+    using Newtonsoft.Json;
+
     using Windows.UI.Xaml.Automation.Peers;
     using Windows.UI.Xaml.Automation.Provider;
 
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;
-
-    using Newtonsoft.Json;
 
     #endregion
 
@@ -42,9 +42,9 @@
                     this.ExecuteAutomationScript(command);
                     break;
                 default:
-                    const string url =
+                    const string Url =
                         "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script";
-                    var msg = string.Format("Unknown script prefix '{0}'. See {1} for supported scripts.", prefix, url);
+                    var msg = string.Format("Unknown script prefix '{0}'. See {1} for supported scripts.", prefix, Url);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
 
@@ -72,17 +72,21 @@
                     var invokeProvider = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                     if (invokeProvider == null)
                     {
-                        throw new AutomationException("Element not supported invoke interface", 
-                                                      ResponseStatus.JavaScriptError);
+                        throw new AutomationException(
+                            "Element not supported invoke interface", 
+                            ResponseStatus.JavaScriptError);
                     }
 
                     invokeProvider.Invoke();
                     break;
                 default:
-                    const string url =
+                    const string Url =
                         "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#use-automationpeerspatterninterface-on-element";
-                    var msg = string.Format("Unknown 'automation:' script command '{0}'. "
-                                            + "See {1} for supported commands.", command ?? string.Empty, url);
+                    var msg =
+                        string.Format(
+                            "Unknown 'automation:' script command '{0}'. " + "See {1} for supported commands.", 
+                            command ?? string.Empty, 
+                            Url);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
         }
