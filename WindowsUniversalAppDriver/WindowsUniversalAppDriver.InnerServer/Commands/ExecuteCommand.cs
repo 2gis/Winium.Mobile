@@ -103,7 +103,7 @@
             var peer = FrameworkElementAutomationPeer.FromElement(element);
             if (peer == null)
             {
-                throw new AutomationException("Element not supported AutomationPeer", ResponseStatus.JavaScriptError);
+                throw new AutomationException("Element does not support AutomationPeer.", ResponseStatus.JavaScriptError);
             }
 
             switch (command)
@@ -113,7 +113,7 @@
                     if (invokeProvider == null)
                     {
                         throw new AutomationException(
-                            "Element not supported invoke interface", 
+                            "Element does not support IInvokeProvider control pattern interface.", 
                             ResponseStatus.JavaScriptError);
                     }
 
