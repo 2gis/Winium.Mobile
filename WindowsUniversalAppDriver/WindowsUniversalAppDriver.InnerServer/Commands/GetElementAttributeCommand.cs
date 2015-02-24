@@ -6,6 +6,8 @@
     using Newtonsoft.Json;
 
     using WindowsUniversalAppDriver.Common;
+    using WindowsUniversalAppDriver.Common.Exceptions;
+    using WindowsUniversalAppDriver.InnerServer.Commands.Helpers;
 
     internal class GetElementAttributeCommand : CommandBase
     {
@@ -33,37 +35,25 @@
                 return this.JsonResponse(ResponseStatus.Success, null);
             }
 
-            var properties = attributeName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-
-            object propertyObject = element;
-            foreach (var property in properties)
-            {
-                propertyObject = GetProperty(propertyObject, property);
-                if (propertyObject == null)
-                {
-                    break;
-                }
-            }
-
             /* GetAttribute command should return: null if no property was found,
              * property value as plain string if property is scalar or string,
              * JSON encoded property if property is Lists, Dictionary or other nonscalar types 
              */
-            var propertyValue = SerializeObjectAsString(propertyObject);
+            try
+            {
+                var propertyObject = element.GetAttribute(attributeName);
 
-            return this.JsonResponse(ResponseStatus.Success, propertyValue);
+                return this.JsonResponse(ResponseStatus.Success, SerializeObjectAsString(propertyObject));
+            }
+            catch (AutomationException)
+            {
+                return this.JsonResponse(ResponseStatus.Success, null);
+            }
         }
 
         #endregion
 
         #region Methods
-
-        private static object GetProperty(object obj, string propertyName)
-        {
-            var property = obj.GetType().GetRuntimeProperty(propertyName);
-
-            return property == null ? null : property.GetValue(obj, null);
-        }
 
         private static bool IsTypeSerializedUsingToString(Type type)
         {

@@ -2,20 +2,35 @@
 {
     #region using
 
-    using System.Collections.Generic;
-
-    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     using Windows.UI.Xaml.Automation.Peers;
     using Windows.UI.Xaml.Automation.Provider;
 
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;
+    using WindowsUniversalAppDriver.InnerServer.Commands.Helpers;
 
     #endregion
 
     internal class ExecuteCommand : CommandBase
     {
+        #region Constants
+
+        internal const string HelpUnknownScriptMsg =
+            "Unknown script command '{0} {1}'. See {2} for supported commands.";
+
+        internal const string HelpUrlAttributeScript =
+            "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#set-property-on-element";
+
+        internal const string HelpUrlAutomationScript =
+            "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#use-automationpeerspatterninterface-on-element";
+
+        internal const string HelpUrlScript =
+            "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#supported-scripts";
+
+        #endregion
+
         #region Public Methods and Operators
 
         public override string DoImpl()
@@ -41,10 +56,11 @@
                 case "automation:":
                     this.ExecuteAutomationScript(command);
                     break;
+                case "attribute:":
+                    this.ExecuteAttributeScript(command);
+                    break;
                 default:
-                    const string Url =
-                        "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script";
-                    var msg = string.Format("Unknown script prefix '{0}'. See {1} for supported scripts.", prefix, Url);
+                    var msg = string.Format(HelpUnknownScriptMsg, prefix, command, HelpUrlScript);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
 
@@ -55,10 +71,34 @@
 
         #region Methods
 
-        internal void ExecuteAutomationScript(string command)
+        private void ExecuteAttributeScript(string command)
         {
-            var args = JsonConvert.DeserializeObject<Dictionary<string, object>[]>(this.Parameters["args"].ToString());
+            if (command != "set")
+            {
+                var msg = string.Format(HelpUnknownScriptMsg, "attribute:", command, HelpUrlAttributeScript);
+                throw new AutomationException(msg, ResponseStatus.JavaScriptError);
+            }
+
+            /* 'attribute: set' is used to set property value on element
+             * script parameters:
+             *      element - WebElement on wich attribute will be set
+             *      attribute name - property to be set, nested property can be set using dot syntax
+             *      value - value to be set
+             */
+            var args = (JArray)this.Parameters["args"];
+
             var elementId = args[0]["ELEMENT"].ToString();
+            var element = this.Automator.WebElements.GetRegisteredElement(elementId);
+
+            var attributeName = args[1].ToString();
+            var value = args[2];
+
+            element.SetAttribute(attributeName, value);
+        }
+
+        private void ExecuteAutomationScript(string command)
+        {
+            var elementId = ((JArray)this.Parameters["args"])[0]["ELEMENT"].ToString();
             var element = this.Automator.WebElements.GetRegisteredElement(elementId);
             var peer = FrameworkElementAutomationPeer.FromElement(element);
             if (peer == null)
@@ -80,13 +120,8 @@
                     invokeProvider.Invoke();
                     break;
                 default:
-                    const string Url =
-                        "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#use-automationpeerspatterninterface-on-element";
-                    var msg =
-                        string.Format(
-                            "Unknown 'automation:' script command '{0}'. " + "See {1} for supported commands.", 
-                            command ?? string.Empty, 
-                            Url);
+                    var msg = string.Format(
+                        HelpUnknownScriptMsg, "automation:", command, HelpUrlAutomationScript);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
         }
