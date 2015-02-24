@@ -1,9 +1,14 @@
 ﻿namespace WindowsUniversalAppDriver.InnerServer.Commands
 {
-    #region using
+    #region
+
+    using System;
+    using System.Linq;
 
     using Newtonsoft.Json.Linq;
 
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Automation;
     using Windows.UI.Xaml.Automation.Peers;
     using Windows.UI.Xaml.Automation.Provider;
 
@@ -17,8 +22,9 @@
     {
         #region Constants
 
-        internal const string HelpUnknownScriptMsg =
-            "Unknown script command '{0} {1}'. See {2} for supported commands.";
+        internal const string HelpArgumentsErrorMsg = "Arguments error. See {0} for more information.";
+
+        internal const string HelpUnknownScriptMsg = "Unknown script command '{0} {1}'. See {2} for supported commands.";
 
         internal const string HelpUrlAttributeScript =
             "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#set-property-on-element";
@@ -71,6 +77,55 @@
 
         #region Methods
 
+        private static ScrollAmount ParseScrollAmount(JToken jToken)
+        {
+            ScrollAmount scrollAmount;
+            if (Enum.TryParse(jToken != null ? jToken.ToString() : "NoAmount", true, out scrollAmount))
+            {
+                return scrollAmount;
+            }
+
+            var msg = string.Format(HelpArgumentsErrorMsg, HelpUrlAutomationScript);
+            throw new AutomationException(msg, ResponseStatus.JavaScriptError);
+        }
+
+        private void AutomationInvokeAction(FrameworkElement element)
+        {
+            var invokeProvider = element.GetProvider<IInvokeProvider>(PatternInterface.Invoke);
+            invokeProvider.Invoke();
+        }
+
+        private void AutomationScrollAction(FrameworkElement element)
+        {
+            var scrollProvider = element.GetProvider<IScrollProvider>(PatternInterface.Scroll);
+
+            var scrollInfo = ((JArray)this.Parameters["args"]).ElementAtOrDefault(1);
+            if (scrollInfo == null)
+            {
+                var msg = string.Format(HelpArgumentsErrorMsg, HelpUrlAutomationScript);
+                throw new AutomationException(msg, ResponseStatus.JavaScriptError);
+            }
+
+            var horizontalAmount = ParseScrollAmount(scrollInfo["horizontal"] ?? scrollInfo["h"]);
+            var verticalAmount = ParseScrollAmount(scrollInfo["vertical"] ?? scrollInfo["v"]);
+            var count = (scrollInfo["count"] ?? 1).Value<int>();
+
+            if (horizontalAmount != ScrollAmount.NoAmount && !scrollProvider.HorizontallyScrollable)
+            {
+                throw new AutomationException("Element is not horizontally scrollable.", ResponseStatus.JavaScriptError);
+            }
+
+            if (verticalAmount != ScrollAmount.NoAmount && !scrollProvider.VerticallyScrollable)
+            {
+                throw new AutomationException("Element is not vertically scrollable.", ResponseStatus.JavaScriptError);
+            }
+
+            for (var i = 0; i < count; ++i)
+            {
+                scrollProvider.Scroll(horizontalAmount, verticalAmount);
+            }
+        }
+
         private void ExecuteAttributeScript(string command)
         {
             if (command != "set")
@@ -100,28 +155,17 @@
         {
             var elementId = ((JArray)this.Parameters["args"])[0]["ELEMENT"].ToString();
             var element = this.Automator.WebElements.GetRegisteredElement(elementId);
-            var peer = FrameworkElementAutomationPeer.FromElement(element);
-            if (peer == null)
-            {
-                throw new AutomationException("Element does not support AutomationPeer.", ResponseStatus.JavaScriptError);
-            }
 
             switch (command)
             {
                 case "invoke":
-                    var invokeProvider = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                    if (invokeProvider == null)
-                    {
-                        throw new AutomationException(
-                            "Element does not support IInvokeProvider control pattern interface.", 
-                            ResponseStatus.JavaScriptError);
-                    }
-
-                    invokeProvider.Invoke();
+                    this.AutomationInvokeAction(element);
+                    break;
+                case "scroll":
+                    this.AutomationScrollAction(element);
                     break;
                 default:
-                    var msg = string.Format(
-                        HelpUnknownScriptMsg, "automation:", command, HelpUrlAutomationScript);
+                    var msg = string.Format(HelpUnknownScriptMsg, "automation:", command, HelpUrlAutomationScript);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
         }
