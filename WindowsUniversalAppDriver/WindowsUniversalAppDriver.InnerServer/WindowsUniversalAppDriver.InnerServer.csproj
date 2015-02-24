@@ -59,10 +59,10 @@
     <Compile Include="Commands\ExecuteCommand.cs" />
     <Compile Include="Commands\ElementCommand.cs" />
     <Compile Include="Commands\ElementsCommand.cs" />
-    <Compile Include="Commands\FindByHelpers\By.cs" />
-    <Compile Include="Commands\FindByHelpers\Finder.cs" />
-    <Compile Include="Commands\FrameworkElementExtensions.cs" />
+    <Compile Include="Commands\Helpers\By.cs" />
+    <Compile Include="Commands\Helpers\Finder.cs" />
     <Compile Include="Commands\GetElementAttributeCommand.cs" />
+    <Compile Include="Commands\Helpers\FrameworkElementExtensions.cs" />
     <Compile Include="Commands\LocationCommand.cs" />
     <Compile Include="Commands\LocationInViewCommand.cs" />
     <Compile Include="Commands\OrientationCommand.cs" />

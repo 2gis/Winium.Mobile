@@ -3,6 +3,7 @@
     using System.Collections.Generic;
 
     using WindowsUniversalAppDriver.Common;
+    using WindowsUniversalAppDriver.InnerServer.Commands.Helpers;
 
     internal class LocationInViewCommand : CommandBase
     {

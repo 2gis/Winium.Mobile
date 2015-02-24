@@ -1,13 +1,18 @@
-﻿namespace WindowsUniversalAppDriver.InnerServer.Commands
+﻿namespace WindowsUniversalAppDriver.InnerServer.Commands.Helpers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
+    using Newtonsoft.Json.Linq;
 
     using Windows.Foundation;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Automation;
     using Windows.UI.Xaml.Media;
+
+    using WindowsUniversalAppDriver.Common.Exceptions;
 
     internal static class FrameworkElementExtensions
     {
@@ -21,6 +26,57 @@
         internal static string AutomationName(this FrameworkElement element)
         {
             return element == null ? null : element.GetValue(AutomationProperties.NameProperty) as string;
+        }
+
+        internal static object GetAttribute(this FrameworkElement element, string attributeName)
+        {
+            object targetObject;
+            PropertyInfo targetPropertyInfo;
+
+            if (GetAttributeTarget(element, attributeName, out targetObject, out targetPropertyInfo))
+            {
+                return targetPropertyInfo.GetValue(targetObject, null);
+            }
+
+            throw new AutomationException("Could not access attribute {0}.", attributeName);
+        }
+
+        internal static bool GetAttributeTarget(
+            this object element, 
+            string attributeName, 
+            out object targetObject, 
+            out PropertyInfo targetPropertyInfo)
+        {
+            targetObject = null;
+            targetPropertyInfo = null;
+
+            object parent = null;
+            var curObject = element;
+            PropertyInfo propertyInfo = null;
+
+            var properties = attributeName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (!properties.Any())
+            {
+                return false;
+            }
+
+            foreach (var property in properties)
+            {
+                parent = curObject;
+                propertyInfo = curObject.GetType().GetRuntimeProperty(property);
+                if (propertyInfo == null)
+                {
+                    return false;
+                }
+
+                curObject = propertyInfo.GetValue(curObject, null);
+            }
+
+            targetObject = parent;
+            targetPropertyInfo = propertyInfo;
+
+            return true;
         }
 
         internal static Point GetCoordinates(this FrameworkElement element, UIElement visualRoot)
@@ -38,7 +94,11 @@
             var boundsInView = new Rect(new Point(0, 0), visualRoot.RenderSize);
             boundsInView.Intersect(bounds);
 
-            var result = boundsInView.IsEmpty ? center : new Point(boundsInView.X + (int)(boundsInView.Width / 2), boundsInView.Y + (int)(boundsInView.Height / 2));
+            var result = boundsInView.IsEmpty
+                             ? center
+                             : new Point(
+                                   boundsInView.X + (int)(boundsInView.Width / 2), 
+                                   boundsInView.Y + (int)(boundsInView.Height / 2));
             return ScreenCoordinatesHelper.LogicalPointToScreenPoint(result);
         }
 
@@ -97,6 +157,19 @@
 
                 element = container;
             }
+        }
+
+        internal static bool SetAttribute(this FrameworkElement element, string attributeName, JToken value)
+        {
+            object targetObject;
+            PropertyInfo targetPropertyInfo;
+
+            if (GetAttributeTarget(element, attributeName, out targetObject, out targetPropertyInfo))
+            {
+                targetPropertyInfo.SetValue(targetObject, value.ToObject(targetPropertyInfo.PropertyType));
+            }
+
+            throw new AutomationException("Could not access attribute {0}.", attributeName);
         }
 
         #endregion

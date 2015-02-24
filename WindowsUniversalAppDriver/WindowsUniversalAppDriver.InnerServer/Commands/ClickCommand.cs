@@ -1,6 +1,7 @@
 ﻿namespace WindowsUniversalAppDriver.InnerServer.Commands
 {
     using WindowsUniversalAppDriver.Common;
+    using WindowsUniversalAppDriver.InnerServer.Commands.Helpers;
 
     internal class ClickCommand : CommandBase
     {

@@ -7,7 +7,7 @@
     using Windows.UI.Xaml.Media;
 
     using WindowsUniversalAppDriver.Common;
-    using WindowsUniversalAppDriver.InnerServer.Commands.FindByHelpers;
+    using WindowsUniversalAppDriver.InnerServer.Commands.Helpers;
 
     internal class ElementsCommand : CommandBase
     {
