@@ -1,9 +1,19 @@
 ﻿namespace WindowsUniversalAppDriver.Common.Exceptions
 {
+    #region
+
     using System;
+
+    #endregion
 
     public class AutomationException : Exception
     {
+        #region Fields
+
+        private ResponseStatus responseStatus = ResponseStatus.UnknownError;
+
+        #endregion
+
         #region Constructors and Destructors
 
         public AutomationException()
@@ -30,7 +40,18 @@
 
         #region Public Properties
 
-        public ResponseStatus Status { get; set; }
+        public ResponseStatus Status
+        {
+            get
+            {
+                return this.responseStatus;
+            }
+
+            set
+            {
+                this.responseStatus = value;
+            }
+        }
 
         #endregion
     }

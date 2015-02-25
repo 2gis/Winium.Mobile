@@ -1,5 +1,7 @@
 ﻿namespace WindowsUniversalAppDriver.InnerServer.Commands.Helpers
 {
+    #region using
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -10,12 +12,21 @@
     using Windows.Foundation;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Automation;
+    using Windows.UI.Xaml.Automation.Peers;
     using Windows.UI.Xaml.Media;
 
     using WindowsUniversalAppDriver.Common.Exceptions;
 
+    #endregion
+
     internal static class FrameworkElementExtensions
     {
+        #region Constants
+
+        internal const string HelpNotSupportInterfaceMsg = "Element does not support {0} control pattern interface.";
+
+        #endregion
+
         #region Methods
 
         internal static string AutomationId(this FrameworkElement element)
@@ -79,6 +90,17 @@
             return true;
         }
 
+        internal static AutomationPeer GetAutomationPeer(this FrameworkElement element)
+        {
+            var peer = FrameworkElementAutomationPeer.FromElement(element);
+            if (peer == null)
+            {
+                throw new AutomationException("Element does not support AutomationPeer.");
+            }
+
+            return peer;
+        }
+
         internal static Point GetCoordinates(this FrameworkElement element, UIElement visualRoot)
         {
             var point = element.TransformToVisual(visualRoot).TransformPoint(new Point(0, 0));
@@ -100,6 +122,18 @@
                                    boundsInView.X + (int)(boundsInView.Width / 2), 
                                    boundsInView.Y + (int)(boundsInView.Height / 2));
             return ScreenCoordinatesHelper.LogicalPointToScreenPoint(result);
+        }
+
+        internal static T GetProvider<T>(this FrameworkElement element, PatternInterface patternInterface)
+            where T : class
+        {
+            var provider = element.GetAutomationPeer().GetPattern(patternInterface) as T;
+            if (provider != null)
+            {
+                return provider;
+            }
+
+            throw new AutomationException(string.Format(HelpNotSupportInterfaceMsg, typeof(T).Name));
         }
 
         internal static string GetText(this FrameworkElement element)
