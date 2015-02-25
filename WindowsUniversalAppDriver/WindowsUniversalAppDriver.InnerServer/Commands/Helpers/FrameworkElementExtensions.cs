@@ -193,7 +193,7 @@
             }
         }
 
-        internal static bool SetAttribute(this FrameworkElement element, string attributeName, JToken value)
+        internal static void SetAttribute(this FrameworkElement element, string attributeName, JToken value)
         {
             object targetObject;
             PropertyInfo targetPropertyInfo;
@@ -202,8 +202,10 @@
             {
                 targetPropertyInfo.SetValue(targetObject, value.ToObject(targetPropertyInfo.PropertyType));
             }
-
-            throw new AutomationException("Could not access attribute {0}.", attributeName);
+            else
+            {
+                throw new AutomationException("Could not access attribute {0}.", attributeName);
+            }
         }
 
         #endregion
