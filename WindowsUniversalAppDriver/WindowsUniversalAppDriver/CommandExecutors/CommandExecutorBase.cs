@@ -51,7 +51,9 @@
             }
             catch (NotImplementedException exception)
             {
-                return HttpResponseHelper.ResponseString(HttpStatusCode.NotImplemented, exception.Message);
+                return HttpResponseHelper.ResponseString(
+                    HttpStatusCode.NotImplemented,
+                    this.JsonResponse(ResponseStatus.UnknownCommand, exception.Message));
             }
             catch (Exception exception)
             {
@@ -68,6 +70,14 @@
         protected virtual string DoImpl()
         {
             throw new InvalidOperationException("DoImpl should never be called in CommandExecutorBase");
+        }
+
+        /// <summary>
+        /// The JsonResponse with SUCCESS status and NULL value.
+        /// </summary>
+        protected string JsonResponse()
+        {
+            return this.JsonResponse(ResponseStatus.Success, null);
         }
 
         protected string JsonResponse(ResponseStatus status, object value)

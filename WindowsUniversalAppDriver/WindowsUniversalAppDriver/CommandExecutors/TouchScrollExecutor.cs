@@ -1,11 +1,15 @@
 ﻿namespace WindowsUniversalAppDriver.CommandExecutors
 {
+    #region
+
     using System;
     using System.Drawing;
     using System.Globalization;
 
     using WindowsUniversalAppDriver.Automator;
     using WindowsUniversalAppDriver.EmulatorHelpers;
+
+    #endregion
 
     internal class TouchScrollExecutor : CommandExecutorBase
     {
@@ -30,7 +34,7 @@
 
             this.Automator.EmulatorController.PerformGesture(new ScrollGesture(startPoint, xOffset, yOffset));
 
-            return null;
+            return this.JsonResponse();
         }
 
         #endregion

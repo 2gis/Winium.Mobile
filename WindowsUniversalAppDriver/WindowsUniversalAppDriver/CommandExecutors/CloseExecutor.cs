@@ -8,7 +8,7 @@
         {
             this.Automator.Deployer.Uninstall();
 
-            return null;
+            return this.JsonResponse();
         }
 
         #endregion

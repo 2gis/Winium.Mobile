@@ -1,6 +1,10 @@
 ﻿namespace WindowsUniversalAppDriver.CommandExecutors
 {
+    #region
+
     using System.Windows.Forms;
+
+    #endregion
 
     internal class GoBackExecutor : CommandExecutorBase
     {
@@ -11,7 +15,7 @@
             // F1 is shortcut for "Back" hardware button
             this.Automator.EmulatorController.TypeKey(Keys.F1);
 
-            return null;
+            return this.JsonResponse();
         }
 
         #endregion

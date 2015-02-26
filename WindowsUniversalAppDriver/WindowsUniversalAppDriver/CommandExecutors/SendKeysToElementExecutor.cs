@@ -1,8 +1,12 @@
 ﻿namespace WindowsUniversalAppDriver.CommandExecutors
 {
+    #region
+
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Forms;
+
+    #endregion
 
     internal class SendKeysToElementExecutor : CommandExecutorBase
     {
@@ -42,7 +46,7 @@
                 this.Automator.EmulatorController.TypeKey(magicKey);
             }
 
-            return null;
+            return this.JsonResponse();
         }
 
         #endregion
