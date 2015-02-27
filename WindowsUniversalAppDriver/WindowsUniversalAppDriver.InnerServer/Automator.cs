@@ -1,16 +1,20 @@
 ﻿namespace WindowsUniversalAppDriver.InnerServer
 {
+    #region
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Windows.UI.Xaml;
-
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    using Windows.UI.Xaml;
+
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.InnerServer.Commands;
+
+    #endregion
 
     internal class Automator
     {
@@ -127,6 +131,10 @@
             else if (command.Equals(DriverCommand.ExecuteScript))
             {
                 commandToExecute = new ExecuteCommand();
+            }
+            else if (command.Equals(DriverCommand.GetElementTagName))
+            {
+                commandToExecute = new GetElementTagNameCommand { ElementId = elementId };
             }
             else
             {

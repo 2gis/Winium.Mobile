@@ -68,6 +68,7 @@
     <Compile Include="Commands\OrientationCommand.cs" />
     <Compile Include="Commands\PageSourceCommand.cs" />
     <Compile Include="Commands\ScreenCoordinatesHelper.cs" />
+    <Compile Include="Commands\GetElementTagNameCommand.cs" />
     <Compile Include="Commands\TextCommand.cs" />
     <Compile Include="Commands\ValueCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
