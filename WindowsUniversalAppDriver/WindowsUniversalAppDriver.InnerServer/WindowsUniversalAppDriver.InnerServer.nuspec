@@ -2,13 +2,15 @@
 <package>
   <metadata>
     <id>WindowsUniversalAppDriver.InnerServer</id>
-    <version>0.1.7</version>
+    <version>0.1.8</version>
     <authors>2GIS</authors>
     <owners>2GIS</owners>
     <projectUrl>https://github.com/2gis/windows-universal-app-driver</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Inner server. Part of Windows Universal App Driver (Selenium Driver) for automated testing of Windows Universal applications.</description>
     <releaseNotes>
+		Version 0.1.8
+			+ Add GetElementTagName command (https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/name)
 		Version 0.1.7
 			- Fix 'attribute: set' script always throw exceptions
 		Version 0.1.6
