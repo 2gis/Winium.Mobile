@@ -70,7 +70,7 @@
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
 
-            return this.JsonResponse(ResponseStatus.Success, null);
+            return this.JsonResponse();
         }
 
         #endregion

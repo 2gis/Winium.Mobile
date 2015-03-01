@@ -30,7 +30,7 @@
             }
 
             TrySetText(textbox, this.KeyString);
-            return this.JsonResponse(ResponseStatus.Success, null);
+            return this.JsonResponse();
         }
 
         #endregion
