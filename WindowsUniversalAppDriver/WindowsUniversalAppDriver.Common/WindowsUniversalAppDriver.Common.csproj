@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CommandResponse.cs" />
     <Compile Include="DriverCommand.cs" />
     <Compile Include="Exceptions\AutomationException.cs" />
     <Compile Include="Exceptions\InnerDriverRequestException.cs" />

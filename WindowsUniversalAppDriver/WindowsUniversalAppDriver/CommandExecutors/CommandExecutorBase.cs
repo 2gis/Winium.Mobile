@@ -1,5 +1,7 @@
 ﻿namespace WindowsUniversalAppDriver.CommandExecutors
 {
+    #region
+
     using System;
     using System.Net;
 
@@ -7,9 +9,11 @@
 
     using OpenQA.Selenium.Remote;
 
+    using WindowsUniversalAppDriver.Automator;
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;
-    using WindowsUniversalAppDriver.Automator;
+
+    #endregion
 
     internal class CommandExecutorBase
     {
@@ -27,7 +31,7 @@
 
         #region Public Methods and Operators
 
-        public string Do()
+        public CommandResponse Do()
         {
             if (this.ExecutedCommand == null)
             {
@@ -38,26 +42,26 @@
             {
                 var session = this.ExecutedCommand.SessionId == null ? null : this.ExecutedCommand.SessionId.ToString();
                 this.Automator = Automator.InstanceForSession(session);
-                return HttpResponseHelper.ResponseString(HttpStatusCode.OK, this.DoImpl());
+                return CommandResponse.Create(HttpStatusCode.OK, this.DoImpl());
             }
             catch (AutomationException ex)
             {
-                return HttpResponseHelper.ResponseString(HttpStatusCode.OK, this.JsonResponse(ex.Status, ex.Message));
+                return CommandResponse.Create(HttpStatusCode.OK, this.JsonResponse(ex.Status, ex.Message));
             }
             catch (InnerDriverRequestException ex)
             {
                 // Bad status returned by Inner Driver when trying to forward command
-                return HttpResponseHelper.ResponseString(ex.StatusCode, ex.Message);
+                return CommandResponse.Create(ex.StatusCode, ex.Message);
             }
             catch (NotImplementedException exception)
             {
-                return HttpResponseHelper.ResponseString(
-                    HttpStatusCode.NotImplemented,
+                return CommandResponse.Create(
+                    HttpStatusCode.NotImplemented, 
                     this.JsonResponse(ResponseStatus.UnknownCommand, exception.Message));
             }
             catch (Exception exception)
             {
-                return HttpResponseHelper.ResponseString(
+                return CommandResponse.Create(
                     HttpStatusCode.OK, 
                     this.JsonResponse(ResponseStatus.UnknownError, "Unknown error: " + exception.Message));
             }
@@ -75,6 +79,9 @@
         /// <summary>
         /// The JsonResponse with SUCCESS status and NULL value.
         /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         protected string JsonResponse()
         {
             return this.JsonResponse(ResponseStatus.Success, null);
