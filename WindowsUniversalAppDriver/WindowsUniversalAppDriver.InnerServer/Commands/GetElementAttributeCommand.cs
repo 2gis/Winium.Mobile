@@ -32,7 +32,7 @@
 
             if (attributeName == null)
             {
-                return this.JsonResponse(ResponseStatus.Success, null);
+                return this.JsonResponse();
             }
 
             /* GetAttribute command should return: null if no property was found,
@@ -47,7 +47,7 @@
             }
             catch (AutomationException)
             {
-                return this.JsonResponse(ResponseStatus.Success, null);
+                return this.JsonResponse();
             }
         }
 

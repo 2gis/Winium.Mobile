@@ -1,10 +1,14 @@
 ﻿namespace WindowsUniversalAppDriver.CommandExecutors
 {
+    #region
+
     using System;
     using System.Drawing;
     using System.Globalization;
 
     using WindowsUniversalAppDriver.Automator;
+
+    #endregion
 
     internal class MouseMoveToExecutor : CommandExecutorBase
     {
@@ -30,7 +34,7 @@
             this.Automator.UpdatedOrientationForEmulatorController();
             this.Automator.EmulatorController.MoveCursorTo(coordinates);
 
-            return null;
+            return this.JsonResponse();
         }
 
         #endregion

@@ -1,11 +1,15 @@
 ﻿namespace WindowsUniversalAppDriver.CommandExecutors
 {
+    #region
+
     using System;
     using System.Drawing;
     using System.Globalization;
 
     using WindowsUniversalAppDriver.Automator;
     using WindowsUniversalAppDriver.EmulatorHelpers;
+
+    #endregion
 
     internal class TouchFlickExecutor : CommandExecutorBase
     {
@@ -38,7 +42,7 @@
                 this.Automator.EmulatorController.PerformGesture(new FlickGesture(startPoint, xSpeed, ySpeed));
             }
 
-            return null;
+            return this.JsonResponse();
         }
 
         #endregion

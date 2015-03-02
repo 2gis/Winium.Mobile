@@ -43,7 +43,7 @@
                     break;
             }
 
-            return null;
+            return this.JsonResponse();
         }
         
         internal void ExecuteMobileScript(string command)

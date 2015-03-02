@@ -44,7 +44,7 @@
 
         public static string ResponseString(HttpStatusCode statusCode, string content)
         {
-            var contentType = statusCode == HttpStatusCode.BadRequest ? PlainTextContentType : JsonContentType;
+            var contentType = IsClientError((int)statusCode) ? PlainTextContentType : JsonContentType;
 
             string statusDescription;
             StatusCodeDescriptors.TryGetValue(statusCode, out statusDescription);
@@ -57,6 +57,11 @@
             responseString.AppendLine(content);
 
             return responseString.ToString();
+        }
+
+        public static bool IsClientError(int code)
+        {
+            return code >= 400 && code < 500;
         }
 
         #endregion

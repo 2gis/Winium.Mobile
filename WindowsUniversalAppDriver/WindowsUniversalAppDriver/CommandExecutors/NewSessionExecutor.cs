@@ -61,9 +61,7 @@
             // Gives sometime to load visuals (needed only in case of slow emulation)
             Thread.Sleep(this.Automator.ActualCapabilities.LaunchDelay);
 
-            var jsonResponse = this.JsonResponse(ResponseStatus.Success, this.Automator.ActualCapabilities);
-
-            return jsonResponse;
+            return this.JsonResponse(ResponseStatus.Success, this.Automator.ActualCapabilities);
         }
 
         private EmulatorController CreateEmulatorController(bool withFallback)

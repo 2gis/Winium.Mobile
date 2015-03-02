@@ -56,7 +56,7 @@
                 }
 
                 invokeProv.Invoke();
-                return null;
+                return this.JsonResponse();
             }
 
             throw new AutomationException("No alert is displayed", ResponseStatus.NoAlertOpenError);

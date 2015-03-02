@@ -84,6 +84,14 @@
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// The JsonResponse with SUCCESS status and NULL value.
+        /// </summary>
+        public string JsonResponse()
+        {
+            return JsonConvert.SerializeObject(new JsonResponse(this.Session, ResponseStatus.Success, null));
+        }
+
         public string JsonResponse(ResponseStatus status, object value)
         {
             if (status != ResponseStatus.Success && value == null)

@@ -8,7 +8,7 @@
         {
             this.Automator.EmulatorController.LeftButtonClick();
 
-            return null;
+            return this.JsonResponse();
         }
 
         #endregion
