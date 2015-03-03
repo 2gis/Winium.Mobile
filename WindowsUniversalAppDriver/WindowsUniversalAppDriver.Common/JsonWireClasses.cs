@@ -50,32 +50,4 @@ namespace WindowsUniversalAppDriver.Common
 
         #endregion
     }
-
-    public class JsonCommand
-    {
-        #region Public Properties
-
-        /// <summary>
-        /// Gets the command name
-        /// 
-        /// </summary>
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets the parameters of the command
-        /// 
-        /// </summary>
-        [JsonProperty("parameters")]
-        public Dictionary<string, object> Parameters { get; set; }
-
-        /// <summary>
-        /// Gets the SessionID of the command
-        /// 
-        /// </summary>
-        [JsonProperty("sessionId")]
-        public string SessionId { get; set; }
-
-        #endregion
-    }
 }

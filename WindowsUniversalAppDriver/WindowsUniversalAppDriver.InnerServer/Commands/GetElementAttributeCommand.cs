@@ -1,13 +1,18 @@
 ﻿namespace WindowsUniversalAppDriver.InnerServer.Commands
 {
+    #region
+
     using System;
     using System.Reflection;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;
     using WindowsUniversalAppDriver.InnerServer.Commands.Helpers;
+
+    #endregion
 
     internal class GetElementAttributeCommand : CommandBase
     {
@@ -23,7 +28,7 @@
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
 
-            object value;
+            JToken value;
             string attributeName = null;
             if (this.Parameters.TryGetValue("NAME", out value))
             {

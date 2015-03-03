@@ -11,21 +11,34 @@
 
     public class Command
     {
+        #region Fields
+
+        private IDictionary<string, JToken> commandParameters = new JObject();
+
+        #endregion
+
         #region Constructors and Destructors
 
         public Command(string name, IDictionary<string, JToken> parameters)
         {
             this.Name = name;
-            this.Parameters = parameters;
+            if (parameters != null)
+            {
+                this.Parameters = parameters;
+            }
         }
 
         public Command(string name, string jsonParameters)
-            : this(name, JObject.Parse(jsonParameters))
+            : this(name, string.IsNullOrEmpty(jsonParameters) ? null : JObject.Parse(jsonParameters))
         {
         }
 
         public Command(string name)
-            : this(name, new JObject())
+        {
+            this.Name = name;
+        }
+
+        public Command()
         {
         }
 
@@ -43,7 +56,18 @@
         /// Gets the parameters of the command
         /// </summary>
         [JsonProperty("parameters")]
-        public IDictionary<string, JToken> Parameters { get; set; }
+        public IDictionary<string, JToken> Parameters
+        {
+            get
+            {
+                return this.commandParameters;
+            }
+
+            set
+            {
+                this.commandParameters = value;
+            }
+        }
 
         /// <summary>
         /// Gets the SessionID of the command

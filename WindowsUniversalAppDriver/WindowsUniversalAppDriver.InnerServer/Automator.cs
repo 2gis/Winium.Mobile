@@ -40,7 +40,7 @@
 
         public string ProcessCommand(string content)
         {
-            var requestData = JsonConvert.DeserializeObject<JsonCommand>(content);
+            var requestData = JsonConvert.DeserializeObject<Command>(content);
             var command = requestData.Name;
             var parameters = requestData.Parameters;
 
@@ -50,7 +50,7 @@
                 throw new NullReferenceException("Parameters can not be NULL");
             }
 
-            object elementIdObject;
+            JToken elementIdObject;
             if (parameters.TryGetValue("ID", out elementIdObject))
             {
                 elementId = elementIdObject.ToString();

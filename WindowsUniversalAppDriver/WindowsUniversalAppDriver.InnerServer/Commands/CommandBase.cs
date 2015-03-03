@@ -1,17 +1,21 @@
 ﻿namespace WindowsUniversalAppDriver.InnerServer.Commands
 {
+    #region
+
     using System;
     using System.Collections.Generic;
     using System.Threading;
 
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
     using Windows.UI.Core;
     using Windows.UI.Xaml;
 
-    using Newtonsoft.Json;
-
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;
-    using WindowsUniversalAppDriver.InnerServer;
+
+    #endregion
 
     internal class CommandBase
     {
@@ -19,7 +23,7 @@
 
         public Automator Automator { get; set; }
 
-        public Dictionary<string, object> Parameters { get; set; }
+        public IDictionary<string, JToken> Parameters { get; set; }
 
         public string Session { get; set; }
 
@@ -33,7 +37,7 @@
             var waitEvent = new AutoResetEvent(false);
 
             root.Dispatcher.RunAsync(
-                CoreDispatcherPriority.Normal,
+                CoreDispatcherPriority.Normal, 
                 () =>
                     {
                         try
@@ -65,7 +69,7 @@
             var response = string.Empty;
             try
             {
-                BeginInvokeSync(Automator.VisualRoot, () => { response = this.DoImpl(); });
+                BeginInvokeSync(this.Automator.VisualRoot, () => { response = this.DoImpl(); });
             }
             catch (AutomationException exception)
             {
@@ -87,6 +91,9 @@
         /// <summary>
         /// The JsonResponse with SUCCESS status and NULL value.
         /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public string JsonResponse()
         {
             return JsonConvert.SerializeObject(new JsonResponse(this.Session, ResponseStatus.Success, null));
