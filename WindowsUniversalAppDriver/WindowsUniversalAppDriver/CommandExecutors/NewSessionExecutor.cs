@@ -1,6 +1,6 @@
 ﻿namespace WindowsUniversalAppDriver.CommandExecutors
 {
-    #region using
+    #region
 
     using System;
     using System.Diagnostics;
@@ -10,10 +10,8 @@
 
     using Newtonsoft.Json;
 
-    using OpenQA.Selenium.Remote;
-
-    using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Automator;
+    using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.EmulatorHelpers;
 
     #endregion
@@ -43,7 +41,7 @@
                 stopWatch.Restart();
 
                 Logger.Trace("Ping inner driver");
-                var pingCommand = new Command(null, "ping", null);
+                var pingCommand = new Command("ping");
                 var responseBody = this.Automator.CommandForwarder.ForwardCommand(pingCommand, false, 2000);
                 if (responseBody.StartsWith("<pong>", StringComparison.Ordinal))
                 {

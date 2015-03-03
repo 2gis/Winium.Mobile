@@ -7,8 +7,6 @@
 
     using Newtonsoft.Json;
 
-    using OpenQA.Selenium.Remote;
-
     using WindowsUniversalAppDriver.Automator;
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;

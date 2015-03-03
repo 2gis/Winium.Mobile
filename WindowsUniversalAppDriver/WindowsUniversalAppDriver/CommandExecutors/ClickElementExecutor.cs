@@ -6,7 +6,7 @@
 
         protected override string DoImpl()
         {
-            var location = this.Automator.RequestElementLocation(this.ExecutedCommand.Parameters["ID"] as string);
+            var location = this.Automator.RequestElementLocation(this.ExecutedCommand.Parameters["ID"]);
 
             if (!location.HasValue)
             {

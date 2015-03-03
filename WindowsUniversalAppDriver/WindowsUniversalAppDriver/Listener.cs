@@ -8,8 +8,6 @@
     using System.Net;
     using System.Net.Sockets;
 
-    using OpenQA.Selenium.Remote;
-
     using WindowsUniversalAppDriver.Common;
 
     #endregion
@@ -175,7 +173,7 @@
 
         private CommandResponse ProcessCommand(Command command)
         {
-            Logger.Info("COMMAND {0}\r\n{1}", command.Name, command.ParametersAsJsonString);
+            Logger.Info("COMMAND {0}\r\n{1}", command.Name, command.Parameters.ToString());
             var executor = this.executorDispatcher.GetExecutor(command.Name);
             executor.ExecutedCommand = command;
             var respnose = executor.Do();
