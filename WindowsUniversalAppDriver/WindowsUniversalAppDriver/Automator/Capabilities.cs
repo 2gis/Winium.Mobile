@@ -18,6 +18,7 @@
             this.LaunchTimeout = 10000;
             this.DebugConnectToRunningApp = false;
             this.InnerPort = 9998;
+            this.TakesScreenshot = true;
         }
 
         #endregion
@@ -53,6 +54,9 @@
 
         [JsonProperty("launchTimeout")]
         public int LaunchTimeout { get; set; }
+
+        [JsonProperty("takesScreenshot")]
+        public bool TakesScreenshot { get; set; }
 
         #endregion
 
