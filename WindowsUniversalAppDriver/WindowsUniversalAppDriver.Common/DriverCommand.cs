@@ -400,6 +400,12 @@ namespace WindowsUniversalAppDriver.Common
         public static readonly string SwitchToFrame = "switchToFrame";
 
         /// <summary>
+        /// Represents SwitchToParentFrame command
+        /// 
+        /// </summary>
+        public static readonly string SwitchToParentFrame = "switchToParentFrame";
+
+        /// <summary>
         /// Represents SwitchToWindow command
         /// 
         /// </summary>

@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Command.cs" />
+    <Compile Include="CommandInfo.cs" />
     <Compile Include="CommandResponse.cs" />
     <Compile Include="DriverCommand.cs" />
     <Compile Include="Exceptions\AutomationException.cs" />
