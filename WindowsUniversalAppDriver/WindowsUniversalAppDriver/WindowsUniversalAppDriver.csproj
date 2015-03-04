@@ -68,7 +68,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcceptedRequest.cs" />
     <Compile Include="Automator\Automator.cs" />
     <Compile Include="Automator\Capabilities.cs" />
     <Compile Include="CommandExecutorDispatchTable.cs" />
@@ -100,6 +99,7 @@
     <Compile Include="EmulatorHelpers\IGesture.cs" />
     <Compile Include="EmulatorHelpers\ScrollGesture.cs" />
     <Compile Include="EmulatorHelpers\TapGesture.cs" />
+    <Compile Include="HttpRequest.cs" />
     <Compile Include="Listener.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
