@@ -1,14 +1,16 @@
 ﻿namespace WindowsUniversalAppDriver
 {
+    #region
+
     using System;
     using System.Globalization;
     using System.IO;
     using System.Net;
     using System.Net.Sockets;
 
-    using OpenQA.Selenium.Remote;
-
     using WindowsUniversalAppDriver.Common;
+
+    #endregion
 
     public class Listener
     {
@@ -91,13 +93,13 @@
                         var acceptedRequest = new AcceptedRequest();
                         acceptedRequest.AcceptRequest(stream);
 
-                        var responseBody = this.HandleRequest(acceptedRequest);
+                        var response = this.HandleRequest(acceptedRequest);
 
                         using (var writer = new StreamWriter(stream))
                         {
                             try
                             {
-                                writer.Write(responseBody);
+                                writer.Write(response);
                                 writer.Flush();
                             }
                             catch (IOException ex)
@@ -165,12 +167,13 @@
                 commandToExecute.Parameters[variableName] = matched.BoundVariables[variableName];
             }
 
-            return this.ProcessCommand(commandToExecute);
+            var commandResponse = this.ProcessCommand(commandToExecute);
+            return HttpResponseHelper.ResponseString(commandResponse.HttpStatusCode, commandResponse.Content);
         }
 
-        private string ProcessCommand(Command command)
+        private CommandResponse ProcessCommand(Command command)
         {
-            Logger.Info("COMMAND {0}\r\n{1}", command.Name, command.ParametersAsJsonString);
+            Logger.Info("COMMAND {0}\r\n{1}", command.Name, command.Parameters.ToString());
             var executor = this.executorDispatcher.GetExecutor(command.Name);
             executor.ExecutedCommand = command;
             var respnose = executor.Do();

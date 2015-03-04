@@ -1,5 +1,7 @@
 ﻿namespace WindowsUniversalAppDriver.Automator
 {
+    #region
+
     using System;
     using System.Collections.Generic;
     using System.Drawing;
@@ -7,12 +9,10 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
-    using OpenQA.Selenium.Remote;
-
     using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.EmulatorHelpers;
 
-    using DriverCommand = WindowsUniversalAppDriver.Common.DriverCommand;
+    #endregion
 
     internal class Automator
     {
@@ -66,12 +66,22 @@
 
         #region Public Methods and Operators
 
-        public static T GetValue<T>(IReadOnlyDictionary<string, object> parameters, string key) where T : class
+        public static T GetValue<T>(IDictionary<string, JToken> parameters, string key) where T : class
         {
-            object valueObject;
-            parameters.TryGetValue(key, out valueObject);
+            JToken valueObject;
+            if (!parameters.TryGetValue(key, out valueObject))
+            {
+                return null;
+            }
 
-            return valueObject as T;
+            try
+            {
+                return valueObject.ToObject<T>();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static Automator InstanceForSession(string sessionId)
@@ -96,9 +106,11 @@
             return instance;
         }
 
-        public Point? RequestElementLocation(string element)
+        public Point? RequestElementLocation(JToken element)
         {
-            var command = new Command(null, DriverCommand.GetElementLocationOnceScrolledIntoView, new Dictionary<string, object> { { "ID", element } });
+            var command = new Command(
+                DriverCommand.GetElementLocationOnceScrolledIntoView, 
+                new Dictionary<string, JToken> { { "ID", element } });
 
             var responseBody = this.CommandForwarder.ForwardCommand(command);
 
@@ -133,7 +145,7 @@
         /// </summary>
         public void UpdatedOrientationForEmulatorController()
         {
-            var command = new Command(null, DriverCommand.GetOrientation, null);
+            var command = new Command(DriverCommand.GetOrientation);
             var responseBody = this.CommandForwarder.ForwardCommand(command);
             var deserializeObject = JsonConvert.DeserializeObject<JsonResponse>(responseBody);
             if (deserializeObject.Status != ResponseStatus.Success)

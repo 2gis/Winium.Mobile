@@ -1,5 +1,7 @@
 ﻿namespace WindowsUniversalAppDriver
 {
+    #region
+
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -8,9 +10,10 @@
 
     using Newtonsoft.Json;
 
-    using OpenQA.Selenium.Remote;
-
+    using WindowsUniversalAppDriver.Common;
     using WindowsUniversalAppDriver.Common.Exceptions;
+
+    #endregion
 
     internal class Requester
     {
