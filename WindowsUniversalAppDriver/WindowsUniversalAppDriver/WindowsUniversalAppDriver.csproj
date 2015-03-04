@@ -89,6 +89,7 @@
     <Compile Include="CommandExecutors\MouseMoveToExecutor.cs" />
     <Compile Include="CommandExecutors\MouseUpExecutor.cs" />
     <Compile Include="CommandExecutors\NewSessionExecutor.cs" />
+    <Compile Include="CommandExecutors\QuitExecuter.cs" />
     <Compile Include="CommandExecutors\ScreenshotExecutor.cs" />
     <Compile Include="CommandExecutors\SendKeysToElementExecutor.cs" />
     <Compile Include="CommandExecutors\TouchFlickExecutor.cs" />

@@ -1,6 +1,6 @@
 ﻿namespace WindowsUniversalAppDriver.CommandExecutors
 {
-    internal class CloseExecutor : CommandExecutorBase
+    internal class QuitExecutor : CommandExecutorBase
     {
         #region Methods
 
@@ -8,9 +8,10 @@
         {
             if (!this.Automator.ActualCapabilities.DebugConnectToRunningApp)
             {
-                // TODO close should only close app, not uninstall
+                // TODO quit should close all open windows (apps) and possible close the emulator
                 this.Automator.Deployer.Uninstall();
             }
+            
 
             return this.JsonResponse();
         }
