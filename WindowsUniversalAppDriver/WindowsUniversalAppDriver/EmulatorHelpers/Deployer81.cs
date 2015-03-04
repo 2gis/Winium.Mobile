@@ -128,7 +128,14 @@ namespace WindowsUniversalAppDriver.EmulatorHelpers
 
         public void Uninstall()
         {
+            if (this.application == null)
+            { 
+                Logger.Debug("Could not uninstall application that is already uninstalled.");
+                return;
+            }
+
             this.application.Uninstall();
+            this.application = null;
         }
 
         #endregion
