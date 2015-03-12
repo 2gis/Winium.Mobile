@@ -116,7 +116,7 @@ class TestGetCommands(WuaTestCase):
         element = self.driver.find_element_by_id('MyTextBox')
         value = loads(element.get_attribute('DesiredSize'))
         assert isinstance(value, dict)
-        assert {'Width', 'Height', 'IsEmpty'} == value.keys()
+        assert {'Width', 'Height', 'IsEmpty'} == set(value.keys())
 
     @pytest.mark.parametrize(("automation_id", "expected_value"), [
         ('MyTextBox', True),

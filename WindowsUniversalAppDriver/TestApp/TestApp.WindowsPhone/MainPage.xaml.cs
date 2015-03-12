@@ -102,12 +102,12 @@ namespace TestApp
             TextBox.Text = "Clicked SecondAppBarButton";
         }
 
-        private void AppBar_OnOpened(object sender, object e)
+        private void AppBarOnOpened(object sender, object e)
         {
             TextBox.Text = "AppBar Opened";
         }
 
-        private void AppBar_OnClosed(object sender, object e)
+        private void AppBarOnClosed(object sender, object e)
         {
             TextBox.Text = "AppBar Closed";
         }
