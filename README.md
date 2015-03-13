@@ -2,6 +2,10 @@
 [![Inner Server NuGet downloads](https://img.shields.io/nuget/dt/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
 [![Inner Server NuGet version](https://img.shields.io/nuget/v/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.StoreApps is Selenium Remote WebDriver implementation for automated testing of Windows Store apps">
+</p>
+
 Winium.StoreApps is an open source test automation tool for Windows Store apps, tested on emulators (currently it supports only testing of Windows Phone apps).
 
 ## Supported Platforms
