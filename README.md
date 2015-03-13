@@ -1,50 +1,71 @@
-Windows Universal App Driver
-============================
+# Winium for Store Apps
+[![Inner Server NuGet downloads](https://img.shields.io/nuget/dt/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
+[![Inner Server NuGet version](https://img.shields.io/nuget/v/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
 
-Selenium Driver for automated testing of Windows Universal applications.
+Winium.StoreApps is an open source, test automation tool for Windows Store apps, tested on emulators (currently only testing of Windows Phone apps is supported).
 
-This repository hosts the code for the Windows Phone driver. You can use it for testing of native Windows Phone 8.1 applications. Currently it implements only limited subset of [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol) and supports testing only via an emulator (Windows Phone 8.1).
+## Supported Platforms
+- Windows Phone 8.1
 
-Driver consists of two parts: the Driver (selenium based) and InnerServer (for application). To run tests you will need to add `WindowsUniversalAppDriver.InnerServer` to the app you want to test and start `WindowsUniversalAppDriver` (Remote WebDriver to send Json Wire Protocol commands to).
+For Windows Phone 8 Silverlight test automation tool see [Windows Phone Driver](https://github.com/2gis/winphonedriver).
+For Windows Desktop (WPF, WinForms) test automation tool see [Winium Desktop](https://github.com/2gis/cruciatus).
 
-Requirements to run tests using Windows Phone driver
----------------------------------------------------
+## Why Winium?
+As said by appium:
+> - You can write tests with your favorite dev tools using any WebDriver-compatible language such as Java, Objective-C, JavaScript with Node.js (in promise, callback or generator flavors), PHP, Python, Ruby, C#, Clojure, or Perl with the Selenium WebDriver API and language-specific client libraries.
+> - You can use any testing framework.
 
+## Requirements
 * Windows 8 or higher
+* Visual Studio 2013 with Update 2 or higher
 * Windows phone 8.1 SDK
-* You will also need Visual Studio 2013 with Update 2 or higher to build driver.
 
-Usage
------
-1. Build solution
-2. In tested app project, add reference to `WindowsUniversalAppDriver.InnerServer` (from https://www.nuget.org/packages/WindowsUniversalAppDriver.InnerServer)
-3. In your app’s source code locate place where `RootFrame` is set (usually in `PrepareApplication` if you use `Caliburn.Micro` or App.xaml.cs for vanilla app) and add
-    
-    ```cs
-    AutomationServer.Instance.InitializeAndStart(RootFrame);
-    ```
+You can get Visual Studio and SDK form Microsoft [here](https://dev.windows.com/en-us/develop/download-phone-sdk).
 
-    or (will include driver only for debug build)
-    
-    ```cs
-    #if DEBUG
-        AutomationServer.Instance.InitializeAndStart(RootFrame);
-    #endif // DEBUG
-    ```
-    
-    where `RootFrame` is visual root of application.
+## Quick Start
+**App under test (AUT)** is application that you would like to test.
 
-4. Write your tests using you favorite language. In your test use `app` desired capability to set path to tested app's appx file (python example).
-    ```python
-    ...
-    self.driver = webdriver.Remote(
-                command_executor = 'http://localhost:9999',
-                desired_capabilities={
-                    "app": r"C:\testApp.appx"
-                })
-    ...
-    # find all Textblock elements
-    blocks= self.driver.find_elements_by_tag_name("System.Windows.Controls.TextBlock")
-    ```
-5. Start WindowsUniversalAppDriver.exe
-6. Run your tests
+1. Add reference to `Winium.StoreApps.InnerServer` in AUT project ([install NuGet package](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/) or build project yourself)
+
+2. In your AUT's source code locate place where `Frame` is set (usually in `MainPageOnLoaded` for vanilla app or `PrepareApplication` if you use `Caliburn.Micro`)  add
+
+	```cs
+	AutomationServer.Instance.InitializeAndStart(Frame);
+	```
+
+	or (will include driver only for debug build)
+
+	```cs
+	#if DEBUG
+		AutomationServer.Instance.InitializeAndStart(Frame);
+	#endif // DEBUG
+	```
+
+	where `Frame` is visual root of application.
+
+3. Write your tests using you favorite language. In your tests use `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) to set path to tested app's appx file. Here is python example:
+	```python
+	# put it in setUp
+	self.driver = webdriver.Remote(command_executor='http://localhost:9999',
+	                               desired_capabilities={'app': 'C:\\testApp.appx'})
+	# ut it in test method body
+	element = self.driver.find_element_by_id('SetButton')
+	element.click()
+	assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
+	```
+
+4. Start `Winium.StoreApps.Driver.exe` ([download release from github](https://github.com/2gis/Winium.StoreApps/releases) or build it yourself)
+
+5. Run your tests and watch the magic happening
+
+## Writing tests
+Essentially, Winium.StoreApps supports limited subset of [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol), which means that you can write tests just like you would write for Selenium or Appium, here are some [docs](http://docs.seleniumhq.org/docs/03_webdriver.jsp).
+For test samples look at [our functional tests](https://github.com/2gis/Winium.StoreApps/tree/master/Winium/TestApp.Test/py-functional).
+
+
+## How it works
+Winium.StoreApps consists of two essential parts:
+
+1. **Winium.StoreApps.Driver** implements Selenium Remote WebDriver and listens for JsonWireProtocol commands. It is responsible for launching emulator, deploying AUT, simulating input, forwarding commands to `Winium.StoreApps.InnerServer`, etc.
+
+2. **Winium.StoreApps.InnerServer** (the one that should be embedded into AUT) communicates with `Winium.StoreApps.Driver.exe` and executes different commands, like finding elements, getting or setting text values, properties, etc., inside your application.
