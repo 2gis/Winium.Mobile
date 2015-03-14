@@ -1,6 +1,8 @@
 # Winium for Store Apps
 [![Inner Server NuGet downloads](https://img.shields.io/nuget/dt/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
 [![Inner Server NuGet version](https://img.shields.io/nuget/v/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
+[![GitHub release](https://img.shields.io/github/release/2gis/Winium.StoreApps.svg?style=flat-square)](https://github.com/2gis/Winium.StoreApps/releases/)
+[![GitHub license](https://img.shields.io/badge/license-MPL 2.0-blue.svg?style=flat-square)](https://raw.githubusercontent.com/2gis/Winium.StoreApps/master/LICENSE)
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.StoreApps is Selenium Remote WebDriver implementation for automated testing of Windows Store apps">
@@ -52,7 +54,7 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 	# put it in setUp
 	self.driver = webdriver.Remote(command_executor='http://localhost:9999',
 	                               desired_capabilities={'app': 'C:\\testApp.appx'})
-	# ut it in test method body
+	# put it in test method body
 	element = self.driver.find_element_by_id('SetButton')
 	element.click()
 	assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
