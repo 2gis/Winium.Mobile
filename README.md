@@ -1,6 +1,8 @@
 # Winium for Store Apps
 [![Inner Server NuGet downloads](https://img.shields.io/nuget/dt/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
 [![Inner Server NuGet version](https://img.shields.io/nuget/v/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
+[![GitHub release](https://img.shields.io/github/release/2gis/Winium.StoreApps.svg?style=flat-square)](https://github.com/2gis/Winium.StoreApps/releases/)
+[![GitHub license](https://img.shields.io/badge/license-MPL 2.0-blue.svg?style=flat-square)](https://raw.githubusercontent.com/2gis/Winium.StoreApps/master/LICENSE)
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.StoreApps is Selenium Remote WebDriver implementation for automated testing of Windows Store apps">
@@ -15,7 +17,7 @@ For Windows Phone 8 Silverlight test automation tool see [Windows Phone Driver](
 For Windows Desktop (WPF, WinForms) test automation tool see [Winium Desktop](https://github.com/2gis/cruciatus).
 
 ## Why Winium?
-As said by Appium:
+You have Selenium WebDriver for testing of web apps, Appium for testing of iOS and Android apps. And now you have Selenium-based tools for testing of Windows apps too. What are some of the benefits? As said by Appium:
 > - You can write tests with your favorite dev tools using any WebDriver-compatible language such as Java, Objective-C, JavaScript with Node.js (in promise, callback or generator flavors), PHP, Python, Ruby, C#, Clojure, or Perl with the Selenium WebDriver API and language-specific client libraries.
 > - You can use any testing framework.
 
@@ -52,7 +54,7 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 	# put it in setUp
 	self.driver = webdriver.Remote(command_executor='http://localhost:9999',
 	                               desired_capabilities={'app': 'C:\\testApp.appx'})
-	# ut it in test method body
+	# put it in test method body
 	element = self.driver.find_element_by_id('SetButton')
 	element.click()
 	assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
@@ -73,3 +75,7 @@ Winium.StoreApps consists of two essential parts:
 1. **Winium.StoreApps.Driver** implements Selenium Remote WebDriver and listens for JsonWireProtocol commands. It is responsible for launching emulator, deploying AUT, simulating input, forwarding commands to `Winium.StoreApps.InnerServer`, etc.
 
 2. **Winium.StoreApps.InnerServer** (the one that should be embedded into AUT) communicates with `Winium.StoreApps.Driver.exe` and executes different commands, like finding elements, getting or setting text values, properties, etc., inside your application.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium-storeapps-struct.png" alt="Winium.StoreApps structure">
+</p>
