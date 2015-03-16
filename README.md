@@ -2,7 +2,7 @@
 [![Inner Server NuGet downloads](https://img.shields.io/nuget/dt/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
 [![Inner Server NuGet version](https://img.shields.io/nuget/v/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
 [![GitHub release](https://img.shields.io/github/release/2gis/Winium.StoreApps.svg?style=flat-square)](https://github.com/2gis/Winium.StoreApps/releases/)
-[![GitHub license](https://img.shields.io/badge/license-MPL 2.0-blue.svg?style=flat-square)](https://raw.githubusercontent.com/2gis/Winium.StoreApps/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MPL 2.0-blue.svg?style=flat-square)](LICENSE)
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.StoreApps is Selenium Remote WebDriver implementation for automated testing of Windows Store apps">
@@ -66,7 +66,7 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 
 ## Writing tests
 Essentially, Winium.StoreApps supports limited subset of [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol), which means that you can write tests just like you would write for Selenium or Appium, here are some [docs](http://docs.seleniumhq.org/docs/03_webdriver.jsp).
-For test samples look at [our functional tests](https://github.com/2gis/Winium.StoreApps/tree/master/Winium/TestApp.Test/py-functional).
+For test samples look at [our functional tests](Winium/TestApp.Test/py-functional).
 
 
 ## How it works
@@ -79,3 +79,20 @@ Winium.StoreApps consists of two essential parts:
 <p align="center">
 <img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium-storeapps-struct.png" alt="Winium.StoreApps structure">
 </p>
+
+## Contributing
+
+Contributions are welcome!
+
+1. Check for open issues or open a fresh issue to start a discussion around a feature idea or a bug.
+2. Fork the repository to start making your changes to the master branch (or branch off of it).
+3. We recommend to write a test which shows that the bug was fixed or that the feature works as expected.
+4. Send a pull request and bug the maintainer until it gets merged and published. :smiley:
+
+## Contact
+
+Have some questions? Found a bug? Create [new issue](https://github.com/2gis/Winium.StoreApps/issues/new) or contact us at n.abalov@2gis.ru
+
+## License
+
+Winium is released under the MPL 2.0 license. See [LICENSE](LICENSE) for details.
