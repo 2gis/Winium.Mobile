@@ -66,7 +66,7 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 
 ## Writing tests
 Essentially, Winium.StoreApps supports limited subset of [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol), which means that you can write tests just like you would write for Selenium or Appium, here are some [docs](http://docs.seleniumhq.org/docs/03_webdriver.jsp).
-For test samples look at [our functional tests](Winium/TestApp.Test/py-functional).
+For test samples look at [our functional tests](Winium/TestApp.Test/py-functional) or [test samples page](https://github.com/2gis/Winium.StoreApps/wiki/Test-Samples).
 
 
 ## How it works
