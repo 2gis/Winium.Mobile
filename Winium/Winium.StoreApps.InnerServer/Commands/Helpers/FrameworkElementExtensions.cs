@@ -101,6 +101,17 @@
             return peer;
         }
 
+        internal static Rect GetRect(this FrameworkElement element, UIElement visualRoot)
+        {
+            var point1 = element.TransformToVisual(visualRoot).TransformPoint(new Point(0, 0));
+            var point2 = new Point(point1.X + element.ActualWidth, point1.Y + element.ActualHeight);
+
+            var scrPoint1 = ScreenCoordinatesHelper.LogicalPointToScreenPoint(point1);
+            var scrPoint2 = ScreenCoordinatesHelper.LogicalPointToScreenPoint(point2);
+
+            return new Rect(scrPoint1, scrPoint2);
+        }
+
         internal static Point GetCoordinates(this FrameworkElement element, UIElement visualRoot)
         {
             var point = element.TransformToVisual(visualRoot).TransformPoint(new Point(0, 0));
