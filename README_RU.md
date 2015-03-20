@@ -31,7 +31,7 @@ Winium.StoreApps это open-source инструмент для автомати
 ## Быстрый старт
 1. Добавить ссылку на `Winium.StoreApps.InnerServer` в проекте тестируемого приложения ([через NuGet пакет](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/) или соберите проект у себя)
 
-2. В тестовом приложении найдите место в коде где корневой элемент визуального дерева приложения `Frame` проинициализирован (usually in `MainPageOnLoaded` for vanilla app or `PrepareApplication` if you use `Caliburn.Micro`)  и добавьте следующий код
+2. В тестовом приложении найдите место в коде где корневой элемент визуального дерева приложения `Frame` проинициализирован (обычно в `MainPageOnLoaded` для чистых приложений или в `PrepareApplication`, если вы используете `Caliburn.Micro`)  и добавьте следующий код
 
 	```cs
 	AutomationServer.Instance.InitializeAndStart(Frame);
@@ -61,8 +61,8 @@ Winium.StoreApps это open-source инструмент для автомати
 5. Запустите тесты и балдейте от происходящей магии
 
 ## Написание тестов
-Essentially, Winium.StoreApps supports limited subset of [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol), which means that you can write tests just like you would write for Selenium or Appium, here are some [docs](http://docs.seleniumhq.org/docs/03_webdriver.jsp).
-For test samples look at [our functional tests](Winium/TestApp.Test/py-functional) or [test samples page](https://github.com/2gis/Winium.StoreApps/wiki/Test-Samples).
+По сути, Winium.StoreApps поддерживает ограниченное подмножество команд из [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol), т.е. вы можете писать ваши тесты также, как если бы вы писали их под Selenium или Appium, см. например [документацию Selenium](http://docs.seleniumhq.org/docs/03_webdriver.jsp).
+В качестве примеров можно использовать наши [функциональные тесты](Winium/TestApp.Test/py-functional) или [примеры с wiki](https://github.com/2gis/Winium.StoreApps/wiki/Test-Samples).
 
 ## Как это работает
 Winium.StoreApps состоит из двух основных частей:
