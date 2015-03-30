@@ -1,0 +1,118 @@
+﻿<Window x:Class="Winium.StoreApps.Inspector.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Winium.StoreApps Inspector" Height="700" Width="1200">
+
+    <Window.CommandBindings>
+        <CommandBinding
+        Command="ApplicationCommands.Copy"
+        CanExecute="CommandBindingCanExecute"
+        Executed="CommandBindingExecuted"/>
+    </Window.CommandBindings>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+        <SolidColorBrush x:Key="XmlValueBrush" Color="Blue" />
+        <SolidColorBrush x:Key="XmAttributeBrush" Color="Red" />
+        <SolidColorBrush x:Key="XmlTagBrush" Color="DarkMagenta" />
+
+
+        <!-- This HierarchicalDataTemplate will visualize all XML-nodes -->
+        <HierarchicalDataTemplate x:Key="NodeTemplate">
+            <StackPanel Orientation="Horizontal" Focusable="False">
+                <TextBlock x:Name="tb" Foreground="{StaticResource XmlTagBrush}" />
+                <WrapPanel Margin="3,0,0,0">
+                    <TextBlock Text="id="
+                 Foreground="{StaticResource XmAttributeBrush}"/>
+                    <TextBlock Text="{Binding Path=Attributes[id].Value, StringFormat='&quot;{0}&quot;'}"
+                 Foreground="{StaticResource XmlValueBrush}"/>
+                </WrapPanel>
+                <WrapPanel Margin="3,0,0,0">
+                    <TextBlock Text="name="
+                 Foreground="{StaticResource XmAttributeBrush}"/>
+                    <TextBlock Text="{Binding Path=Attributes[name].Value, StringFormat='&quot;{0}&quot;'}"
+                 Foreground="{StaticResource XmlValueBrush}"/>
+                </WrapPanel>
+
+            </StackPanel>
+
+            <HierarchicalDataTemplate.ItemsSource>
+                <Binding XPath="child::node()" />
+            </HierarchicalDataTemplate.ItemsSource>
+            <HierarchicalDataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=NodeType}" Value="Text">
+                    <Setter TargetName="tb" Property="Text" Value="{Binding Path=Value}"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=NodeType}" Value="Element">
+                    <Setter TargetName="tb" Property="Text" Value="{Binding Path=Name}"></Setter>
+                </DataTrigger>
+            </HierarchicalDataTemplate.Triggers>
+        </HierarchicalDataTemplate>
+
+        <!-- This will contain the initial XML-data as well as any other file the user may pick at runtime. -->
+        <XmlDataProvider x:Key="XmlDp" XPath="*" />
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,10">
+            <Button Name="DeployButton" Content="Deploy appx file..." Margin="4,0" Padding="10,1" Click="DeployButtonClick" />
+            <Button Name="ConnectButton" Content="Connect to running" Margin="4,0" Padding="10,1" Click="ConnectButtonClick"/>
+            <TextBox Name="RemoteUriTextBox" Text="{Binding Path=CommandExecutor}" Margin="4,0" Width="300"/>
+        </StackPanel>
+
+        <Image Grid.Row="1" Grid.Column="0" Name="ScreenImage" HorizontalAlignment="Left" Source="{Binding PhoneScreenData}" MaxWidth="{Binding Source.Width, ElementName=ScreenImage, Mode=OneWay}"/>
+        <TreeView x:Name="PageSourceTreeView"
+                Grid.Row="1" Grid.Column="1" 
+                ItemTemplate= "{StaticResource NodeTemplate}"
+                ItemsSource="{Binding Source={StaticResource XmlDp}}"
+                Margin="0"
+                SelectedItemChanged="PageSourceTreeViewSelectedItemChanged"
+                >
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="True"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+        <Button Name="RefreshButton" Grid.Row="2" Grid.Column="2" IsEnabled="{Binding IsConnected}"  Height="20" VerticalAlignment="Bottom" Content="Refresh" Click="RefreshButtonClick" Margin="4"/>
+
+        <DockPanel Grid.Row="2" Grid.Column="1" LastChildFill="True">
+            <Button x:Name="Button3" Content="Scope to root" Click="ScopeToRootClick" Height="20" VerticalAlignment="Bottom" Margin="4" Padding="4,1" Width="100"/>
+            <Button x:Name="Button2" Content="Scope to this" Click="ScopeToNodeClick" Margin="4" Padding="4,1" Width="100"/>
+            <Button x:Name="ApplyFilter" Content="XPath Filter" DockPanel.Dock="Right" Margin="4" Padding="4,1" Width="100" Click="ApplyFilterClick"/>
+            <TextBox x:Name="FilterBox" Text="{Binding TreeFilter}" Margin="4" Padding="4,1" />
+        </DockPanel>
+
+        <ListView x:Name="PropertiesListView" Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=SelectedNode.Attributes}" Width="280" SelectionMode="Single">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Copy" Command="ApplicationCommands.Copy"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="100"/>
+                    <GridViewColumn Header="Value" DisplayMemberBinding="{Binding Value}" Width="160"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" Background="#55000000" BorderThickness="0" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">
+            <TextBlock Text="In progress..." VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+        </Border>
+    </Grid>
+</Window>

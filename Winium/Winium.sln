@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winium.StoreApps.Common", "Winium.StoreApps.Common\Winium.StoreApps.Common.csproj", "{3C8D0B9C-576B-4778-97B1-6839AA944AEE}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Windows", "TestApp\TestApp.Windows\TestApp.Windows.csproj", "{89E0F534-8622-42DD-9846-5514E390694D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.WindowsPhone", "TestApp\TestApp.WindowsPhone\TestApp.WindowsPhone.csproj", "{10A0B15D-CA68-4A4F-83BC-639A62B5EF1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winium.StoreApps.Inspector", "Winium.StoreApps.Inspector\Winium.StoreApps.Inspector.csproj", "{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -120,6 +122,16 @@ Global
 		{10A0B15D-CA68-4A4F-83BC-639A62B5EF1E}.Release|x86.ActiveCfg = Release|x86
 		{10A0B15D-CA68-4A4F-83BC-639A62B5EF1E}.Release|x86.Build.0 = Release|x86
 		{10A0B15D-CA68-4A4F-83BC-639A62B5EF1E}.Release|x86.Deploy.0 = Release|x86
+		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Release|x64.ActiveCfg = Release|Any CPU
+		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
