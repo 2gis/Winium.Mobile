@@ -231,7 +231,11 @@
 
         private void CommandBindingExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            Clipboard.SetText(((XmlAttribute)this.PropertiesListView.SelectedItem).Value);
+            var selectedAttribute = this.PropertiesListView.SelectedItem as XmlAttribute;
+            if (selectedAttribute != null)
+            {
+                Clipboard.SetText(selectedAttribute.Value);
+            }
         }
 
         private void ConnectButtonClick(object sender, RoutedEventArgs e)
