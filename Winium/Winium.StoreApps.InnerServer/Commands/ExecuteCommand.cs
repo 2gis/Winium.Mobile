@@ -3,6 +3,7 @@
     #region
 
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Newtonsoft.Json.Linq;
@@ -57,49 +58,40 @@
                 command = script.Substring(index).Trim();
             }
 
+            object response;
             switch (prefix)
             {
                 case "automation:":
-                    this.ExecuteAutomationScript(command);
+                    response = this.ExecuteAutomationScript(command);
                     break;
                 case "attribute:":
-                    this.ExecuteAttributeScript(command);
+                    response = this.ExecuteAttributeScript(command);
                     break;
                 default:
                     var msg = string.Format(HelpUnknownScriptMsg, prefix, command, HelpUrlScript);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
 
-            return this.JsonResponse();
+            return this.JsonResponse(ResponseStatus.Success, response);
         }
 
         #endregion
 
         #region Methods
 
-        private static ScrollAmount ParseScrollAmount(JToken jToken)
-        {
-            ScrollAmount scrollAmount;
-            if (Enum.TryParse(jToken != null ? jToken.ToString() : "NoAmount", true, out scrollAmount))
-            {
-                return scrollAmount;
-            }
-
-            var msg = string.Format(HelpArgumentsErrorMsg, HelpUrlAutomationScript);
-            throw new AutomationException(msg, ResponseStatus.JavaScriptError);
-        }
-
-        private void AutomationInvokeAction(FrameworkElement element)
+        private static object AutomationInvokeAction(FrameworkElement element)
         {
             var invokeProvider = element.GetProvider<IInvokeProvider>(PatternInterface.Invoke);
             invokeProvider.Invoke();
+
+            return null;
         }
 
-        private void AutomationScrollAction(FrameworkElement element)
+        private static object AutomationScrollAction(FrameworkElement element, IDictionary<string, JToken> parameters)
         {
             var scrollProvider = element.GetProvider<IScrollProvider>(PatternInterface.Scroll);
 
-            var scrollInfo = ((JArray)this.Parameters["args"]).ElementAtOrDefault(1);
+            var scrollInfo = parameters["args"].ElementAtOrDefault(1);
             if (scrollInfo == null)
             {
                 var msg = string.Format(HelpArgumentsErrorMsg, HelpUrlAutomationScript);
@@ -124,9 +116,37 @@
             {
                 scrollProvider.Scroll(horizontalAmount, verticalAmount);
             }
+
+            return null;
         }
 
-        private void ExecuteAttributeScript(string command)
+        private static ScrollAmount ParseScrollAmount(JToken jToken)
+        {
+            ScrollAmount scrollAmount;
+            if (Enum.TryParse(jToken != null ? jToken.ToString() : "NoAmount", true, out scrollAmount))
+            {
+                return scrollAmount;
+            }
+
+            var msg = string.Format(HelpArgumentsErrorMsg, HelpUrlAutomationScript);
+            throw new AutomationException(msg, ResponseStatus.JavaScriptError);
+        }
+
+        private static object TogglePatternToggle(FrameworkElement element)
+        {
+            var provider = element.GetProvider<IToggleProvider>(PatternInterface.Toggle);
+            provider.Toggle();
+
+            return null;
+        }
+
+        private static string TogglePatternToggleState(FrameworkElement element)
+        {
+            var provider = element.GetProvider<IToggleProvider>(PatternInterface.Toggle);
+            return provider.ToggleState.ToString();
+        }
+
+        private string ExecuteAttributeScript(string command)
         {
             if (command != "set")
             {
@@ -149,21 +169,27 @@
             var value = args[2];
 
             element.SetAttribute(attributeName, value);
+
+            return null;
         }
 
-        private void ExecuteAutomationScript(string command)
+        private object ExecuteAutomationScript(string command)
         {
             var elementId = ((JArray)this.Parameters["args"])[0]["ELEMENT"].ToString();
             var element = this.Automator.WebElements.GetRegisteredElement(elementId);
 
             switch (command)
             {
+                case "InvokePattern.Invoke":
                 case "invoke":
-                    this.AutomationInvokeAction(element);
-                    break;
+                    return AutomationInvokeAction(element);
+                case "ScrollPattern.Scroll":
                 case "scroll":
-                    this.AutomationScrollAction(element);
-                    break;
+                    return AutomationScrollAction(element, this.Parameters);
+                case "TogglePattern.Toggle":
+                    return TogglePatternToggle(element);
+                case "TogglePattern.ToggleState":
+                    return TogglePatternToggleState(element);
                 default:
                     var msg = string.Format(HelpUnknownScriptMsg, "automation:", command, HelpUrlAutomationScript);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
