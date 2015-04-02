@@ -3,6 +3,7 @@
     #region
 
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Newtonsoft.Json.Linq;
@@ -86,37 +87,11 @@
             return null;
         }
 
-        private static ScrollAmount ParseScrollAmount(JToken jToken)
-        {
-            ScrollAmount scrollAmount;
-            if (Enum.TryParse(jToken != null ? jToken.ToString() : "NoAmount", true, out scrollAmount))
-            {
-                return scrollAmount;
-            }
-
-            var msg = string.Format(HelpArgumentsErrorMsg, HelpUrlAutomationScript);
-            throw new AutomationException(msg, ResponseStatus.JavaScriptError);
-        }
-
-        private static object TogglePatternToggle(FrameworkElement element)
-        {
-            var provider = element.GetProvider<IToggleProvider>(PatternInterface.Toggle);
-            provider.Toggle();
-
-            return null;
-        }
-
-        private static string TogglePatternToggleState(FrameworkElement element)
-        {
-            var provider = element.GetProvider<IToggleProvider>(PatternInterface.Toggle);
-            return provider.ToggleState.ToString();
-        }
-
-        private object AutomationScrollAction(FrameworkElement element)
+        private static object AutomationScrollAction(FrameworkElement element, IDictionary<string, JToken> parameters)
         {
             var scrollProvider = element.GetProvider<IScrollProvider>(PatternInterface.Scroll);
 
-            var scrollInfo = this.Parameters["args"].ElementAtOrDefault(1);
+            var scrollInfo = parameters["args"].ElementAtOrDefault(1);
             if (scrollInfo == null)
             {
                 var msg = string.Format(HelpArgumentsErrorMsg, HelpUrlAutomationScript);
@@ -143,6 +118,32 @@
             }
 
             return null;
+        }
+
+        private static ScrollAmount ParseScrollAmount(JToken jToken)
+        {
+            ScrollAmount scrollAmount;
+            if (Enum.TryParse(jToken != null ? jToken.ToString() : "NoAmount", true, out scrollAmount))
+            {
+                return scrollAmount;
+            }
+
+            var msg = string.Format(HelpArgumentsErrorMsg, HelpUrlAutomationScript);
+            throw new AutomationException(msg, ResponseStatus.JavaScriptError);
+        }
+
+        private static object TogglePatternToggle(FrameworkElement element)
+        {
+            var provider = element.GetProvider<IToggleProvider>(PatternInterface.Toggle);
+            provider.Toggle();
+
+            return null;
+        }
+
+        private static string TogglePatternToggleState(FrameworkElement element)
+        {
+            var provider = element.GetProvider<IToggleProvider>(PatternInterface.Toggle);
+            return provider.ToggleState.ToString();
         }
 
         private string ExecuteAttributeScript(string command)
@@ -184,7 +185,7 @@
                     return AutomationInvokeAction(element);
                 case "ScrollPattern.Scroll":
                 case "scroll":
-                    return this.AutomationScrollAction(element);
+                    return AutomationScrollAction(element, this.Parameters);
                 case "TogglePattern.Toggle":
                     return TogglePatternToggle(element);
                 case "TogglePattern.ToggleState":

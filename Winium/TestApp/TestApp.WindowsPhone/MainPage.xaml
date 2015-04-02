@@ -12,8 +12,6 @@
         <!--Pivot item one-->
         <PivotItem Header="first">
             <Grid>
-                <Grid.Resources>
-                </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="100"/>
