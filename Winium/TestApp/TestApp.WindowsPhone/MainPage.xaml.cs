@@ -2,11 +2,14 @@
 
 namespace TestApp
 {
+    using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Automation;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Data;
     using Windows.UI.Xaml.Navigation;
 
     using Winium.StoreApps.InnerServer;

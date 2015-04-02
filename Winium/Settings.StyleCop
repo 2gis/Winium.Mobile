@@ -6,6 +6,7 @@
           <Value>ip</Value>
           <Value>x</Value>
           <Value>y</Value>
+          <Value>j</Value>
         </CollectionProperty>
       </AnalyzerSettings>
     </Analyzer>

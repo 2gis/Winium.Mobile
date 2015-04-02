@@ -12,6 +12,8 @@
         <!--Pivot item one-->
         <PivotItem Header="first">
             <Grid>
+                <Grid.Resources>
+                </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="100"/>
@@ -45,6 +47,8 @@
                 <AppBarButton Label="Second button"
                               Click="SecondAppBarButtonOnClick"
                               AutomationProperties.AutomationId="SecondAppBarButton"/>
+                <AppBarToggleButton Label="Toggle button"
+                                    AutomationProperties.AutomationId="FirstToggleAppBarButton"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

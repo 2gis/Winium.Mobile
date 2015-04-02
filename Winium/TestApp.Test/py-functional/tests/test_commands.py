@@ -59,7 +59,7 @@ class TestGetCommands(WuaTestCase):
     @pytest.mark.parametrize(("by", "value", "expected_count"), [
         (By.NAME, 'NonUniqueName', 2),
         (By.CLASS_NAME, 'Windows.UI.Xaml.Controls.AppBarButton', 3),
-        (By.TAG_NAME, 'Windows.UI.Xaml.Controls.TextBlock', 29),
+        (By.TAG_NAME, 'Windows.UI.Xaml.Controls.TextBlock', 30),
     ], ids=['by name', 'by class name', 'by tag name'])
     def test_find_elements(self, by, value, expected_count):
         """
@@ -167,20 +167,31 @@ class TestExecuteScript(WuaTestCase):
     https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script
     Tested scripts do affect app interface, but test methods are made in such way that they can be run in one session.
     """
-    def test_automation_invoke(self):
+    @pytest.mark.parametrize("command_alias", ["automation: invoke", "automation: InvokePattern.Invoke"])
+    def test_automation_invoke(self, command_alias):
+        self.driver.find_element_by_id('MyTextBox').send_keys('')
         element = self.driver.find_element_by_id('SetButton')
-        self.driver.execute_script('automation: invoke', element)
+        self.driver.execute_script(command_alias, element)
         assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
 
-    def test_automation_scroll(self):
+    @pytest.mark.parametrize("command_alias", ["automation: scroll", "automation: ScrollPattern.Scroll"])
+    def test_automation_scroll(self, command_alias):
         list_box = self.driver.find_element_by_id('MyListBox')
         list_item = list_box.find_element_by_name('November')
         start_location = list_item.location
         scroll_info = {"v": "smallIncrement", "count": 10}
-        self.driver.execute_script("automation: scroll", list_box, scroll_info)
+        self.driver.execute_script(command_alias, list_box, scroll_info)
         end_location = list_item.location
 
         assert (end_location['y'] - start_location['y']) < 0
+
+    def test_automation_toggle(self):
+        element = self.driver.find_element_by_id("FirstToggleAppBarButton")
+        start_state = self.driver.execute_script("automation: TogglePattern.ToggleState", element)
+        self.driver.execute_script("automation: TogglePattern.Toggle", element)
+        end_state = self.driver.execute_script("automation: TogglePattern.ToggleState", element)
+
+        assert start_state != end_state
 
     @pytest.mark.parametrize(("attribute", "value"), [('Width', 10, ), ('Background.Opacity', 0, )],
                              ids=["should set basic properties", "should set nested properties"])

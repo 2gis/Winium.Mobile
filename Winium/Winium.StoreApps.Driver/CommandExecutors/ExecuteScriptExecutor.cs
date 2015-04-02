@@ -15,7 +15,7 @@
     {
         #region Methods
 
-        internal void ExecuteMobileScript(string command)
+        internal object ExecuteMobileScript(string command)
         {
             switch (command)
             {
@@ -34,9 +34,11 @@
                         url);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
+
+            return null;
         }
 
-        internal void ForwardCommand()
+        internal object ForwardCommand()
         {
             var responseBody = this.Automator.CommandForwarder.ForwardCommand(this.ExecutedCommand);
             var deserializeObject = JsonConvert.DeserializeObject<JsonResponse>(responseBody);
@@ -44,6 +46,8 @@
             {
                 throw new AutomationException(deserializeObject.Value.ToString(), ResponseStatus.JavaScriptError);
             }
+
+            return deserializeObject.Value;
         }
 
         protected override string DoImpl()
@@ -64,17 +68,19 @@
                 command = script.Substring(index).Trim();
             }
 
+            object response;
+
             switch (prefix)
             {
                 case "mobile:":
-                    this.ExecuteMobileScript(command);
+                    response = this.ExecuteMobileScript(command);
                     break;
                 default:
-                    this.ForwardCommand();
+                    response = this.ForwardCommand();
                     break;
             }
 
-            return this.JsonResponse();
+            return this.JsonResponse(ResponseStatus.Success, response);
         }
 
         #endregion
