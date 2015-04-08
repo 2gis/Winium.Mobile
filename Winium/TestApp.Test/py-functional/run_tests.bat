@@ -1,5 +1,5 @@
 REM Run Winium.StoreApps.Driver.exe
-start ..\..\Winium.StoreApps.Driver\bin\Debug\Winium.StoreApps.Driver.exe
+start ..\..\Winium.StoreApps.Driver\bin\x86\Debug\Winium.StoreApps.Driver.exe
 
 REM Run tests
 pip install -r requirements.txt
