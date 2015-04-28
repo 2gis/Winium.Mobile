@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.WindowsPhone", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winium.StoreApps.Inspector", "Winium.StoreApps.Inspector\Winium.StoreApps.Inspector.csproj", "{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "TestApp.Test\Samples\Samples.csproj", "{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TestApp\TestApp.Shared\TestApp.Shared.projitems*{10a0b15d-ca68-4a4f-83bc-639a62b5ef1e}*SharedItemsImports = 4
@@ -129,6 +131,16 @@ Global
 		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Release|ARM.ActiveCfg = Release|Any CPU
 		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Release|x64.ActiveCfg = Release|Any CPU
 		{C5261C5C-B5FB-43AC-A5BA-B67FF0634B3E}.Release|x86.ActiveCfg = Release|Any CPU
+		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}.Release|ARM.ActiveCfg = Release|Any CPU
+		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}.Release|x64.ActiveCfg = Release|Any CPU
+		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
