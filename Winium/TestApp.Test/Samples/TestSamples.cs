@@ -15,7 +15,7 @@
     #endregion
 
     [TestClass]
-    public class UnitTest1
+    public class TestSamples
     {
         #region Fields
 
