@@ -7,10 +7,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="MainPageOnLoaded">
-    <Pivot Title="MY APPLICATION">
+    <Pivot Title="MY APPLICATION" AutomationProperties.AutomationId="MainPivot">
 
         <!--Pivot item one-->
-        <PivotItem Header="first">
+        <PivotItem Header="first" AutomationProperties.AutomationId="FirstTab">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -28,7 +28,11 @@
                          AutomationProperties.AutomationId="MyListBox"/>
             </Grid>
         </PivotItem>
-        <PivotItem Header="second" />
+        <PivotItem Header="second" AutomationProperties.AutomationId="SecondTab">
+            <TextBox
+                Text ="Nice swipe!"
+                AutomationProperties.AutomationId="SecondTabTextBox" />
+        </PivotItem>
     </Pivot>
     <Page.BottomAppBar>
         <CommandBar AutomationProperties.AutomationId="BottomAppBar" Opened="AppBarOnOpened" Closed="AppBarOnClosed">
