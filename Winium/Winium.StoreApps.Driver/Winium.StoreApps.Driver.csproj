@@ -113,6 +113,7 @@
     <Compile Include="CommandExecutors\TouchFlickExecutor.cs" />
     <Compile Include="CommandExecutors\TouchScrollExecutor.cs" />
     <Compile Include="CommandExecutors\TouchSingleTapExecutor.cs" />
+    <Compile Include="CommandHelpers\BuildInfo.cs" />
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="EmulatorHelpers\Deployer81.cs" />
     <Compile Include="EmulatorHelpers\EmulatorController.cs" />
@@ -151,7 +152,7 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>git rev-parse HEAD &gt; "$(ProjectDir)\version.txt"</PreBuildEvent>
+    <PreBuildEvent>git rev-parse HEAD &gt; "$(ProjectDir)\version.txt" || (echo version.txt:warning:  Could not write git revision for version.txt: GIT not found in PATH. Add git.exe to PATH &amp;&amp; exit 0)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
