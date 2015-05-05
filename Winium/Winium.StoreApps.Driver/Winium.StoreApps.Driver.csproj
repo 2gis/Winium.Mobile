@@ -109,6 +109,7 @@
     <Compile Include="CommandExecutors\QuitExecutor.cs" />
     <Compile Include="CommandExecutors\ScreenshotExecutor.cs" />
     <Compile Include="CommandExecutors\SendKeysToElementExecutor.cs" />
+    <Compile Include="CommandExecutors\StatusExecutor.cs" />
     <Compile Include="CommandExecutors\TouchFlickExecutor.cs" />
     <Compile Include="CommandExecutors\TouchScrollExecutor.cs" />
     <Compile Include="CommandExecutors\TouchSingleTapExecutor.cs" />
@@ -138,6 +139,9 @@
       <Name>Winium.StoreApps.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="version.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -146,6 +150,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>git rev-parse HEAD &gt; "$(ProjectDir)\version.txt"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
