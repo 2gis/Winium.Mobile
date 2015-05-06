@@ -238,11 +238,3 @@ class TestInputChains(WuaTestCase):
     def test_touch_actions(self):
         # TODO TouchSingleTap, TouchScroll, TouchFlick
         pytest.skip('TODO')
-
-
-class TestTemp(WuaTestCase):
-    def test_me(self):
-        print(self.driver.find_element_by_name('May').is_displayed())
-        print(self.driver.find_element_by_name('June').is_displayed())
-        print(self.driver.find_element_by_name('July').is_displayed())
-        print(self.driver.find_element_by_name('August').is_displayed())
