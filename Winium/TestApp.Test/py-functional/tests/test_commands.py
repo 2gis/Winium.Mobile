@@ -144,6 +144,10 @@ class TestGetCommands(WuaTestCase):
         # TODO: rewrite and parametrize test to test different orientations
         assert 'PORTRAIT' == self.driver.orientation
 
+    def test_is_displayed(self):
+        assert self.driver.find_element_by_name('May').is_displayed()
+        assert self.driver.find_element_by_name('June').is_displayed()
+        assert not self.driver.find_element_by_name('August').is_displayed()
 
 class TestAlert(WuaTestCase):
     # __shared_session__ = False
