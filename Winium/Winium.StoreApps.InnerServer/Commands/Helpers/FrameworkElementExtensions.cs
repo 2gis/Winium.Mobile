@@ -171,7 +171,7 @@
             var elementSize = new Size(element.ActualWidth, element.ActualHeight);
 
             // Check if element is of zero size
-            if (!(elementSize.Width > 0 && elementSize.Height > 0))
+            if (elementSize.Width <= 0 || elementSize.Height <= 0)
             {
                 return false;
             }
@@ -181,11 +181,12 @@
             var rootRect = new Rect(zero, visualRoot.RenderSize);
             rootRect.Intersect(bound);
 
-            // Check if element is offscreen
+            // Check if element is offscreen. Save time on traversing tree if element is not in root rect
             if (rootRect.IsEmpty)
             {
                 return false;
             }
+
 
             while (true)
             {
@@ -198,6 +199,27 @@
                 if (container == null)
                 {
                     return true;
+                }
+
+                if (container.RenderSize.IsEmpty)
+                {
+                    // There are some elements in UI tree that always return zero size, e.g. ContentControl, etc.
+                    continue;
+                }
+
+                // FIXME we only check if element is visible in parent and parent visible in his parent and so on
+                // we do not actully check if any part of original element is visible in grandparents
+                elementSize = new Size(element.ActualWidth, element.ActualHeight);
+                rect = new Rect(zero, elementSize);
+                bound = element.TransformToVisual(container).TransformBounds(rect);
+                var containerRect = new Rect(zero, container.RenderSize);
+                
+                containerRect.Intersect(bound);
+
+                // Check if element is offscreen
+                if (containerRect.IsEmpty)
+                {
+                    return false;
                 }
 
                 element = container;
