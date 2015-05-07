@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Xml;
 
@@ -29,12 +30,12 @@
         public override string DoImpl()
         {
             string source;
-            var settings = new XmlWriterSettings { Indent = true, Encoding = new UTF8Encoding(false) };
+            var settings = new XmlWriterSettings { Indent = true, Encoding = new UTF8Encoding(false)};
 
             using (var writer = new MemoryStream())
             {
                 var xmlWriter = XmlWriter.Create(writer, settings);
-                this.WriteElementToXml(xmlWriter, this.Automator.VisualRoot as FrameworkElement);
+                this.WriteElementsToXml(xmlWriter);
                 xmlWriter.Flush();
 
                 var buffer = writer.ToArray();
@@ -45,6 +46,19 @@
         }
 
         #endregion
+
+        private void WriteElementsToXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("root");
+            this.WriteElementToXml(writer, this.Automator.VisualRoot as FrameworkElement);
+            var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
+            foreach (var popupChild in popups.Select(popup => popup.Child))
+            {
+                this.WriteElementToXml(writer, popupChild as FrameworkElement);
+            }
+
+            writer.WriteEndElement();
+        }
 
         #region Methods
 
