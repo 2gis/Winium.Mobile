@@ -30,7 +30,7 @@
         public override string DoImpl()
         {
             string source;
-            var settings = new XmlWriterSettings { Indent = true, Encoding = new UTF8Encoding(false)};
+            var settings = new XmlWriterSettings { Indent = true, Encoding = new UTF8Encoding(false) };
 
             using (var writer = new MemoryStream())
             {
@@ -46,19 +46,6 @@
         }
 
         #endregion
-
-        private void WriteElementsToXml(XmlWriter writer)
-        {
-            writer.WriteStartElement("root");
-            this.WriteElementToXml(writer, this.Automator.VisualRoot as FrameworkElement);
-            var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
-            foreach (var popupChild in popups.Select(popup => popup.Child))
-            {
-                this.WriteElementToXml(writer, popupChild as FrameworkElement);
-            }
-
-            writer.WriteEndElement();
-        }
 
         #region Methods
 
@@ -83,14 +70,8 @@
                                          .ToLowerInvariant()
                                      }, 
                                      { "value", item.GetText() }, 
-                                     {
-                                         "x", 
-                                         rect.X.ToString(CultureInfo.InvariantCulture)
-                                     }, 
-                                     {
-                                         "y", 
-                                         rect.Y.ToString(CultureInfo.InvariantCulture)
-                                     },
+                                     { "x", rect.X.ToString(CultureInfo.InvariantCulture) }, 
+                                     { "y", rect.Y.ToString(CultureInfo.InvariantCulture) }, 
                                      {
                                          "width", 
                                          rect.Width.ToString(CultureInfo.InvariantCulture)
@@ -110,6 +91,19 @@
             {
                 var child = VisualTreeHelper.GetChild(item, i);
                 this.WriteElementToXml(writer, child as FrameworkElement);
+            }
+
+            writer.WriteEndElement();
+        }
+
+        private void WriteElementsToXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("root");
+            this.WriteElementToXml(writer, this.Automator.VisualRoot as FrameworkElement);
+            var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
+            foreach (var popupChild in popups.Select(popup => popup.Child))
+            {
+                this.WriteElementToXml(writer, popupChild as FrameworkElement);
             }
 
             writer.WriteEndElement();
