@@ -10,6 +10,7 @@ class TestGetCommands(WuaTestCase):
     """
     Test GET commands that do not change anything in app, meaning they can all be run in one session.
     """
+
     def test_get_current_window_handle(self):
         """
         GET /session/:sessionId/window_handle Retrieve the current window handle.
@@ -37,8 +38,10 @@ class TestGetCommands(WuaTestCase):
 
         source = self.driver.page_source
         root = ElementTree.fromstring(source)
-        assert 'Windows.UI.Xaml.Controls.Frame' == root.tag
-        assert any(root.iterfind('*')), 'Page source should contain at least one children of root frame'
+        visual_root = next(root.iterfind('*'))
+        assert 'Windows.UI.Xaml.Controls.Frame' == visual_root.tag
+        assert sum(1 for _ in root.iterfind('*')) == 2, 'Page source should contain at both visual root and popups'
+        assert any(visual_root.iterfind('*')), 'Page source should contain at least one children of visual root'
 
     @pytest.mark.parametrize(("by", "value"), [
         (By.ID, 'MyTextBox'),
@@ -113,6 +116,7 @@ class TestGetCommands(WuaTestCase):
         Complex properties (i.e. non scalar and non string should be serialized to JSON and returned as string)
         """
         from json import loads
+
         element = self.driver.find_element_by_id('MyTextBox')
         value = loads(element.get_attribute('DesiredSize'))
         assert isinstance(value, dict)
@@ -149,6 +153,7 @@ class TestGetCommands(WuaTestCase):
         assert self.driver.find_element_by_name('June').is_displayed()
         assert not self.driver.find_element_by_name('August').is_displayed()
 
+
 class TestAlert(WuaTestCase):
     # __shared_session__ = False
 
@@ -171,6 +176,7 @@ class TestExecuteScript(WuaTestCase):
     https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script
     Tested scripts do affect app interface, but test methods are made in such way that they can be run in one session.
     """
+
     @pytest.mark.parametrize("command_alias", ["automation: invoke", "automation: InvokePattern.Invoke"])
     def test_automation_invoke(self, command_alias):
         self.driver.find_element_by_id('MyTextBox').send_keys('')
