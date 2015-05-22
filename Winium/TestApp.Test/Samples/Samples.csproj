@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="TestSamples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AutoSuggestSample.cs" />
     <Compile Include="WpDriver.cs" />
   </ItemGroup>
   <ItemGroup>

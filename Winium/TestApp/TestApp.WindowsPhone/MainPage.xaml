@@ -29,9 +29,18 @@
             </Grid>
         </PivotItem>
         <PivotItem Header="second" AutomationProperties.AutomationId="SecondTab">
+            <StackPanel Orientation="Vertical">
             <TextBox
                 Text ="Nice swipe!"
                 AutomationProperties.AutomationId="SecondTabTextBox" />
+
+
+            <AutoSuggestBox x:Name="Suggestions"
+                AutomationProperties.AutomationId ="MySuggestBox"
+                ItemsSource="{Binding }"
+                TextChanged="SuggestionsTextChanged" 
+                SuggestionChosen="SuggestionsSuggestionChosen"></AutoSuggestBox>
+            </StackPanel>
         </PivotItem>
     </Pivot>
     <Page.BottomAppBar>

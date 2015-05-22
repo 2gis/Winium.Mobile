@@ -114,5 +114,19 @@ namespace TestApp
         {
             TextBox.Text = "AppBar Closed";
         }
+
+        private void SuggestionsSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            Suggestions.Text = args.SelectedItem.ToString();
+        }
+
+        private void SuggestionsTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                var suggestions = new List<string> { "A1", "A2", "A3" };
+                sender.ItemsSource = suggestions;
+            }
+        }
     }
 }
