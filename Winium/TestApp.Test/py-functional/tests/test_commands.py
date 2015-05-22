@@ -37,7 +37,7 @@ class TestGetCommands(WuaTestCase):
         from xml.etree import ElementTree
 
         source = self.driver.page_source
-        root = ElementTree.fromstring(source)
+        root = ElementTree.fromstring(source.encode('utf-8'))
         visual_root = next(root.iterfind('*'))
         assert 'Windows.UI.Xaml.Controls.Frame' == visual_root.tag
         assert sum(1 for _ in root.iterfind('*')) == 2, 'Page source should contain at both visual root and popups'
