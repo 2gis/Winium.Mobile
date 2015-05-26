@@ -254,6 +254,8 @@ class TestInputChains(WuaTestCase):
 
 class TestAutoSuggestBox(WuaTestCase):
     def test_select_suggest(self):
+        self.driver.execute_script("mobile: OnScreenKeyboard.Disable")
+
         pivots = self.driver.find_elements_by_class_name("Windows.UI.Xaml.Controls.Primitives.PivotHeaderItem")
         pivots[1].click()
 
