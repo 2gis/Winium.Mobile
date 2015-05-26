@@ -121,6 +121,8 @@
 
         internal static Point GetCoordinatesInView(this FrameworkElement element, UIElement visualRoot)
         {
+            // TODO reasearch posibility to replace this code to GetClickablePoint()
+            // FIXME Location returns wrong coordinates when apps screen slides up due to some input element getting focus #34
             var point = element.TransformToVisual(visualRoot).TransformPoint(new Point(0, 0));
             var center = new Point(point.X + (int)(element.ActualWidth / 2), point.Y + (int)(element.ActualHeight / 2));
             var bounds = new Rect(point, new Size(element.ActualWidth, element.ActualHeight));

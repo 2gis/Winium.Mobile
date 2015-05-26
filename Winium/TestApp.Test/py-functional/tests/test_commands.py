@@ -1,9 +1,15 @@
 # coding: utf-8
 import pytest
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver import ActionChains
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 from tests import WuaTestCase
+
+
+By.XNAME = 'xname'
 
 
 class TestGetCommands(WuaTestCase):
@@ -244,3 +250,34 @@ class TestInputChains(WuaTestCase):
     def test_touch_actions(self):
         # TODO TouchSingleTap, TouchScroll, TouchFlick
         pytest.skip('TODO')
+
+
+class TestAutoSuggestBox(WuaTestCase):
+    def test_select_suggest(self):
+        self.driver.execute_script("mobile: OnScreenKeyboard.Disable")
+
+        pivots = self.driver.find_elements_by_class_name("Windows.UI.Xaml.Controls.Primitives.PivotHeaderItem")
+        pivots[1].click()
+
+        waiter = WebDriverWait(self.driver, timeout=5)
+
+        autosuggestion_box = waiter.until(EC.presence_of_element_located((By.ID, 'MySuggestBox')))
+        autosuggestion_input = autosuggestion_box.find_element_by_class_name('Windows.UI.Xaml.Controls.TextBox')
+        autosuggestion_input.send_keys('A')
+
+        suggestions_list = waiter.until(EC.presence_of_element_located((By.XNAME, 'SuggestionsList')))
+        suggestions = suggestions_list.find_elements_by_class_name('Windows.UI.Xaml.Controls.TextBlock')
+
+        expected_text = 'A2'
+
+        for suggest in suggestions:
+            if suggest.text == expected_text:
+                # When AutoSuggest is focused it moves whole view up
+                # but it is not reflected coordinates that we get from driver,
+                # instead of suggest.click() we will have to use Select pattern
+                point = self.driver.execute_script('automation: GetClickablePoint', suggest)
+                x, y = [float(v) for v in point.split(',')]
+                ActionChains(self.driver).move_by_offset(x, y).click().perform()
+                break
+
+        assert expected_text == autosuggestion_input.text

@@ -146,6 +146,12 @@
             return provider.ToggleState.ToString();
         }
 
+        private static string GetClickablePoint(FrameworkElement element)
+        {
+            var peer = element.GetAutomationPeer();
+            return peer.GetClickablePoint().ToString();
+        }
+
         private string ExecuteAttributeScript(string command)
         {
             if (command != "set")
@@ -190,6 +196,8 @@
                     return TogglePatternToggle(element);
                 case "TogglePattern.ToggleState":
                     return TogglePatternToggleState(element);
+                case "GetClickablePoint":
+                    return GetClickablePoint(element);
                 default:
                     var msg = string.Format(HelpUnknownScriptMsg, "automation:", command, HelpUrlAutomationScript);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);

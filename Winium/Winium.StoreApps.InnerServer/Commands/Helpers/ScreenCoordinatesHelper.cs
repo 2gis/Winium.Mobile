@@ -41,13 +41,13 @@
         }
 
         /// <summary>
-        /// Переводит координаты точки с логических в реальные.
+        /// Translate logical coordinates to real coordinates.
         /// </summary>
         /// <param name="point">
-        /// Точка относительно логической сетки.
+        /// Point in logical coordinates.
         /// </param>
         /// <returns>
-        /// Точка относительно реального разрешения устройства.
+        /// Point in real coordinates.
         /// </returns>
         public static Point LogicalPointToScreenPoint(Point point)
         {
@@ -61,13 +61,13 @@
         }
 
         /// <summary>
-        /// Переводит координаты точки с реальных в логические.
+        /// Translate real coordinates to logical coordinates.
         /// </summary>
         /// <param name="point">
-        /// Точка относительно реального разрешения устройства.
+        /// Point in real coordinates.
         /// </param>
         /// <returns>
-        /// Точка относительно логической сетки.
+        /// Point in logical coordinates.
         /// </returns>
         public static Point ScreenPointToLogicalPoint(Point point)
         {

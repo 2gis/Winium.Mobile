@@ -25,6 +25,12 @@
                 case "search":
                     this.Automator.EmulatorController.TypeKey(Keys.F3);
                     break;
+                case "OnScreenKeyboard.Enable": 
+                    this.Automator.EmulatorController.TypeKey(Keys.PageDown);
+                    break;
+                case "OnScreenKeyboard.Disable":
+                    this.Automator.EmulatorController.TypeKey(Keys.PageUp);
+                    break;
                 default:
                     const string url =
                         "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#press-hardware-button";

@@ -3,6 +3,7 @@
     #region
 
     using System;
+    using System.Reflection;
 
     using OpenQA.Selenium;
     using OpenQA.Selenium.Remote;
@@ -52,5 +53,26 @@
         }
 
         #endregion
+
+        private static object Invoke(object o, string methodName, params object[] args)
+        {
+            var mi = o.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
+            if (mi != null)
+            {
+                return mi.Invoke(o, args);
+            }
+            return null;
+        }
+
+        public IWebElement FindByXName(string locator)
+        {
+            return Invoke(this, "FindElement", "xname", locator) as IWebElement;
+        }
+
+        public static IWebElement FindByXName(IWebElement root, string locator)
+        {
+            var parentElement = root as RemoteWebElement;
+            return Invoke(parentElement, "FindElement", "xname", locator) as IWebElement;
+        }
     }
 }
