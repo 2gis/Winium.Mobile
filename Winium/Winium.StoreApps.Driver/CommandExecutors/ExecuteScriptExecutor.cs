@@ -26,10 +26,10 @@
                     this.Automator.EmulatorController.TypeKey(Keys.F3);
                     break;
                 case "OnScreenKeyboard.Enable": 
-                    this.Automator.EmulatorController.TypeKey(Keys.PageDown);
+                    this.Automator.EmulatorController.TypeKey(Keys.PageUp);
                     break;
                 case "OnScreenKeyboard.Disable":
-                    this.Automator.EmulatorController.TypeKey(Keys.PageUp);
+                    this.Automator.EmulatorController.TypeKey(Keys.PageDown);
                     break;
                 default:
                     const string url =
