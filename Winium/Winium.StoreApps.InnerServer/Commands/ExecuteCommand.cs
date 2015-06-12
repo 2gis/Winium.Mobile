@@ -152,6 +152,12 @@
             return peer.GetClickablePoint().ToString();
         }
 
+        private static bool IsOffscreen(FrameworkElement element)
+        {
+            var peer = element.GetAutomationPeer();
+            return peer.IsOffscreen();
+        }
+
         private string ExecuteAttributeScript(string command)
         {
             if (command != "set")
@@ -198,6 +204,8 @@
                     return TogglePatternToggleState(element);
                 case "GetClickablePoint":
                     return GetClickablePoint(element);
+                case "IsOffscreen":
+                    return IsOffscreen(element);
                 default:
                     var msg = string.Format(HelpUnknownScriptMsg, "automation:", command, HelpUrlAutomationScript);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
