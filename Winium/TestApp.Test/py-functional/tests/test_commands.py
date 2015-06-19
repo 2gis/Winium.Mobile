@@ -4,6 +4,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from tests import WuaTestCase
@@ -225,10 +226,21 @@ class TestBasicInput(WuaTestCase):
         POST /session/:sessionId/element/:id/value Send a sequence of key strokes to an element.
         TODO: test magic keys
         """
-        actual_input = 'Some test string'
+        actual_input = 'Some test string' + Keys.ENTER
         element = self.driver.find_element_by_id('MyTextBox')
         element.send_keys(actual_input)
-        assert actual_input == element.text
+        assert actual_input.replace(Keys.ENTER, '\r\n') == element.text
+
+    def test_send_keys_to_active_element(self):
+        element = self.driver.find_element_by_id('MyTextBox')
+        element.click()
+        ActionChains(self.driver).send_keys(Keys.ENTER).perform()
+        assert '\r\n' == element.text
+
+    def test_submit_element(self):
+        element = self.driver.find_element_by_id('MyTextBox')
+        element.submit()
+        assert '\r\n' == element.text
 
     def test_back(self):
         self.driver.find_element_by_id('GoAppBarButton').click()

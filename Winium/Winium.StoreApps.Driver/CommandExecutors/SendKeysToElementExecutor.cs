@@ -2,11 +2,11 @@
 {
     #region
 
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Windows.Forms;
 
     using Newtonsoft.Json.Linq;
+
+    using Winium.StoreApps.Driver.CommandHelpers;
 
     #endregion
 
@@ -24,19 +24,15 @@
              * F2 - start/windows
              * F3 - search
              */
-            var magicKeys = new Dictionary<string, Keys>
-                                {
-                                    { "\ue007", Keys.Enter }, 
-                                    { "\ue031", Keys.F1 }, 
-                                    { "\ue032", Keys.F2 }, 
-                                    { "\ue033", Keys.F3 }
-                                };
             var value = this.ExecutedCommand.Parameters["value"].ToObject<string[]>();
 
-            var foundMagicKeys = (from key in value where magicKeys.ContainsKey(key) select magicKeys[key]).ToList();
+            var foundMagicKeys =
+                (from key in value
+                 where SendKeysHelper.SpecialKeys.ContainsKey(key)
+                 select SendKeysHelper.SpecialKeys[key]).ToList();
             if (foundMagicKeys.Any())
             {
-                value = value.Where(val => magicKeys.ContainsKey(val) == false).ToArray();
+                value = value.Where(val => SendKeysHelper.SpecialKeys.ContainsKey(val) == false).ToArray();
             }
 
             this.ExecutedCommand.Parameters["value"] = JToken.FromObject(value);

@@ -19,6 +19,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBox Name="TextBox" Grid.Row="0" Width="300" Height="100"
+                         AcceptsReturn="True"
                          VerticalAlignment="Center"
                          AutomationProperties.AutomationId="MyTextBox" AutomationProperties.Name="NonUniqueName"/>
                 <Button Content="Set 'CARAMBA' text to TextBox" Grid.Row="1" 

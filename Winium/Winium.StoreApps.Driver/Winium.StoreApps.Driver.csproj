@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Automator\Automator.cs" />
     <Compile Include="Automator\Capabilities.cs" />
+    <Compile Include="CommandExecutors\SubmitElementExecutor.cs" />
     <Compile Include="CommandExecutorDispatchTable.cs" />
     <Compile Include="CommandExecutors\ClickElementExecutor.cs" />
     <Compile Include="CommandExecutors\CloseExecutor.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="CommandExecutors\TouchScrollExecutor.cs" />
     <Compile Include="CommandExecutors\TouchSingleTapExecutor.cs" />
     <Compile Include="CommandHelpers\BuildInfo.cs" />
+    <Compile Include="CommandHelpers\SendKeysHelper.cs" />
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="EmulatorHelpers\Deployer81.cs" />
     <Compile Include="EmulatorHelpers\EmulatorController.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requester.cs" />
+    <Compile Include="CommandExecutors\SendKeysToActiveElementExecutor.cs" />
     <Compile Include="UriDispatchTables.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,22 +1,34 @@
 ﻿namespace Winium.StoreApps.Driver.CommandExecutors
 {
+    #region
+
+    using Winium.StoreApps.Driver.Automator;
+
+    #endregion
+
     internal class ClickElementExecutor : CommandExecutorBase
     {
         #region Methods
 
-        protected override string DoImpl()
+        internal static bool ClickElement(Automator automator, string elementId)
         {
-            var location = this.Automator.RequestElementLocation(this.ExecutedCommand.Parameters["ID"]);
+            var location = automator.RequestElementLocation(elementId);
 
             if (!location.HasValue)
             {
                 // TODO return bad parameters?
-                return null;
+                return false;
             }
 
-            this.Automator.UpdatedOrientationForEmulatorController();
+            automator.UpdatedOrientationForEmulatorController();
+            automator.EmulatorController.LeftButtonClick(location.Value);
 
-            this.Automator.EmulatorController.LeftButtonClick(location.Value);
+            return true;
+        }
+
+        protected override string DoImpl()
+        {
+            ClickElement(this.Automator, this.ExecutedCommand.Parameters["ID"].ToString());
 
             return this.JsonResponse();
         }
