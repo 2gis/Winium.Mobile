@@ -10,6 +10,7 @@
     using Newtonsoft.Json.Linq;
 
     using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Media;
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.InnerServer.Commands;
@@ -22,7 +23,7 @@
 
         public Automator(UIElement visualRoot)
         {
-            this.VisualRoot = visualRoot;
+            this.VisualRoot = GetTrueVisualRoot(visualRoot);
             this.WebElements = new AutomatorElements();
         }
 
@@ -148,6 +149,34 @@
             var response = commandToExecute.Do();
 
             return response;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Walk visual tree upwards til we find actual visual root. 
+        /// This fixes incorrect locations being returned for elements when app screen is scrolled up to make place for onscreen keyboards, etc (issue #34 ).
+        /// </summary>
+        /// <param name="visualRoot">
+        /// </param>
+        /// <returns>
+        /// The <see cref="UIElement"/>.
+        /// </returns>
+        private static UIElement GetTrueVisualRoot(UIElement visualRoot)
+        {
+            var root = visualRoot;
+            while (true)
+            {
+                var parent = VisualTreeHelper.GetParent(root) as UIElement;
+                if (parent == null)
+                {
+                    return root;
+                }
+
+                root = parent;
+            }
         }
 
         #endregion

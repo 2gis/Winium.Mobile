@@ -39,7 +39,7 @@
 
             var basePath = Directory.GetCurrentDirectory();
             const string FilePath =
-                "..\\..\\..\\..\\TestApp\\TestApp.WindowsPhone\\AppPackages\\TestApp.WindowsPhone_1.0.0.0_AnyCPU_Test\\TestApp.WindowsPhone_1.0.0.0_AnyCPU.appx";
+                "..\\..\\..\\..\\TestApp\\TestApp.WindowsPhone\\AppPackages\\TestApp.WindowsPhone_1.0.0.0_AnyCPU_Debug_Test\\TestApp.WindowsPhone_1.0.0.0_AnyCPU_Debug.appx";
             var autPath = Path.GetFullPath(Path.Combine(basePath, FilePath));
 
             capabillities.SetCapability("app", autPath);
@@ -86,18 +86,7 @@
                     continue;
                 }
 
-                /* Unfortunatly when some inputs, including AutoSuggestBox are focused
-                 * whole interface is scrolled up, but driver still returns original coordinates
-                 * automation: GetClickablePoint is a temporary solution for this problem,
-                 * in this case it returns correct coordinates
-                */
-                var coords = this.driver.ExecuteScript("automation: GetClickablePoint", suggest).ToString().Split(',');
-
-                // Execute script returns string, so now we will have to parse it
-                var x = float.Parse(coords[0], CultureInfo.InvariantCulture.NumberFormat);
-                var y = float.Parse(coords[1], CultureInfo.InvariantCulture.NumberFormat);
-                var ac = new Actions(this.driver);
-                ac.MoveByOffset((int)x, (int)y).Click().Perform();
+                suggest.Click();
 
                 break;
             }

@@ -46,8 +46,8 @@ class TestGetCommands(WuaTestCase):
         source = self.driver.page_source
         root = ElementTree.fromstring(source.encode('utf-8'))
         visual_root = next(root.iterfind('*'))
-        assert 'Windows.UI.Xaml.Controls.Frame' == visual_root.tag
-        assert sum(1 for _ in root.iterfind('*')) == 2, 'Page source should contain at both visual root and popups'
+        assert 'Windows.UI.Xaml.Controls.ScrollViewer' == visual_root.tag
+        assert sum(1 for _ in root.iterfind('*')) > 1, 'Page source should contain at both visual root and popups'
         assert any(visual_root.iterfind('*')), 'Page source should contain at least one children of visual root'
 
     @pytest.mark.parametrize(("by", "value"), [
@@ -284,12 +284,7 @@ class TestAutoSuggestBox(WuaTestCase):
 
         for suggest in suggestions:
             if suggest.text == expected_text:
-                # When AutoSuggest is focused it moves whole view up
-                # but it is not reflected coordinates that we get from driver,
-                # instead of suggest.click() we will have to use Select pattern
-                point = self.driver.execute_script('automation: GetClickablePoint', suggest)
-                x, y = [float(v) for v in point.split(',')]
-                ActionChains(self.driver).move_by_offset(x, y).click().perform()
+                suggest.click()
                 break
 
         assert expected_text == autosuggestion_input.text
