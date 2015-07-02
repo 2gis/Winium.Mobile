@@ -25,11 +25,14 @@
         {
             this.VisualRoot = GetTrueVisualRoot(visualRoot);
             this.WebElements = new AutomatorElements();
+            this.DoAfterResponseOnce = null;
         }
 
         #endregion
 
         #region Public Properties
+
+        public Action DoAfterResponseOnce { get; set; }
 
         public UIElement VisualRoot { get; private set; }
 
@@ -136,6 +139,10 @@
             else if (command.Equals(DriverCommand.GetElementTagName))
             {
                 commandToExecute = new GetElementTagNameCommand { ElementId = elementId };
+            }
+            else if (command.Equals(DriverCommand.CloseApp))
+            {
+                commandToExecute = new CloseAppCommand();
             }
             else
             {

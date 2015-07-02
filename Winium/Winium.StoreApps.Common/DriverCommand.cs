@@ -9,6 +9,8 @@ namespace Winium.StoreApps.Common
     {
         #region Static Fields
 
+        #region Selenium
+
         /// <summary>
         /// Represents the AcceptAlert command
         /// 
@@ -464,6 +466,16 @@ namespace Winium.StoreApps.Common
         /// 
         /// </summary>
         public static readonly string UploadFile = "uploadFile";
+
+        #endregion
+
+        #region Appium
+
+        public static readonly string LaunchApp = "launchApp";
+
+        public static readonly string CloseApp = "closeApp";
+
+        #endregion
 
         #endregion
     }

@@ -32,7 +32,11 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         private IAppManifestInfo appManifestInfo;
 
-        private IRemoteApplication application;
+        private IDevice device;
+
+        private bool installed = false;
+
+        private IRemoteApplication remoteApplication;
 
         #endregion
 
@@ -80,24 +84,51 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         #endregion
 
+        #region Properties
+
+        private IAppManifestInfo AppManifestInfo
+        {
+            get
+            {
+                return this.appManifestInfo
+                       ?? (this.appManifestInfo = Utils.ReadAppManifestInfoFromPackage(this.appPath));
+            }
+        }
+
+        private IDevice Device
+        {
+            get
+            {
+                return this.device ?? (this.device = this.connectableDevice.Connect(true));
+            }
+        }
+
+        private IRemoteApplication RemoteApplication
+        {
+            get
+            {
+                return this.remoteApplication
+                       ?? (this.remoteApplication = this.Device.GetApplication(this.AppManifestInfo.ProductId));
+            }
+        }
+
+        #endregion
+
         #region Public Methods and Operators
 
         public void Install()
         {
-            this.appManifestInfo = Utils.ReadAppManifestInfoFromPackage(this.appPath);
-
-            Utils.InstallApplication(this.deviceInfo, this.appManifestInfo, DeploymentOptions.None, this.appPath);
-
-            var device = this.connectableDevice.Connect(true);
-            this.application = device.GetApplication(this.appManifestInfo.ProductId);
-            device.Activate();
+            Utils.InstallApplication(this.deviceInfo, this.AppManifestInfo, DeploymentOptions.None, this.appPath);
+            this.installed = true;
 
             Logger.Info("Successfully deployed using Microsoft.Phone.Tools.Deploy");
         }
 
         public void Launch()
         {
-            this.application.Launch();
+            this.Device.Activate();
+
+            this.RemoteApplication.Launch();
         }
 
         public void ReciveFiles(Dictionary<string, string> files)
@@ -112,7 +143,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
                 return;
             }
 
-            var isolatedStore = this.application.GetIsolatedStore("Local");
+            var isolatedStore = this.RemoteApplication.GetIsolatedStore("Local");
             foreach (var file in files)
             {
                 var phoneDirectoryName = Path.GetDirectoryName(file.Value);
@@ -133,14 +164,16 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         public void Uninstall()
         {
-            if (this.application == null)
+            if (!this.installed)
             {
                 Logger.Debug("Could not uninstall application that is already uninstalled.");
                 return;
             }
 
-            this.application.Uninstall();
-            this.application = null;
+            this.remoteApplication.Uninstall();
+            this.remoteApplication = null;
+
+            this.device.Disconnect();
         }
 
         #endregion

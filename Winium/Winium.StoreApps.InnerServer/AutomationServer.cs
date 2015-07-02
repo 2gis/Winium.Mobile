@@ -125,6 +125,16 @@
             await writer.StoreAsync();
 
             socket.Dispose();
+
+            if (this.automator.DoAfterResponseOnce == null)
+            {
+                return;
+            }
+
+            var localDoAfterResponseOnce = this.automator.DoAfterResponseOnce;
+            this.automator.DoAfterResponseOnce = null;
+
+            localDoAfterResponseOnce();
         }
 
         private async void ListenerConnectionReceived(
