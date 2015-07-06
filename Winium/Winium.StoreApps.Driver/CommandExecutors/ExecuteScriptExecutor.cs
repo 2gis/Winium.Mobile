@@ -35,8 +35,7 @@
                     LaunchAppExecutor.LaunchApp(this.Automator);
                     break;
                 case "App.Close":
-                    var remoteCommand = new Command(DriverCommand.CloseApp);
-                    this.Automator.CommandForwarder.ForwardCommand(remoteCommand);
+                    CloseAppExecutor.CloseApp(this.Automator);
                     break;
                 default:
                     const string Url =
