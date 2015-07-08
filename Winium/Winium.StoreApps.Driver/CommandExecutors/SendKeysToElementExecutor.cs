@@ -4,8 +4,10 @@
 
     using System.Linq;
 
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    using Winium.StoreApps.Common;
     using Winium.StoreApps.Driver.CommandHelpers;
 
     #endregion
@@ -40,6 +42,12 @@
             // TODO Use TypeKey for text instead of InnerDrive magic
             // TODO check if response status = success, throw if not
             var responseBody = this.Automator.CommandForwarder.ForwardCommand(this.ExecutedCommand);
+            var response = JsonConvert.DeserializeObject<JsonResponse>(responseBody);
+            if (response.Status != ResponseStatus.Success)
+            {
+                return responseBody;
+            }
+
             foreach (var magicKey in foundMagicKeys)
             {
                 this.Automator.EmulatorController.TypeKey(magicKey);

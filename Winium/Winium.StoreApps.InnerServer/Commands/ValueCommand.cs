@@ -9,6 +9,7 @@
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
+    using Winium.StoreApps.InnerServer.Commands.Helpers;
 
     #endregion
 
@@ -27,13 +28,13 @@
         public override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var textbox = element as TextBox;
-            if (textbox == null)
+            var control = element as Control;
+            if (control == null)
             {
-                throw new AutomationException("Element referenced is not a TextBox.", ResponseStatus.UnknownError);
+                throw new AutomationException("Element referenced is not of control type.", ResponseStatus.UnknownError);
             }
 
-            TrySetText(textbox, this.KeyString);
+            TrySetText(control, this.KeyString);
             return this.JsonResponse();
         }
 
@@ -41,23 +42,33 @@
 
         #region Methods
 
-        private static void TrySetText(TextBox textbox, string text)
+        private static void TrySetText(Control element, string text)
         {
-            // TODO: why IValueProvider is null in UniApp?
-            var peer = new TextBoxAutomationPeer(textbox);
-            var valueProvider = peer.GetPattern(PatternInterface.Value) as IValueProvider;
-            if (valueProvider != null)
+            // TODO Research why TextBox does not support IValueProvider
+            var provider = element.GetProviderOrDefault<IValueProvider>(PatternInterface.Value);
+
+            if (provider != null)
             {
-                valueProvider.SetValue(text);
+                provider.SetValue(text);
+            }
+            else if (element is TextBox)
+            {
+                var textBox = element as TextBox;
+                textBox.Text = text;
+                textBox.SelectionStart = text.Length;
+            }
+            else if (element is PasswordBox)
+            {
+                var passwordBox = element as PasswordBox;
+                passwordBox.Password = text;
             }
             else
             {
-                textbox.Text = text;
-                textbox.SelectionStart = text.Length;
+                throw new AutomationException("Element does not support SendKeys.", ResponseStatus.UnknownError);
             }
 
             // TODO: new parameter - FocusState
-            textbox.Focus(FocusState.Pointer);
+            element.Focus(FocusState.Pointer);
         }
 
         #endregion

@@ -137,10 +137,18 @@
             return ScreenCoordinatesHelper.LogicalPointToScreenPoint(result);
         }
 
+        internal static T GetProviderOrDefault<T>(this FrameworkElement element, PatternInterface patternInterface)
+            where T : class
+        {
+            var peer = FrameworkElementAutomationPeer.FromElement(element);
+
+            return peer == null ? null : peer.GetPattern(patternInterface) as T;
+        }
+
         internal static T GetProvider<T>(this FrameworkElement element, PatternInterface patternInterface)
             where T : class
         {
-            var provider = element.GetAutomationPeer().GetPattern(patternInterface) as T;
+            var provider = element.GetProviderOrDefault<T>(patternInterface);
             if (provider != null)
             {
                 return provider;
