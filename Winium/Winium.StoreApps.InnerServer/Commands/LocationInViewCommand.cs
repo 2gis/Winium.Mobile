@@ -6,6 +6,7 @@
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.InnerServer.Commands.Helpers;
+    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
@@ -22,7 +23,7 @@
         public override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var coordinates = element.GetCoordinatesInView(this.Automator.VisualRoot);
+            var coordinates = new WiniumElement(element).GetCoordinatesInView(this.Automator.VisualRoot);
             var coordinatesDict = new Dictionary<string, int>
                                       {
                                           { "x", (int)coordinates.X }, 

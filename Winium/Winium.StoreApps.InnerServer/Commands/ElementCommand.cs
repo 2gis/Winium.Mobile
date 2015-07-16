@@ -4,12 +4,10 @@
 
     using System.Linq;
 
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Media;
-
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
     using Winium.StoreApps.InnerServer.Commands.Helpers;
+    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
@@ -28,50 +26,29 @@
             var searchValue = this.Parameters["value"].ToString();
             var searchPolicy = this.Parameters["using"].ToString();
 
-            DependencyObject relativeElement = this.ElementId == null
-                                                   ? this.Automator.VisualRoot
-                                                   : this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-
             var searchStrategy = new By(searchPolicy, searchValue);
-            var webObjectId = this.FindElementBy(relativeElement, searchStrategy);
 
-            if (webObjectId == null && this.ElementId == null)
+            WiniumElement winiumElement;
+
+            if (this.ElementId == null)
             {
-                var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
-                foreach (var popupChild in popups.Select(popup => popup.Child))
-                {
-                    webObjectId = this.FindElementBy(popupChild, searchStrategy);
-                    if (webObjectId != null)
-                    {
-                        break;
-                    }
-                }
+                winiumElement  = WiniumVirtualRoot.Current.Find(TreeScope.Descendants, searchStrategy.Predicate).FirstOrDefault();
+            }
+            else
+            {
+                var parentElement = new WiniumElement(this.Automator.WebElements.GetRegisteredElement(this.ElementId));
+                winiumElement = parentElement.Find(TreeScope.Descendants, searchStrategy.Predicate).FirstOrDefault();
             }
 
-            if (webObjectId == null)
+            if (winiumElement == null)
             {
                 throw new AutomationException("Element cannot be found", ResponseStatus.NoSuchElement);
             }
 
+            var webObjectId = this.Automator.WebElements.RegisterElement(winiumElement.Element);
+
             var webElement = new JsonWebElementContent(webObjectId);
             return this.JsonResponse(ResponseStatus.Success, webElement);
-        }
-
-        #endregion
-
-        #region Methods
-
-        private string FindElementBy(DependencyObject relativeElement, By searchStrategy)
-        {
-            string foundId = null;
-
-            var element = (FrameworkElement)Finder.GetDescendantsBy(relativeElement, searchStrategy).FirstOrDefault();
-            if (element != null)
-            {
-                foundId = this.Automator.WebElements.RegisterElement(element);
-            }
-
-            return foundId;
         }
 
         #endregion

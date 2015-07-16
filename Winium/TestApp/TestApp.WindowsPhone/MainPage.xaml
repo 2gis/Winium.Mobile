@@ -42,6 +42,7 @@
                 TextChanged="SuggestionsTextChanged" 
                 SuggestionChosen="SuggestionsSuggestionChosen"></AutoSuggestBox>
                 <PasswordBox AutomationProperties.AutomationId="MyPasswordBox" PlaceholderText="Password"/>
+                <Button Content="Show Msg" Click="Button_Click"/>
             </StackPanel>
         </PivotItem>
     </Pivot>

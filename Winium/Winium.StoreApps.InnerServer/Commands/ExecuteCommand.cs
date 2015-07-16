@@ -16,6 +16,7 @@
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
     using Winium.StoreApps.InnerServer.Commands.Helpers;
+    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
@@ -180,7 +181,7 @@
             var attributeName = args[1].ToString();
             var value = args[2];
 
-            element.SetAttribute(attributeName, value);
+            new WiniumElement(element).SetAttribute(attributeName, value);
 
             return null;
         }

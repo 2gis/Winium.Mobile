@@ -7,6 +7,6 @@ APPX_PATH = '..\\TestApp\\TestApp.WindowsPhone\\AppPackages\\TestApp.WindowsPhon
             'TestApp.WindowsPhone_1.0.0.0_AnyCPU{0}.appx'.format(CONFIG_IDENTIFIER)
 
 DESIRED_CAPABILITIES = {
-    "app": os.path.abspath(os.path.join(BASE_DIR, APPX_PATH))
+    "app": os.path.abspath(os.path.join(BASE_DIR, APPX_PATH)),
     # "debugConnectToRunningApp": True
 }

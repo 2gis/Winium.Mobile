@@ -5,15 +5,11 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
-    using System.Linq;
     using System.Text;
     using System.Xml;
 
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Media;
-
     using Winium.StoreApps.Common;
-    using Winium.StoreApps.InnerServer.Commands.Helpers;
+    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
@@ -49,27 +45,27 @@
 
         #region Methods
 
-        private void WriteElementToXml(XmlWriter writer, FrameworkElement item)
+        private void WriteElementToXml(XmlWriter writer, WiniumElement element)
         {
-            if (item == null)
+            if (element == null)
             {
                 return;
             }
 
-            writer.WriteStartElement(item.GetType().ToString());
-            var rect = item.GetRect(this.Automator.VisualRoot);
+            writer.WriteStartElement(element.ClassName);
+            var rect = element.GetRect(this.Automator.VisualRoot);
             var attributes = new Dictionary<string, string>
                                  {
-                                     { "name", item.AutomationName() }, 
-                                     { "id", item.AutomationId() }, 
-                                     { "xname", item.Name }, 
+                                     { "name", element.AutomationName }, 
+                                     { "id", element.AutomationId }, 
+                                     { "xname", element.XName }, 
                                      {
                                          "visible", 
-                                         item.IsUserVisible(this.Automator.VisualRoot)
+                                         element.IsUserVisible(this.Automator.VisualRoot)
                                          .ToString()
                                          .ToLowerInvariant()
                                      }, 
-                                     { "value", item.GetText() }, 
+                                     { "value", element.GetText() }, 
                                      { "x", rect.X.ToString(CultureInfo.InvariantCulture) }, 
                                      { "y", rect.Y.ToString(CultureInfo.InvariantCulture) }, 
                                      {
@@ -79,6 +75,10 @@
                                      {
                                          "height", 
                                          rect.Height.ToString(CultureInfo.InvariantCulture)
+                                     },
+                                     {
+                                         "clickable_point",
+                                         element.GetCoordinatesInView(this.Automator.VisualRoot).ToString(CultureInfo.InvariantCulture)
                                      }
                                  };
             foreach (var attribute in attributes)
@@ -86,11 +86,9 @@
                 writer.WriteAttributeString(attribute.Key, attribute.Value);
             }
 
-            var childrenCount = VisualTreeHelper.GetChildrenCount(item);
-            for (var i = 0; i < childrenCount; ++i)
+            foreach (var child in element.Find(TreeScope.Children, x => true))
             {
-                var child = VisualTreeHelper.GetChild(item, i);
-                this.WriteElementToXml(writer, child as FrameworkElement);
+                this.WriteElementToXml(writer, child);
             }
 
             writer.WriteEndElement();
@@ -99,11 +97,10 @@
         private void WriteElementsToXml(XmlWriter writer)
         {
             writer.WriteStartElement("root");
-            this.WriteElementToXml(writer, this.Automator.VisualRoot as FrameworkElement);
-            var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
-            foreach (var popupChild in popups.Select(popup => popup.Child))
+
+            foreach (var element in WiniumVirtualRoot.Current.Find(TreeScope.Children, x=> true))
             {
-                this.WriteElementToXml(writer, popupChild as FrameworkElement);
+                this.WriteElementToXml(writer, element);
             }
 
             writer.WriteEndElement();

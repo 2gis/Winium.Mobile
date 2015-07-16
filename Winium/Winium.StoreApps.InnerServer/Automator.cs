@@ -89,10 +89,6 @@
             {
                 commandToExecute = new ElementsCommand { ElementId = elementId };
             }
-            else if (command.Equals(DriverCommand.ClickElement))
-            {
-                commandToExecute = new ClickCommand { ElementId = elementId };
-            }
             else if (command.Equals(DriverCommand.SendKeysToElement))
             {
                 var values = ((JArray)parameters["value"]).ToObject<List<string>>();

@@ -128,5 +128,16 @@ namespace TestApp
                 sender.ItemsSource = suggestions;
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var noWifiDialog = new ContentDialog()
+            {
+                Title = "No wifi connection",
+                Content = "Check connection and try again",
+                PrimaryButtonText = "Ok"
+            };
+            noWifiDialog.ShowAsync();
+        }
     }
 }

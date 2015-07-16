@@ -54,7 +54,6 @@
     <Compile Include="Commands\AlertCommand.cs" />
     <Compile Include="Commands\AlertTextCommand.cs" />
     <Compile Include="Commands\CloseAppCommand.cs" />
-    <Compile Include="Commands\ClickCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\DisplayedCommand.cs" />
     <Compile Include="Commands\ExecuteCommand.cs" />
@@ -72,6 +71,14 @@
     <Compile Include="Commands\GetElementTagNameCommand.cs" />
     <Compile Include="Commands\TextCommand.cs" />
     <Compile Include="Commands\ValueCommand.cs" />
+    <Compile Include="Element\ISearchable.cs" />
+    <Compile Include="Element\WiniumElement.GetText.cs" />
+    <Compile Include="Element\WiniumElement.Find.cs" />
+    <Compile Include="Element\WiniumElement.Location.cs" />
+    <Compile Include="Element\WiniumElement.GetSetAttribute.cs" />
+    <Compile Include="Element\WiniumElement.cs" />
+    <Compile Include="Element\WiniumElement.IsUserVisible.cs" />
+    <Compile Include="Element\WiniumVirtualRoot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

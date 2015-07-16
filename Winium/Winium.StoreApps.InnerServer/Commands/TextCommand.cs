@@ -3,7 +3,7 @@
     #region
 
     using Winium.StoreApps.Common;
-    using Winium.StoreApps.InnerServer.Commands.Helpers;
+    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
@@ -20,7 +20,7 @@
         public override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var text = element.GetText();
+            var text = new WiniumElement(element).GetText();
 
             return this.JsonResponse(ResponseStatus.Success, text);
         }
