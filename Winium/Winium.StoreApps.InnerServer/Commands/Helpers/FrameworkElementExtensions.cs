@@ -197,7 +197,6 @@
                 return false;
             }
 
-
             while (true)
             {
                 if (element.Visibility != Visibility.Visible || !element.IsHitTestVisible || !(element.Opacity > 0))

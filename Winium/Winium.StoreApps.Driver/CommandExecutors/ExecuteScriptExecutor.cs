@@ -31,13 +31,19 @@
                 case "OnScreenKeyboard.Disable":
                     this.Automator.EmulatorController.TypeKey(Keys.PageDown);
                     break;
+                case "App.Open":
+                    LaunchAppExecutor.LaunchApp(this.Automator);
+                    break;
+                case "App.Close":
+                    CloseAppExecutor.CloseApp(this.Automator);
+                    break;
                 default:
-                    const string url =
+                    const string Url =
                         "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#press-hardware-button";
                     var msg = string.Format(
                         "Unknown 'mobile:' script command '{0}'. See {1} for supported commands.", 
                         command ?? string.Empty, 
-                        url);
+                        Url);
                     throw new AutomationException(msg, ResponseStatus.JavaScriptError);
             }
 
