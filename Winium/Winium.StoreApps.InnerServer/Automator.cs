@@ -9,8 +9,8 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    using Windows.UI.Core;
     using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Media;
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.InnerServer.Commands;
@@ -21,9 +21,9 @@
     {
         #region Constructors and Destructors
 
-        public Automator(UIElement visualRoot)
+        public Automator(UIElement visualRoot = null)
         {
-            this.VisualRoot = GetTrueVisualRoot(visualRoot);
+            this.UiThreadDispatcher = Window.Current.Dispatcher;
             this.WebElements = new AutomatorElements();
             this.DoAfterResponseOnce = null;
         }
@@ -34,7 +34,7 @@
 
         public Action DoAfterResponseOnce { get; set; }
 
-        public UIElement VisualRoot { get; private set; }
+        public CoreDispatcher UiThreadDispatcher { get; private set; }
 
         public AutomatorElements WebElements { get; private set; }
 
@@ -91,7 +91,7 @@
             }
             else if (command.Equals(DriverCommand.SendKeysToElement))
             {
-                var values = ((JArray)parameters["value"]).ToObject<List<string>>();
+                var values = parameters["value"].ToObject<List<string>>();
                 var value = string.Empty;
                 if (values.Any())
                 {
@@ -152,34 +152,6 @@
             var response = commandToExecute.Do();
 
             return response;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Walk visual tree upwards til we find actual visual root. 
-        /// This fixes incorrect locations being returned for elements when app screen is scrolled up to make place for onscreen keyboards, etc (issue #34 ).
-        /// </summary>
-        /// <param name="visualRoot">
-        /// </param>
-        /// <returns>
-        /// The <see cref="UIElement"/>.
-        /// </returns>
-        private static UIElement GetTrueVisualRoot(UIElement visualRoot)
-        {
-            var root = visualRoot;
-            while (true)
-            {
-                var parent = VisualTreeHelper.GetParent(root) as UIElement;
-                if (parent == null)
-                {
-                    return root;
-                }
-
-                root = parent;
-            }
         }
 
         #endregion

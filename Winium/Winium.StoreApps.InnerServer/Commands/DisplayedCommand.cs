@@ -17,10 +17,10 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var displayed = new WiniumElement(element).IsUserVisible(this.Automator.VisualRoot);
+            var displayed = new WiniumElement(element).IsUserVisible();
 
             return this.JsonResponse(ResponseStatus.Success, displayed);
         }

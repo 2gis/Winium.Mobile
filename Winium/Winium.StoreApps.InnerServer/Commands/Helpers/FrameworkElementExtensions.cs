@@ -2,14 +2,6 @@
 {
     #region
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
-    using Newtonsoft.Json.Linq;
-
-    using Windows.Foundation;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Automation;
     using Windows.UI.Xaml.Automation.Peers;
@@ -22,7 +14,7 @@
     {
         #region Constants
 
-        internal const string HelpNotSupportInterfaceMsg = "Element does not support {0} control pattern interface.";
+        private const string HelpNotSupportInterfaceMsg = "Element does not support {0} control pattern interface.";
 
         #endregion
 

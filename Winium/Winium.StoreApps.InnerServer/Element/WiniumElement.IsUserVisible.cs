@@ -12,7 +12,7 @@
     {
         #region Methods
 
-        internal bool IsUserVisible(UIElement visualRoot)
+        internal bool IsUserVisible()
         {
             /* TODO: There is IsOffscreen method on AutomationPeer that can be used.
              * But it returns true even if currentElement is on another pivot (i.e. invisible)
@@ -20,6 +20,7 @@
              * return peer != null && peer.IsOffscreen();
              * This might improve speed but will make all non user interactable elements, like border, scrollbiew "invisible"
              */
+            var visualRoot = WiniumVirtualRoot.Current.VisualRoot.Element;
             var currentElement = this.Element;
 
             var currentElementSize = new Size(currentElement.ActualWidth, currentElement.ActualHeight);

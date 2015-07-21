@@ -21,7 +21,7 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
             var searchValue = this.Parameters["value"].ToString();
             var searchPolicy = this.Parameters["using"].ToString();

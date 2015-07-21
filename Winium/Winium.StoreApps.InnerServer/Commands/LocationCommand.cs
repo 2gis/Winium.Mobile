@@ -19,10 +19,10 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var coordinates = new WiniumElement(element).GetCoordinates(this.Automator.VisualRoot);
+            var coordinates = new WiniumElement(element).GetCoordinates();
             var coordinatesDict = new Dictionary<string, int>
                                       {
                                           { "x", (int)coordinates.X }, 

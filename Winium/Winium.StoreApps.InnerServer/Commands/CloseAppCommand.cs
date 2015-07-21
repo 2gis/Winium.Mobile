@@ -10,7 +10,7 @@
     {
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
             this.Automator.DoAfterResponseOnce = () => Application.Current.Exit();
 

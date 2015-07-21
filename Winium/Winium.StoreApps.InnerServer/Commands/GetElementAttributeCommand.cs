@@ -24,7 +24,7 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
 

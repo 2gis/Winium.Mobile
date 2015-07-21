@@ -23,7 +23,7 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
             string source;
             var settings = new XmlWriterSettings { Indent = true, Encoding = new UTF8Encoding(false) };
@@ -53,7 +53,7 @@
             }
 
             writer.WriteStartElement(element.ClassName);
-            var rect = element.GetRect(this.Automator.VisualRoot);
+            var rect = element.GetRect();
             var attributes = new Dictionary<string, string>
                                  {
                                      { "name", element.AutomationName }, 
@@ -61,9 +61,7 @@
                                      { "xname", element.XName }, 
                                      {
                                          "visible", 
-                                         element.IsUserVisible(this.Automator.VisualRoot)
-                                         .ToString()
-                                         .ToLowerInvariant()
+                                         element.IsUserVisible().ToString().ToLowerInvariant()
                                      }, 
                                      { "value", element.GetText() }, 
                                      { "x", rect.X.ToString(CultureInfo.InvariantCulture) }, 
@@ -75,10 +73,11 @@
                                      {
                                          "height", 
                                          rect.Height.ToString(CultureInfo.InvariantCulture)
-                                     },
+                                     }, 
                                      {
-                                         "clickable_point",
-                                         element.GetCoordinatesInView(this.Automator.VisualRoot).ToString(CultureInfo.InvariantCulture)
+                                         "clickable_point", 
+                                         element.GetCoordinatesInView()
+                                         .ToString(CultureInfo.InvariantCulture)
                                      }
                                  };
             foreach (var attribute in attributes)
@@ -98,7 +97,7 @@
         {
             writer.WriteStartElement("root");
 
-            foreach (var element in WiniumVirtualRoot.Current.Find(TreeScope.Children, x=> true))
+            foreach (var element in WiniumVirtualRoot.Current.Find(TreeScope.Children, x => true))
             {
                 this.WriteElementToXml(writer, element);
             }

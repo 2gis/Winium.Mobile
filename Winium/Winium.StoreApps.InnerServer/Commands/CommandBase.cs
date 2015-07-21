@@ -10,7 +10,6 @@
     using Newtonsoft.Json.Linq;
 
     using Windows.UI.Core;
-    using Windows.UI.Xaml;
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
@@ -31,12 +30,13 @@
 
         #region Public Methods and Operators
 
-        public static void BeginInvokeSync(UIElement root, Action action)
+        private static void BeginInvokeSync(CoreDispatcher dispatcher, Action action)
         {
             Exception exception = null;
             var waitEvent = new AutoResetEvent(false);
 
-            root.Dispatcher.RunAsync(
+            // TODO Research dispatcher.RunIdleAsync
+            dispatcher.RunAsync(
                 CoreDispatcherPriority.Normal, 
                 () =>
                     {
@@ -69,7 +69,7 @@
             var response = string.Empty;
             try
             {
-                BeginInvokeSync(this.Automator.VisualRoot, () => { response = this.DoImpl(); });
+                BeginInvokeSync(this.Automator.UiThreadDispatcher, () => { response = this.DoImpl(); });
             }
             catch (AutomationException exception)
             {
@@ -83,7 +83,7 @@
             return response;
         }
 
-        public virtual string DoImpl()
+        protected virtual string DoImpl()
         {
             throw new NotImplementedException();
         }
@@ -94,12 +94,12 @@
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public string JsonResponse()
+        protected string JsonResponse()
         {
             return JsonConvert.SerializeObject(new JsonResponse(this.Session, ResponseStatus.Success, null));
         }
 
-        public string JsonResponse(ResponseStatus status, object value)
+        protected string JsonResponse(ResponseStatus status, object value)
         {
             if (status != ResponseStatus.Success && value == null)
             {

@@ -3,7 +3,6 @@
     #region
 
     using Windows.Foundation;
-    using Windows.UI.Xaml;
 
     using Winium.StoreApps.InnerServer.Commands.Helpers;
 
@@ -11,10 +10,11 @@
 
     internal partial class WiniumElement
     {
-        #region Methods
+        #region Public Methods and Operators
 
-        internal Point GetCoordinates(UIElement visualRoot)
+        public Point GetCoordinates()
         {
+            var visualRoot = WiniumVirtualRoot.Current.VisualRoot.Element;
             var element = this.Element;
 
             var point = element.TransformToVisual(visualRoot).TransformPoint(new Point(0, 0));
@@ -22,9 +22,10 @@
             return ScreenCoordinatesHelper.LogicalPointToScreenPoint(center);
         }
 
-        internal Point GetCoordinatesInView(UIElement visualRoot)
+        public Point GetCoordinatesInView()
         {
             // TODO reasearch posibility to replace this code to GetClickablePoint()
+            var visualRoot = WiniumVirtualRoot.Current.VisualRoot.Element;
             var element = this.Element;
 
             var point = element.TransformToVisual(visualRoot).TransformPoint(new Point(0, 0));
@@ -41,8 +42,13 @@
             return ScreenCoordinatesHelper.LogicalPointToScreenPoint(result);
         }
 
-        internal Rect GetRect(UIElement visualRoot)
+        #endregion
+
+        #region Methods
+
+        internal Rect GetRect()
         {
+            var visualRoot = WiniumVirtualRoot.Current.VisualRoot.Element;
             var element = this.Element;
 
             var point1 = element.TransformToVisual(visualRoot).TransformPoint(new Point(0, 0));

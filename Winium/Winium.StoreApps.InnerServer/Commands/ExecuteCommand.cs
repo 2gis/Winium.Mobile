@@ -41,7 +41,7 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
             string command;
             var prefix = string.Empty;

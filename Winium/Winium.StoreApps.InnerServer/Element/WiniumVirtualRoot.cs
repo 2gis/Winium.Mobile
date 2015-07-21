@@ -24,7 +24,7 @@
 
         private WiniumVirtualRoot()
         {
-            this.VisulaRoot = new WiniumElement(GetTrueVisualRoot());
+            this.VisualRoot = new WiniumElement(GetTrueVisualRoot());
         }
 
         #endregion
@@ -44,11 +44,11 @@
             get
             {
                 var popups = VisualTreeHelper.GetOpenPopups(Window.Current).ToList();
-                return popups.Select(x => new WiniumElement(x.Child as FrameworkElement));
+                return popups.Select(popup => new WiniumElement(popup.Child as FrameworkElement));
             }
         }
 
-        public WiniumElement VisulaRoot { get; private set; }
+        public WiniumElement VisualRoot { get; private set; }
 
         #endregion
 
@@ -62,24 +62,23 @@
             }
 
             // yield main visual tree
-            if (predicate(this.VisulaRoot.Element))
+            if (predicate(this.VisualRoot.Element))
             {
-                yield return this.VisulaRoot;
+                yield return this.VisualRoot;
             }
 
             if (scope.HasFlag(TreeScope.Descendants))
             {
-                foreach (var element in this.VisulaRoot.Find(scope, predicate))
+                foreach (var element in this.VisualRoot.Find(scope, predicate))
                 {
                     yield return element;
                 }
             }
 
             // yield popups (AppBar, etc.)
-            var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
-            foreach (var popupChild in popups.Select(popup => new WiniumElement(popup.Child as FrameworkElement)))
+            foreach (var popupChild in this.OpenPopups)
             {
-                if (predicate(this.VisulaRoot.Element))
+                if (predicate(popupChild.Element))
                 {
                     yield return popupChild;
                 }
