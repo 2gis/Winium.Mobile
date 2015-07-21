@@ -4,15 +4,14 @@
 
     using System.Linq;
 
-    using Windows.UI.Xaml;
     using Windows.UI.Xaml.Automation.Peers;
     using Windows.UI.Xaml.Automation.Provider;
     using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Media;
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
     using Winium.StoreApps.InnerServer.Commands.Helpers;
+    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
@@ -31,41 +30,39 @@
 
         #region Public Properties
 
-        public With Action { get; set; }
+        public With Action { private get; set; }
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Methods
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
-            var buttonName = this.Action == With.Accept ? "LeftButton" : "RightButton";
+            var buttonName = this.Action == With.Accept ? "Button1Host" : "Button2Host";
 
-            // TODO: new parameter - Window
-            var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
-            foreach (var popup in popups)
+            var popup = WiniumVirtualRoot.Current.OpenPopups.FirstOrDefault();
+            if (popup == null || !(popup.Element is ContentDialog))
             {
-                var popupChild = popup.Child;
-                var element =
-                    (FrameworkElement)Finder.GetDescendantsBy(popupChild, new By("name", buttonName)).FirstOrDefault()
-                    as Button;
-                if (element == null)
-                {
-                    continue;
-                }
-
-                var peer = new ButtonAutomationPeer(element);
-                var invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                if (invokeProv == null)
-                {
-                    continue;
-                }
-
-                invokeProv.Invoke();
-                return this.JsonResponse();
+                throw new AutomationException("No alert is displayed", ResponseStatus.NoAlertOpenError);
             }
 
-            throw new AutomationException("No alert is displayed", ResponseStatus.NoAlertOpenError);
+            var hostStrategy = By.XName(buttonName);
+            var buttonHost = popup.Find(TreeScope.Descendants, hostStrategy.Predicate).FirstOrDefault();
+
+            if (buttonHost != null)
+            {
+                var btnStrategy = By.ClassName(typeof(Button).FullName);
+                var button = buttonHost.Find(TreeScope.Children, btnStrategy.Predicate).FirstOrDefault();
+
+                if (button != null)
+                {
+                    button.Element.GetProvider<IInvokeProvider>(PatternInterface.Invoke).Invoke();
+
+                    return this.JsonResponse();
+                }
+            }
+
+            throw new AutomationException("Could not find {0} in ContentDialog", buttonName);
         }
 
         #endregion

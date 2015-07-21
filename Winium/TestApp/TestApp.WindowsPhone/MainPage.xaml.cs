@@ -129,15 +129,18 @@ namespace TestApp
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void ButtonClick(object sender, RoutedEventArgs e)
         {
-            var noWifiDialog = new ContentDialog()
+            var noWifiDialog = new ContentDialog
             {
                 Title = "No wifi connection",
                 Content = "Check connection and try again",
-                PrimaryButtonText = "Ok"
+                PrimaryButtonText = "Ok",
+                SecondaryButtonText = "Cancel"
             };
-            noWifiDialog.ShowAsync();
+            var result = await noWifiDialog.ShowAsync();
+
+            this.SecondTabTextBox.Text = result == ContentDialogResult.Primary ? "Accepted" : "Dismissed";
         }
     }
 }

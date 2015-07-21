@@ -4,13 +4,12 @@
 
     using System.Linq;
 
-    using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Media;
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
     using Winium.StoreApps.InnerServer.Commands.Helpers;
+    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
@@ -18,44 +17,24 @@
     {
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
-            var message = string.Empty;
-
-            // TODO: new parameter - Window
-            var popups = VisualTreeHelper.GetOpenPopups(Window.Current).ToList();
-            var children = popups.Select(x => x.Child).ToList();
-            if (!children.Any())
+            var popup = WiniumVirtualRoot.Current.OpenPopups.FirstOrDefault();
+            if (popup == null || !(popup.Element is ContentDialog))
             {
                 throw new AutomationException("No alert is displayed", ResponseStatus.NoAlertOpenError);
             }
 
-            foreach (var popupChild in children)
-            {
-                message += FirstTextInChild(popupChild);
-                if (!string.IsNullOrEmpty(message))
-                {
-                    break;
-                }
-            }
-
+            var strategy = By.ClassName(typeof(TextBlock).FullName);
+            var textBoxes = popup.Find(TreeScope.Descendants, strategy.Predicate);
+            var message = string.Join("\n", textBoxes.Select(x => x.GetText()));
+            
             return this.JsonResponse(ResponseStatus.Success, message);
         }
 
         #endregion
 
         #region Methods
-
-        private static string FirstTextInChild(DependencyObject popupChild)
-        {
-            var elements = Finder.GetDescendantsBy(popupChild, new By("tag name", "System.Windows.Controls.TextBlock"));
-
-            return
-                elements.Select(o => o as TextBlock)
-                    .Where(textBlock => textBlock != null)
-                    .Select(textBlock => textBlock.Text)
-                    .FirstOrDefault(x => !string.IsNullOrEmpty(x));
-        }
 
         #endregion
     }
