@@ -19,7 +19,7 @@
 
         protected override string DoImpl()
         {
-            var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
+            var element = this.Automator.ElementsRegistry.GetRegisteredElement(this.ElementId);
             var displayed = element.IsUserVisible();
 
             return this.JsonResponse(ResponseStatus.Success, displayed);

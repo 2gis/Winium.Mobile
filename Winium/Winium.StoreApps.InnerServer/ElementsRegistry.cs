@@ -14,7 +14,7 @@
 
     #endregion
 
-    internal class AutomatorElements
+    internal class ElementsRegistry
     {
         #region Static Fields
 
@@ -30,7 +30,7 @@
 
         #region Constructors and Destructors
 
-        public AutomatorElements()
+        public ElementsRegistry()
         {
             this.registredElements = new Dictionary<string, WiniumElement>();
         }

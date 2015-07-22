@@ -21,7 +21,7 @@
 
         protected override string DoImpl()
         {
-            var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
+            var element = this.Automator.ElementsRegistry.GetRegisteredElement(this.ElementId);
             var coordinates = element.GetCoordinates();
             var coordinatesDict = new Dictionary<string, int>
                                       {

@@ -24,7 +24,7 @@
         public Automator()
         {
             this.UiThreadDispatcher = Window.Current.Dispatcher;
-            this.WebElements = new AutomatorElements();
+            this.ElementsRegistry = new ElementsRegistry();
             this.DoAfterResponseOnce = null;
         }
 
@@ -36,7 +36,7 @@
 
         public CoreDispatcher UiThreadDispatcher { get; private set; }
 
-        public AutomatorElements WebElements { get; private set; }
+        public ElementsRegistry ElementsRegistry { get; private set; }
 
         #endregion
 

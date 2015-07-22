@@ -46,7 +46,7 @@
     <Compile Include="AcceptedRequest.cs" />
     <Compile Include="AutomationServer.cs" />
     <Compile Include="Automator.cs" />
-    <Compile Include="AutomatorElements.cs" />
+    <Compile Include="ElementsRegistry.cs" />
     <Compile Include="Commands\AlertCommand.cs" />
     <Compile Include="Commands\AlertTextCommand.cs" />
     <Compile Include="Commands\CloseAppCommand.cs" />

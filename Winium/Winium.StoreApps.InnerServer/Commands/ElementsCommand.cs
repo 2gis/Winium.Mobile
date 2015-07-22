@@ -35,7 +35,7 @@
             }
             else
             {
-                var parentElement = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
+                var parentElement = this.Automator.ElementsRegistry.GetRegisteredElement(this.ElementId);
                 result = parentElement.Find(TreeScope.Descendants, searchStrategy.Predicate).ToList();
             }
 
@@ -43,7 +43,7 @@
 
             foreach (var winiumElement in result)
             {
-                var webObjectId = this.Automator.WebElements.RegisterElement(winiumElement);
+                var webObjectId = this.Automator.ElementsRegistry.RegisterElement(winiumElement);
                 registredObjects.Add(new JsonWebElementContent(webObjectId));
             }
 
