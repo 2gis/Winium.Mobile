@@ -47,7 +47,8 @@ class TestGetCommands(WuaTestCase):
         visual_root = next(root.iterfind('*'))
         assert 'Windows.UI.Xaml.Controls.ScrollViewer' == visual_root.tag
         assert sum(1 for _ in root.iterfind('*')) > 1, 'Page source should contain at both visual root and popups'
-        assert any(visual_root.iterfind('*')), 'Page source should contain at least one children of visual root'
+        first_child = next(visual_root.iterfind('*'), next)
+        assert first_child is not None, 'Page source should contain at least one children of visual root'
 
     @pytest.mark.parametrize(("by", "value"), [
         (By.ID, 'MyTextBox'),
