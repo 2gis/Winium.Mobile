@@ -20,7 +20,7 @@
         protected override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var text = new WiniumElement(element).GetText();
+            var text = element.GetText();
 
             return this.JsonResponse(ResponseStatus.Success, text);
         }

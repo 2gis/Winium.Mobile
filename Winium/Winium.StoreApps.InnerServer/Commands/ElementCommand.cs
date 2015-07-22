@@ -36,7 +36,7 @@
             }
             else
             {
-                var parentElement = new WiniumElement(this.Automator.WebElements.GetRegisteredElement(this.ElementId));
+                var parentElement = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
                 winiumElement = parentElement.Find(TreeScope.Descendants, searchStrategy.Predicate).FirstOrDefault();
             }
 
@@ -45,7 +45,7 @@
                 throw new AutomationException("Element cannot be found", ResponseStatus.NoSuchElement);
             }
 
-            var webObjectId = this.Automator.WebElements.RegisterElement(winiumElement.Element);
+            var webObjectId = this.Automator.WebElements.RegisterElement(winiumElement);
 
             var webElement = new JsonWebElementContent(webObjectId);
             return this.JsonResponse(ResponseStatus.Success, webElement);

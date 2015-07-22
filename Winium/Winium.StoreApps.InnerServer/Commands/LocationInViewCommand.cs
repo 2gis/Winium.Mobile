@@ -22,7 +22,7 @@
         protected override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var coordinates = new WiniumElement(element).GetCoordinatesInView();
+            var coordinates = element.GetCoordinatesInView();
             var coordinatesDict = new Dictionary<string, int>
                                       {
                                           { "x", (int)coordinates.X }, 

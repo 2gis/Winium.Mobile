@@ -9,7 +9,6 @@
 
     using Windows.Networking.Sockets;
     using Windows.Storage.Streams;
-    using Windows.UI.Xaml;
 
     using Winium.StoreApps.Common;
 
@@ -38,16 +37,14 @@
         #region Public Methods and Operators
 
         /// <summary>
-        /// Initializes and starts <see cref="AutomationServer"/> on default port (9998) with specified parameters.
+        /// Initializes and starts <see cref="AutomationServer"/> on default port (9998).
         /// </summary>
         /// <remarks>
         /// Use it in conjuction with <see cref="Instance"/> to simplify inclusion of server in tested app.
         /// </remarks>
-        /// <param name="visualRoot">
-        /// </param>
-        public void InitializeAndStart(UIElement visualRoot)
+        public void InitializeAndStart()
         {
-            this.SetAutomator(visualRoot);
+            this.automator = new Automator();
             this.Start(9998);
         }
 
@@ -57,19 +54,12 @@
         /// <remarks>
         /// Use it in conjuction with <see cref="Instance"/> to simplify inclusion of server in tested app.
         /// </remarks>
-        /// <param name="visualRoot">
-        /// </param>
         /// <param name="port">
         /// </param>
-        public void InitializeAndStart(UIElement visualRoot, int port)
+        public void InitializeAndStart(int port)
         {
-            this.SetAutomator(visualRoot);
+            this.automator = new Automator();
             this.Start(port);
-        }
-
-        public void SetAutomator(UIElement visualRoot)
-        {
-            this.automator = new Automator(visualRoot);
         }
 
         public async void Start(int port)

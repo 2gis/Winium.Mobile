@@ -20,7 +20,7 @@
         protected override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var displayed = new WiniumElement(element).IsUserVisible();
+            var displayed = element.IsUserVisible();
 
             return this.JsonResponse(ResponseStatus.Success, displayed);
         }

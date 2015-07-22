@@ -181,7 +181,7 @@
             var attributeName = args[1].ToString();
             var value = args[2];
 
-            new WiniumElement(element).SetAttribute(attributeName, value);
+            element.SetAttribute(attributeName, value);
 
             return null;
         }
@@ -189,7 +189,7 @@
         private object ExecuteAutomationScript(string command)
         {
             var elementId = ((JArray)this.Parameters["args"])[0]["ELEMENT"].ToString();
-            var element = this.Automator.WebElements.GetRegisteredElement(elementId);
+            var element = this.Automator.WebElements.GetRegisteredElement(elementId).Element;
 
             switch (command)
             {

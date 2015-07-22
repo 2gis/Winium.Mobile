@@ -87,7 +87,7 @@ namespace TestApp
 
         private void MainPageOnLoaded(object sender, RoutedEventArgs e)
         {
-            AutomationServer.Instance.InitializeAndStart(Frame);
+            AutomationServer.Instance.InitializeAndStart();
         }
 
         private void GoAppBarButtonOnClick(object sender, RoutedEventArgs e)

@@ -30,6 +30,11 @@
             return element == null ? null : element.GetValue(AutomationProperties.NameProperty) as string;
         }
 
+        internal static string ClassName(this FrameworkElement element)
+        {
+            return element == null ? null : element.GetType().ToString();
+        }
+
         internal static AutomationPeer GetAutomationPeer(this FrameworkElement element)
         {
             var peer = FrameworkElementAutomationPeer.FromElement(element);

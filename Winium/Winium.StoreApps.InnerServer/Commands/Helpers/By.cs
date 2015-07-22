@@ -10,15 +10,19 @@
 
     internal class By
     {
-        private const string XNameStrategy = "xname";
+        #region Constants
 
         private const string ClassNameStrategy = "class name";
-
-        private const string TagNameStrategy = "tag name";
 
         private const string IdStrategy = "id";
 
         private const string NameStrategy = "name";
+
+        private const string TagNameStrategy = "tag name";
+
+        private const string XNameStrategy = "xname";
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -26,7 +30,11 @@
         {
             if (strategy.Equals(TagNameStrategy) || strategy.Equals(ClassNameStrategy))
             {
-                this.Predicate = x => x.GetType().ToString().Equals(value);
+                this.Predicate = x =>
+                    {
+                        var className = (x as FrameworkElement).ClassName();
+                        return className.Equals(value);
+                    };
             }
             else if (strategy.Equals(IdStrategy))
             {
@@ -60,6 +68,16 @@
             }
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public Predicate<DependencyObject> Predicate { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         public static By ClassName(string value)
         {
             return new By(ClassNameStrategy, value);
@@ -69,12 +87,6 @@
         {
             return new By(XNameStrategy, value);
         }
-
-        #endregion
-
-        #region Public Properties
-
-        public Predicate<DependencyObject> Predicate { get; private set; }
 
         #endregion
     }

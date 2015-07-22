@@ -8,10 +8,9 @@
     using System.Linq;
     using System.Threading;
 
-    using Windows.UI.Xaml;
-
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
+    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
@@ -25,7 +24,7 @@
 
         #region Fields
 
-        private readonly Dictionary<string, WeakReference> registeredElements;
+        private readonly Dictionary<string, WiniumElement> registredElements;
 
         #endregion
 
@@ -33,53 +32,50 @@
 
         public AutomatorElements()
         {
-            this.registeredElements = new Dictionary<string, WeakReference>();
+            this.registredElements = new Dictionary<string, WiniumElement>();
         }
 
         #endregion
 
         #region Public Methods and Operators
 
-        /// <summary>
-        /// Returns FrameworkElement registered with specified key if any exists. Throws if no element is found.
-        /// </summary>
-        /// <param name="registeredKey">
-        /// </param>
-        /// <exception cref="AutomationException">
-        /// Registered element is not found or element has been garbage collected.
-        /// </exception>
-        /// <returns>
-        /// The <see cref="FrameworkElement"/>.
-        /// </returns>
-        public FrameworkElement GetRegisteredElement(string registeredKey)
+        public WiniumElement GetRegisteredElement(string registredKey)
         {
-            WeakReference reference;
-            if (this.registeredElements.TryGetValue(registeredKey, out reference))
+            WiniumElement item;
+            if (this.registredElements.TryGetValue(registredKey, out item))
             {
-                var item = reference.Target as FrameworkElement;
-                if (item != null)
+                if (!item.IsStale)
                 {
                     return item;
                 }
+
+                this.registredElements.Remove(registredKey);
             }
 
             throw new AutomationException("Stale element reference", ResponseStatus.StaleElementReference);
         }
 
-        public string RegisterElement(FrameworkElement element)
+        public string RegisterElement(WiniumElement element)
         {
-            var registeredKey = this.registeredElements.FirstOrDefault(x => x.Value.Target == element).Key;
+            var registeredKey = this.registredElements.FirstOrDefault(x => x.Value.Equals(element)).Key;
 
             if (registeredKey == null)
             {
-                Interlocked.Increment(ref safeInstanceCount);
-
-                registeredKey = element.GetHashCode() + "-"
-                                + safeInstanceCount.ToString(string.Empty, CultureInfo.InvariantCulture);
-                this.registeredElements.Add(registeredKey, new WeakReference(element));
+                registeredKey = GenerateGuid(element);
+                this.registredElements.Add(registeredKey, element);
             }
 
             return registeredKey;
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static string GenerateGuid(WiniumElement element)
+        {
+            Interlocked.Increment(ref safeInstanceCount);
+            return element.GetHashCode() + "-" + safeInstanceCount.ToString(string.Empty, CultureInfo.InvariantCulture);
         }
 
         #endregion

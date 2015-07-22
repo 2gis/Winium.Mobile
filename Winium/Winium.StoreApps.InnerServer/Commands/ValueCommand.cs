@@ -28,7 +28,7 @@
         protected override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var control = element as Control;
+            var control = element.Element as Control;
             if (control == null)
             {
                 throw new AutomationException("Element referenced is not of control type.", ResponseStatus.UnknownError);

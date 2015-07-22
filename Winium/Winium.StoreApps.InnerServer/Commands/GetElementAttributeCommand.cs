@@ -46,7 +46,7 @@
              */
             try
             {
-                var propertyObject = new WiniumElement(element).GetAttribute(attributeName);
+                var propertyObject = element.GetAttribute(attributeName);
 
                 return this.JsonResponse(ResponseStatus.Success, SerializeObjectAsString(propertyObject));
             }

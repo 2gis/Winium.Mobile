@@ -21,7 +21,7 @@
     {
         #region Constructors and Destructors
 
-        public Automator(UIElement visualRoot = null)
+        public Automator()
         {
             this.UiThreadDispatcher = Window.Current.Dispatcher;
             this.WebElements = new AutomatorElements();

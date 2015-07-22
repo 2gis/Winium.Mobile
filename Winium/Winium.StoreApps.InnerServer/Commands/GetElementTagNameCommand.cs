@@ -19,9 +19,8 @@
         protected override string DoImpl()
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var tagName = element.GetType().ToString();
 
-            return this.JsonResponse(ResponseStatus.Success, tagName);
+            return this.JsonResponse(ResponseStatus.Success, element.ClassName);
         }
 
         #endregion
