@@ -40,7 +40,7 @@
             var response = string.Empty;
             try
             {
-                BeginInvokeSync(this.Automator.UiThreadDispatcher, () => { response = this.DoImpl(); });
+                InvokeSync(this.Automator.UiThreadDispatcher, () => { response = this.DoImpl(); });
             }
             catch (AutomationException exception)
             {
@@ -84,10 +84,9 @@
             return JsonConvert.SerializeObject(new JsonResponse(this.Session, status, value));
         }
 
-        private static void BeginInvokeSync(CoreDispatcher dispatcher, Action action)
+        private static void InvokeSync(CoreDispatcher dispatcher, Action action)
         {
             Exception exception = null;
-            var waitEvent = new AutoResetEvent(false);
 
             // TODO Research dispatcher.RunIdleAsync
             dispatcher.RunAsync(
@@ -102,10 +101,7 @@
                         {
                             exception = ex;
                         }
-
-                        waitEvent.Set();
-                    });
-            waitEvent.WaitOne();
+                    }).AsTask().Wait();
 
             if (exception != null)
             {
