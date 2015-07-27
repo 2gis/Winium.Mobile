@@ -174,7 +174,9 @@ class TestAlert(WuaTestCase):
 
     @pytest.fixture
     def alert(self, second_tab, waiter):
-        second_tab.find_element_by_id('MsgBtn').click()
+        msg_btn = second_tab.find_element_by_id('MsgBtn')
+        waiter.until(EC.visibility_of(msg_btn))
+        msg_btn.click()
         return waiter.until(EC.alert_is_present())
 
     def test_get_alert_text(self, alert):

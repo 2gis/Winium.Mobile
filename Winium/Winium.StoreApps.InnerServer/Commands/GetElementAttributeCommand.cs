@@ -10,7 +10,6 @@
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
-    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
@@ -73,7 +72,7 @@
                 return null;
             }
 
-            // Serialize basic types as palin strings
+            // Serialize basic types as plain strings
             if (IsTypeSerializedUsingToString(obj.GetType()))
             {
                 return obj.ToString();

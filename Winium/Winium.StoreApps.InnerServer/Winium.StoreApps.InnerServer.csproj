@@ -56,7 +56,6 @@
     <Compile Include="Commands\ElementCommand.cs" />
     <Compile Include="Commands\ElementsCommand.cs" />
     <Compile Include="Commands\Helpers\By.cs" />
-    <Compile Include="Commands\Helpers\Finder.cs" />
     <Compile Include="Commands\GetElementAttributeCommand.cs" />
     <Compile Include="Commands\Helpers\FrameworkElementExtensions.cs" />
     <Compile Include="Commands\LocationCommand.cs" />

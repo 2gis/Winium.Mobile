@@ -3,7 +3,6 @@
     #region
 
     using Winium.StoreApps.Common;
-    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
