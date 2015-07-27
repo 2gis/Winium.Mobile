@@ -37,19 +37,19 @@
         #region Public Methods and Operators
 
         /// <summary>
-        /// Initializes and starts <see cref="AutomationServer"/> on default port (9998).
+        /// Initialize and starts <see cref="AutomationServer"/> with specified parameters.
         /// </summary>
         /// <remarks>
         /// Use it in conjuction with <see cref="Instance"/> to simplify inclusion of server in tested app.
         /// </remarks>
         public void InitializeAndStart()
         {
-            this.automator = new Automator();
+            this.Initialize();
             this.Start(9998);
         }
 
         /// <summary>
-        /// Initializes and starts <see cref="AutomationServer"/> with specified parameters.
+        /// Initialize and starts <see cref="AutomationServer"/> on default port.
         /// </summary>
         /// <remarks>
         /// Use it in conjuction with <see cref="Instance"/> to simplify inclusion of server in tested app.
@@ -58,12 +58,30 @@
         /// </param>
         public void InitializeAndStart(int port)
         {
-            this.automator = new Automator();
+            this.Initialize();
             this.Start(port);
         }
 
+        /// <summary>
+        /// Initialize <see cref="AutomationServer"/>.
+        /// This method must be called on UI thread.
+        /// </summary>
+        public void Initialize()
+        {
+            this.automator = new Automator();
+        }
+
+        /// <summary>
+        /// Start <see cref="AutomationServer"/> on specified port.
+        /// </summary>
+        /// <param name="port"></param>
         public async void Start(int port)
         {
+            if (this.automator == null)
+            {
+                throw new InvalidOperationException("Initialize must be called before starting the server.");
+            }
+
             if (this.isServerActive)
             {
                 return;
@@ -78,6 +96,9 @@
             await this.listener.BindServiceNameAsync(this.listeningPort.ToString(CultureInfo.InvariantCulture));
         }
 
+        /// <summary>
+        /// Stop <see cref="AutomationServer"/>.
+        /// </summary>
         public void Stop()
         {
             if (this.isServerActive)

@@ -38,21 +38,20 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 
 1. Add reference to `Winium.StoreApps.InnerServer` in AUT project ([install NuGet package](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/) or build project yourself)
 
-2. In your AUT's source code find place where `Frame` is set (usually in `MainPageOnLoaded` for vanilla app or `PrepareApplication` if you use `Caliburn.Micro`)  add
+2. In your AUT's source code add following lines to be called on UI thread after visual root is initialized (usually in `MainPageOnLoaded` for vanilla app or `PrepareApplication` if you use `Caliburn.Micro`)
 
 	```cs
-	AutomationServer.Instance.InitializeAndStart(Frame);
+	AutomationServer.Instance.InitializeAndStart();
 	```
 
 	or (will include driver only for debug build)
 
 	```cs
 	#if DEBUG
-		AutomationServer.Instance.InitializeAndStart(Frame);
+		AutomationServer.Instance.InitializeAndStart();
 	#endif // DEBUG
 	```
 
-	where `Frame` is visual root of application.
 
 3. Write your tests using you favorite language. In your tests use `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) to set path to tested app's appx file. Here is python example:
 	```python

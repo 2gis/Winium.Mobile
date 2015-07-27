@@ -23,6 +23,11 @@
 
         public Automator()
         {
+            if (Window.Current == null)
+            {
+                throw new InvalidOperationException("This method must be called from UI thread.");
+            }
+
             this.UiThreadDispatcher = Window.Current.Dispatcher;
             this.ElementsRegistry = new ElementsRegistry();
             this.DoAfterResponseOnce = null;

@@ -36,7 +36,7 @@ Winium.StoreApps это open-source инструмент для автомати
 ## Быстрый старт
 1. Добавить ссылку на `Winium.StoreApps.InnerServer` в проекте тестируемого приложения ([через NuGet пакет](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/) или соберите проект у себя)
 
-2. В тестовом приложении найдите место в коде где корневой элемент визуального дерева приложения `Frame` проинициализирован (обычно в `MainPageOnLoaded` для чистых приложений или в `PrepareApplication`, если вы используете `Caliburn.Micro`)  и добавьте следующий код
+2. В тестовом приложении добавьте следующий код для исполнения на UI потоке после того, как был создан коде где корневой элемент визуального дерева (обычно в `MainPageOnLoaded` для чистых приложений или в `PrepareApplication`, если вы используете `Caliburn.Micro`)
 
 	```cs
 	AutomationServer.Instance.InitializeAndStart(Frame);
