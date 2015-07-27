@@ -12,7 +12,7 @@
 
     #endregion
 
-    internal partial class WiniumElement
+    internal partial class WiniumElement : IEquatable<WiniumElement>
     {
         #region Fields
 

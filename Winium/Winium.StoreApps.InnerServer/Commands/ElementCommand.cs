@@ -19,7 +19,7 @@
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Methods
 
         protected override string DoImpl()
         {
@@ -32,7 +32,8 @@
 
             if (this.ElementId == null)
             {
-                winiumElement  = WiniumVirtualRoot.Current.Find(TreeScope.Descendants, searchStrategy.Predicate).FirstOrDefault();
+                winiumElement =
+                    WiniumVirtualRoot.Current.Find(TreeScope.Descendants, searchStrategy.Predicate).FirstOrDefault();
             }
             else
             {
@@ -45,10 +46,10 @@
                 throw new AutomationException("Element cannot be found", ResponseStatus.NoSuchElement);
             }
 
-            var webObjectId = this.Automator.ElementsRegistry.RegisterElement(winiumElement);
+            var registeredKey = this.Automator.ElementsRegistry.RegisterElement(winiumElement);
+            var registredObjects = new JsonElementContent(registeredKey);
 
-            var webElement = new JsonWebElementContent(webObjectId);
-            return this.JsonResponse(ResponseStatus.Success, webElement);
+            return this.JsonResponse(ResponseStatus.Success, registredObjects);
         }
 
         #endregion

@@ -19,7 +19,7 @@
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Methods
 
         protected override string DoImpl()
         {
@@ -39,12 +39,12 @@
                 result = parentElement.Find(TreeScope.Descendants, searchStrategy.Predicate).ToList();
             }
 
-            var registredObjects = new List<JsonWebElementContent>();
+            var registredObjects = new List<JsonElementContent>();
 
             foreach (var winiumElement in result)
             {
-                var webObjectId = this.Automator.ElementsRegistry.RegisterElement(winiumElement);
-                registredObjects.Add(new JsonWebElementContent(webObjectId));
+                var registeredKey = this.Automator.ElementsRegistry.RegisterElement(winiumElement);
+                registredObjects.Add(new JsonElementContent(registeredKey));
             }
 
             return this.JsonResponse(ResponseStatus.Success, registredObjects.ToArray());
