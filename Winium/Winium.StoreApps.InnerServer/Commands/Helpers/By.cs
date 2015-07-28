@@ -10,15 +10,33 @@
 
     internal class By
     {
+        #region Constants
+
+        private const string ClassNameStrategy = "class name";
+
+        private const string IdStrategy = "id";
+
+        private const string NameStrategy = "name";
+
+        private const string TagNameStrategy = "tag name";
+
+        private const string XNameStrategy = "xname";
+
+        #endregion
+
         #region Constructors and Destructors
 
         public By(string strategy, string value)
         {
-            if (strategy.Equals("tag name") || strategy.Equals("class name"))
+            if (strategy.Equals(TagNameStrategy) || strategy.Equals(ClassNameStrategy))
             {
-                this.Predicate = x => x.GetType().ToString().Equals(value);
+                this.Predicate = x =>
+                    {
+                        var className = (x as FrameworkElement).ClassName();
+                        return className.Equals(value);
+                    };
             }
-            else if (strategy.Equals("id"))
+            else if (strategy.Equals(IdStrategy))
             {
                 this.Predicate = x =>
                     {
@@ -26,7 +44,7 @@
                         return automationId != null && automationId.Equals(value);
                     };
             }
-            else if (strategy.Equals("name"))
+            else if (strategy.Equals(NameStrategy))
             {
                 this.Predicate = x =>
                     {
@@ -34,7 +52,7 @@
                         return automationName != null && automationName.Equals(value);
                     };
             }
-            else if (strategy.Equals("xname"))
+            else if (strategy.Equals(XNameStrategy))
             {
                 // TODO: transitional. to be depricated
                 this.Predicate = x =>
@@ -55,6 +73,20 @@
         #region Public Properties
 
         public Predicate<DependencyObject> Predicate { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public static By ClassName(string value)
+        {
+            return new By(ClassNameStrategy, value);
+        }
+
+        public static By XName(string value)
+        {
+            return new By(XNameStrategy, value);
+        }
 
         #endregion
     }

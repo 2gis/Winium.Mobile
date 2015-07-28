@@ -5,7 +5,6 @@
     using System.Collections.Generic;
 
     using Winium.StoreApps.Common;
-    using Winium.StoreApps.InnerServer.Commands.Helpers;
 
     #endregion
 
@@ -19,10 +18,10 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
-            var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var coordinates = element.GetCoordinatesInView(this.Automator.VisualRoot);
+            var element = this.Automator.ElementsRegistry.GetRegisteredElement(this.ElementId);
+            var coordinates = element.GetCoordinatesInView();
             var coordinatesDict = new Dictionary<string, int>
                                       {
                                           { "x", (int)coordinates.X }, 

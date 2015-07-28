@@ -4,13 +4,11 @@
 
     using System;
     using System.Collections.Generic;
-    using System.Threading;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     using Windows.UI.Core;
-    using Windows.UI.Xaml;
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
@@ -31,34 +29,6 @@
 
         #region Public Methods and Operators
 
-        public static void BeginInvokeSync(UIElement root, Action action)
-        {
-            Exception exception = null;
-            var waitEvent = new AutoResetEvent(false);
-
-            root.Dispatcher.RunAsync(
-                CoreDispatcherPriority.Normal, 
-                () =>
-                    {
-                        try
-                        {
-                            action();
-                        }
-                        catch (Exception ex)
-                        {
-                            exception = ex;
-                        }
-
-                        waitEvent.Set();
-                    });
-            waitEvent.WaitOne();
-
-            if (exception != null)
-            {
-                throw exception;
-            }
-        }
-
         public string Do()
         {
             if (this.Automator == null)
@@ -69,7 +39,7 @@
             var response = string.Empty;
             try
             {
-                BeginInvokeSync(this.Automator.VisualRoot, () => { response = this.DoImpl(); });
+                InvokeSync(this.Automator.UiThreadDispatcher, () => { response = this.DoImpl(); });
             }
             catch (AutomationException exception)
             {
@@ -83,7 +53,11 @@
             return response;
         }
 
-        public virtual string DoImpl()
+        #endregion
+
+        #region Methods
+
+        protected virtual string DoImpl()
         {
             throw new NotImplementedException();
         }
@@ -94,12 +68,12 @@
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public string JsonResponse()
+        protected string JsonResponse()
         {
             return JsonConvert.SerializeObject(new JsonResponse(this.Session, ResponseStatus.Success, null));
         }
 
-        public string JsonResponse(ResponseStatus status, object value)
+        protected string JsonResponse(ResponseStatus status, object value)
         {
             if (status != ResponseStatus.Success && value == null)
             {
@@ -107,6 +81,31 @@
             }
 
             return JsonConvert.SerializeObject(new JsonResponse(this.Session, status, value));
+        }
+
+        private static void InvokeSync(CoreDispatcher dispatcher, Action action)
+        {
+            Exception exception = null;
+
+            // TODO Research dispatcher.RunIdleAsync
+            dispatcher.RunAsync(
+                CoreDispatcherPriority.Normal, 
+                () =>
+                    {
+                        try
+                        {
+                            action();
+                        }
+                        catch (Exception ex)
+                        {
+                            exception = ex;
+                        }
+                    }).AsTask().Wait();
+
+            if (exception != null)
+            {
+                throw exception;
+            }
         }
 
         #endregion

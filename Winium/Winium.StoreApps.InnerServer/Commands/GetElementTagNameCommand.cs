@@ -16,12 +16,11 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
-            var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var tagName = element.GetType().ToString();
+            var element = this.Automator.ElementsRegistry.GetRegisteredElement(this.ElementId);
 
-            return this.JsonResponse(ResponseStatus.Success, tagName);
+            return this.JsonResponse(ResponseStatus.Success, element.ClassName);
         }
 
         #endregion

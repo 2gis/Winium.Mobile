@@ -87,7 +87,7 @@ namespace TestApp
 
         private void MainPageOnLoaded(object sender, RoutedEventArgs e)
         {
-            AutomationServer.Instance.InitializeAndStart(Frame);
+            AutomationServer.Instance.InitializeAndStart();
         }
 
         private void GoAppBarButtonOnClick(object sender, RoutedEventArgs e)
@@ -127,6 +127,20 @@ namespace TestApp
                 var suggestions = new List<string> { "A1", "A2", "A3" };
                 sender.ItemsSource = suggestions;
             }
+        }
+
+        private async void ButtonClick(object sender, RoutedEventArgs e)
+        {
+            var noWifiDialog = new ContentDialog
+            {
+                Title = "No wifi connection",
+                Content = "Check connection and try again",
+                PrimaryButtonText = "Ok",
+                SecondaryButtonText = "Cancel"
+            };
+            var result = await noWifiDialog.ShowAsync();
+
+            this.SecondTabTextBox.Text = result == ContentDialogResult.Primary ? "Accepted" : "Dismissed";
         }
     }
 }

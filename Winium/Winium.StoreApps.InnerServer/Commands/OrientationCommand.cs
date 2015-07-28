@@ -12,11 +12,11 @@
     {
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
             var orientation = DisplayOrientations.Portrait;
 
-            /*var frame = this.Automator.VisualRoot as PhoneApplicationFrame;
+            /*var frame = WiniumVirtualRoot.Current.VisualRoot.Element as PhoneApplicationFrame;
             if (frame != null)
             {
                 orientation = frame.Orientation;

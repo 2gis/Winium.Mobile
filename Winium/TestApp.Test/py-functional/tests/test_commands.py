@@ -2,11 +2,10 @@
 import pytest
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
+
 from tests import WuaTestCase
 
 
@@ -48,7 +47,8 @@ class TestGetCommands(WuaTestCase):
         visual_root = next(root.iterfind('*'))
         assert 'Windows.UI.Xaml.Controls.ScrollViewer' == visual_root.tag
         assert sum(1 for _ in root.iterfind('*')) > 1, 'Page source should contain at both visual root and popups'
-        assert any(visual_root.iterfind('*')), 'Page source should contain at least one children of visual root'
+        first_child = next(visual_root.iterfind('*'), next)
+        assert first_child is not None, 'Page source should contain at least one children of visual root'
 
     @pytest.mark.parametrize(("by", "value"), [
         (By.ID, 'MyTextBox'),
@@ -164,17 +164,36 @@ class TestGetCommands(WuaTestCase):
 class TestAlert(WuaTestCase):
     # __shared_session__ = False
 
-    def test_get_alert_text(self):
+    @pytest.fixture
+    def second_tab(self, waiter):
+        pivots = self.driver.find_elements_by_class_name("Windows.UI.Xaml.Controls.Primitives.PivotHeaderItem")
+        pivots[1].click()
+        tab = self.driver.find_element_by_id('SecondTab')
+        waiter.until(EC.visibility_of(tab))
+        return tab
+
+    @pytest.fixture
+    def alert(self, second_tab, waiter):
+        msg_btn = second_tab.find_element_by_id('MsgBtn')
+        waiter.until(EC.visibility_of(msg_btn))
+        msg_btn.click()
+        return waiter.until(EC.alert_is_present())
+
+    def test_get_alert_text(self, alert):
         """GET /session/:sessionId/alert_text Gets the text of the currently displayed alert"""
-        pytest.skip('TODO')
+        assert alert.text
 
-    def test_accept_alert(self):
+    def test_accept_alert(self, alert):
         """POST /session/:sessionId/accept_alert Accepts the currently displayed alert dialog."""
-        pytest.skip('TODO')
+        alert.accept()
+        textbox_value = self.driver.find_element_by_id('SecondTabTextBox').text
+        assert 'Accepted' == textbox_value
 
-    def test_dismiss_alert(self):
+    def test_dismiss_alert(self, alert):
         """POST /session/:sessionId/dismiss_alert Dismisses the currently displayed alert dialog."""
-        pytest.skip('TODO')
+        alert.dismiss()
+        textbox_value = self.driver.find_element_by_id('SecondTabTextBox').text
+        assert 'Dismissed' == textbox_value
 
 
 class TestExecuteScript(WuaTestCase):
@@ -265,13 +284,11 @@ class TestInputChains(WuaTestCase):
 
 
 class TestAutoSuggestBox(WuaTestCase):
-    def test_select_suggest(self):
+    def test_select_suggest(self, waiter):
         self.driver.execute_script("mobile: OnScreenKeyboard.Disable")
 
         pivots = self.driver.find_elements_by_class_name("Windows.UI.Xaml.Controls.Primitives.PivotHeaderItem")
         pivots[1].click()
-
-        waiter = WebDriverWait(self.driver, timeout=5)
 
         autosuggestion_box = waiter.until(EC.presence_of_element_located((By.ID, 'MySuggestBox')))
         autosuggestion_input = autosuggestion_box.find_element_by_class_name('Windows.UI.Xaml.Controls.TextBox')

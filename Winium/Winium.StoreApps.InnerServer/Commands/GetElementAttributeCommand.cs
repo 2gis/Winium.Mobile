@@ -10,7 +10,6 @@
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
-    using Winium.StoreApps.InnerServer.Commands.Helpers;
 
     #endregion
 
@@ -24,9 +23,9 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
-            var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
+            var element = this.Automator.ElementsRegistry.GetRegisteredElement(this.ElementId);
 
             JToken value;
             string attributeName = null;
@@ -73,7 +72,7 @@
                 return null;
             }
 
-            // Serialize basic types as palin strings
+            // Serialize basic types as plain strings
             if (IsTypeSerializedUsingToString(obj.GetType()))
             {
                 return obj.ToString();

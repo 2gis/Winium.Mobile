@@ -1,9 +1,11 @@
 # coding: utf-8
+import pytest
 from selenium.webdriver import Remote
+from selenium.webdriver.support.wait import WebDriverWait
 import config
 
 
-class WuaTestCase:
+class WuaTestCase(object):
     """
     If True, then new session is created when test class is being setup,
     i.e. one session is used for all test methods in class.
@@ -39,3 +41,7 @@ class WuaTestCase:
     def teardown_class(cls):
         if cls.__shared_session__:
             WuaTestCase._destroy_session(cls)
+
+    @pytest.fixture
+    def waiter(self):
+        return WebDriverWait(self.driver, timeout=5)

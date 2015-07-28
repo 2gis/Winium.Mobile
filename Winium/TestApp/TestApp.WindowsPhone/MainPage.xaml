@@ -32,16 +32,18 @@
         <PivotItem Header="second" AutomationProperties.AutomationId="SecondTab">
             <StackPanel Orientation="Vertical">
             <TextBox
+                x:Name="SecondTabTextBox"
                 Text ="Nice swipe!"
                 AutomationProperties.AutomationId="SecondTabTextBox" />
-
-
             <AutoSuggestBox x:Name="Suggestions"
                 AutomationProperties.AutomationId ="MySuggestBox"
                 ItemsSource="{Binding }"
                 TextChanged="SuggestionsTextChanged" 
                 SuggestionChosen="SuggestionsSuggestionChosen"></AutoSuggestBox>
                 <PasswordBox AutomationProperties.AutomationId="MyPasswordBox" PlaceholderText="Password"/>
+                <Button Content="Show Msg" 
+                        Click="ButtonClick"
+                        AutomationProperties.AutomationId="MsgBtn" />
             </StackPanel>
         </PivotItem>
     </Pivot>

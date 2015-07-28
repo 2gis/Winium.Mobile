@@ -3,7 +3,6 @@
     #region
 
     using Winium.StoreApps.Common;
-    using Winium.StoreApps.InnerServer.Commands.Helpers;
 
     #endregion
 
@@ -17,10 +16,10 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
-            var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
-            var displayed = element.IsUserVisible(this.Automator.VisualRoot);
+            var element = this.Automator.ElementsRegistry.GetRegisteredElement(this.ElementId);
+            var displayed = element.IsUserVisible();
 
             return this.JsonResponse(ResponseStatus.Success, displayed);
         }

@@ -40,7 +40,7 @@
 
         #region Public Methods and Operators
 
-        public override string DoImpl()
+        protected override string DoImpl()
         {
             string command;
             var prefix = string.Empty;
@@ -175,7 +175,7 @@
             var args = (JArray)this.Parameters["args"];
 
             var elementId = args[0]["ELEMENT"].ToString();
-            var element = this.Automator.WebElements.GetRegisteredElement(elementId);
+            var element = this.Automator.ElementsRegistry.GetRegisteredElement(elementId);
 
             var attributeName = args[1].ToString();
             var value = args[2];
@@ -188,7 +188,7 @@
         private object ExecuteAutomationScript(string command)
         {
             var elementId = ((JArray)this.Parameters["args"])[0]["ELEMENT"].ToString();
-            var element = this.Automator.WebElements.GetRegisteredElement(elementId);
+            var element = this.Automator.ElementsRegistry.GetRegisteredElement(elementId).Element;
 
             switch (command)
             {
