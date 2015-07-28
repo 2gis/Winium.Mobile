@@ -147,6 +147,14 @@ class TestGetCommands(WuaTestCase):
         location = self.driver.find_element_by_id('MyTextBox').location
         assert {'x': 240, 'y': 261} == location
 
+    def test_get_element_size(self):
+        size = self.driver.find_element_by_id('MyTextBox').size
+        assert size == {'height': 120, 'width': 360}
+
+    def test_get_element_rect(self):
+        rect = self.driver.find_element_by_id('MyTextBox').rect
+        assert rect == {'height': 120, 'width': 360, 'x': 60, 'y': 202}
+
     def test_get_orientation(self):
         """
         GET /session/:sessionId/orientation Get the current browser orientation.

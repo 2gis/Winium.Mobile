@@ -46,6 +46,8 @@
     <Compile Include="AcceptedRequest.cs" />
     <Compile Include="AutomationServer.cs" />
     <Compile Include="Automator.cs" />
+    <Compile Include="Commands\GetElementRectCommand.cs" />
+    <Compile Include="Commands\GetElementSizeCommand.cs" />
     <Compile Include="ElementsRegistry.cs" />
     <Compile Include="Commands\AlertCommand.cs" />
     <Compile Include="Commands\AlertTextCommand.cs" />
