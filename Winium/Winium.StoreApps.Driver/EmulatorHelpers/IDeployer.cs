@@ -20,7 +20,7 @@
 
         void Launch();
 
-        void ReciveFiles(Dictionary<string, string> files);
+        void ReceiveFiles(Dictionary<string, string> files);
 
         void SendFiles(Dictionary<string, string> files);
 

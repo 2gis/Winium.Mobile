@@ -131,9 +131,9 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
             this.RemoteApplication.Launch();
         }
 
-        public void ReciveFiles(Dictionary<string, string> files)
+        public void ReceiveFiles(Dictionary<string, string> files)
         {
-            throw new NotImplementedException("Deployer81.ReciveFiles");
+            throw new NotImplementedException("Deployer81.ReceiveFiles");
         }
 
         public void SendFiles(Dictionary<string, string> files)
