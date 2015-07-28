@@ -469,6 +469,12 @@ namespace Winium.StoreApps.Common
 
         #endregion
 
+        #region Winium
+
+        public static readonly string GetElementRect = "getElementRect";
+
+        #endregion
+
         #region Appium
 
         public static readonly string LaunchApp = "launchApp";

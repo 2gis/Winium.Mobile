@@ -29,6 +29,7 @@
         public UriDispatchTables(Uri prefix)
         {
             this.InitializeSeleniumCommandDictionary();
+            this.InitializeWiniumCommandDictionary();
             this.InitializeAppiumCommandDictionary();
             this.ConstructDispatcherTables(prefix);
         }
@@ -287,6 +288,11 @@
                 DriverCommand.TouchFlick, 
                 new CommandInfo("POST", "/session/{sessionId}/touch/flick"));
             this.commandDictionary.Add(DriverCommand.UploadFile, new CommandInfo("POST", "/session/{sessionId}/file"));
+        }
+
+        private void InitializeWiniumCommandDictionary()
+        {
+            this.commandDictionary.Add(DriverCommand.GetElementRect, new CommandInfo("GET", "/session/{sessionId}/element/{id}/rect"));
         }
 
         private void InitializeAppiumCommandDictionary()

@@ -121,6 +121,14 @@
             {
                 commandToExecute = new LocationInViewCommand { ElementId = elementId };
             }
+            else if (command.Equals(DriverCommand.GetElementSize))
+            {
+                commandToExecute = new GetElementSizeCommand { ElementId = elementId };
+            }
+            else if (command.Equals(DriverCommand.GetElementRect))
+            {
+                commandToExecute = new GetElementRectCommand { ElementId = elementId };
+            }
             else if (command.Equals(DriverCommand.GetPageSource))
             {
                 commandToExecute = new PageSourceCommand { ElementId = elementId };
