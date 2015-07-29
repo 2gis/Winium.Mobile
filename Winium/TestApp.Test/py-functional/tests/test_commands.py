@@ -1,6 +1,6 @@
 # coding: utf-8
 import pytest
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -196,6 +196,11 @@ class TestAlert(WuaTestCase):
         alert.accept()
         textbox_value = self.driver.find_element_by_id('SecondTabTextBox').text
         assert 'Accepted' == textbox_value
+
+    def test_no_alert(self):
+        with pytest.raises(NoAlertPresentException):
+            alert = self.driver.switch_to.alert
+            print(alert.text)
 
     def test_dismiss_alert(self, alert):
         """POST /session/:sessionId/dismiss_alert Dismisses the currently displayed alert dialog."""
