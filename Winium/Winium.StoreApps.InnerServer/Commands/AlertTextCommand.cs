@@ -20,7 +20,7 @@
         protected override string DoImpl()
         {
             var popup = WiniumVirtualRoot.Current.OpenPopups.FirstOrDefault();
-            if (popup == null || !(popup.Element is ContentDialog))
+            if (popup == null || !popup.ClassName.EndsWith(".ContentDialog"))
             {
                 throw new AutomationException("No alert is displayed", ResponseStatus.NoAlertOpenError);
             }
