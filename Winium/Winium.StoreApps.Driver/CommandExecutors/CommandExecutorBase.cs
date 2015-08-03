@@ -38,13 +38,13 @@
 
             try
             {
-                var session = this.ExecutedCommand.SessionId == null ? null : this.ExecutedCommand.SessionId.ToString();
+                var session = this.ExecutedCommand.SessionId;
                 this.Automator = Automator.InstanceForSession(session);
                 return CommandResponse.Create(HttpStatusCode.OK, this.DoImpl());
             }
-            catch (AutomationException ex)
+            catch (AutomationException exception)
             {
-                return CommandResponse.Create(HttpStatusCode.OK, this.JsonResponse(ex.Status, ex.Message));
+                return CommandResponse.Create(HttpStatusCode.OK, this.JsonResponse(exception.Status, exception));
             }
             catch (InnerDriverRequestException ex)
             {
@@ -55,13 +55,13 @@
             {
                 return CommandResponse.Create(
                     HttpStatusCode.NotImplemented, 
-                    this.JsonResponse(ResponseStatus.UnknownCommand, exception.Message));
+                    this.JsonResponse(ResponseStatus.UnknownCommand, exception));
             }
             catch (Exception exception)
             {
                 return CommandResponse.Create(
                     HttpStatusCode.OK, 
-                    this.JsonResponse(ResponseStatus.UnknownError, "Unknown error: " + exception.Message));
+                    this.JsonResponse(ResponseStatus.UnknownError, exception));
             }
         }
 
