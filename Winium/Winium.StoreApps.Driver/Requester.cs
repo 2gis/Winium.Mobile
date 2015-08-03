@@ -21,13 +21,13 @@
 
         private readonly string ip;
 
-        private readonly int port;
+        private readonly string port;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public Requester(string ip, int port)
+        public Requester(string ip, string port)
         {
             this.ip = ip;
             this.port = port;

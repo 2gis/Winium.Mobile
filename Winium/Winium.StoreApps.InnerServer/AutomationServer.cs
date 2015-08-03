@@ -3,12 +3,14 @@
     #region
 
     using System;
-    using System.Globalization;
     using System.Net;
     using System.Threading.Tasks;
 
     using Windows.Networking.Sockets;
+    using Windows.Storage;
     using Windows.Storage.Streams;
+
+    using Newtonsoft.Json;
 
     using Winium.StoreApps.Common;
 
@@ -30,8 +32,6 @@
 
         private StreamSocketListener listener;
 
-        private int listeningPort;
-
         #endregion
 
         #region Public Methods and Operators
@@ -45,23 +45,9 @@
         public void InitializeAndStart()
         {
             this.Initialize();
-            this.Start(9998);
+            this.Start();
         }
-
-        /// <summary>
-        /// Initialize and starts <see cref="AutomationServer"/> on default port.
-        /// </summary>
-        /// <remarks>
-        /// Use it in conjuction with <see cref="Instance"/> to simplify inclusion of server in tested app.
-        /// </remarks>
-        /// <param name="port">
-        /// </param>
-        public void InitializeAndStart(int port)
-        {
-            this.Initialize();
-            this.Start(port);
-        }
-
+        
         /// <summary>
         /// Initialize <see cref="AutomationServer"/>.
         /// This method must be called on UI thread.
@@ -74,8 +60,7 @@
         /// <summary>
         /// Start <see cref="AutomationServer"/> on specified port.
         /// </summary>
-        /// <param name="port"></param>
-        public async void Start(int port)
+        public async void Start()
         {
             if (this.automator == null)
             {
@@ -87,13 +72,12 @@
                 return;
             }
 
-            this.listeningPort = port;
-
-            this.isServerActive = true;
             this.listener = new StreamSocketListener();
             this.listener.Control.QualityOfService = SocketQualityOfService.Normal;
             this.listener.ConnectionReceived += this.ListenerConnectionReceived;
-            await this.listener.BindServiceNameAsync(this.listeningPort.ToString(CultureInfo.InvariantCulture));
+            await this.listener.BindServiceNameAsync(string.Empty);
+            await this.WriteConnectionData();
+            this.isServerActive = true;
         }
 
         /// <summary>
@@ -101,16 +85,26 @@
         /// </summary>
         public void Stop()
         {
-            if (this.isServerActive)
+            if (!this.isServerActive)
             {
-                this.listener.Dispose();
-                this.isServerActive = false;
+                return;
             }
+
+            this.listener.Dispose();
+            this.isServerActive = false;
         }
 
         #endregion
 
         #region Methods
+
+        private async Task WriteConnectionData()
+        {
+            var file = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(ConnectionInformation.FileName, CreationCollisionOption.ReplaceExisting);
+
+            var information = new ConnectionInformation { RemotePort = this.listener.Information.LocalPort };
+            await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(information));
+        }
 
         private async void HandleRequest(StreamSocket socket)
         {
