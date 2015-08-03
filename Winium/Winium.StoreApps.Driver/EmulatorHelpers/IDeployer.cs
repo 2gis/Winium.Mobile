@@ -20,7 +20,7 @@
 
         void Launch();
 
-        void ReceiveFiles(Dictionary<string, string> files);
+        void ReceiveFile(string isoStoreRoot, string sourceDeviceFilePath, string targetDesktopFilePath);
 
         void SendFiles(Dictionary<string, string> files);
 

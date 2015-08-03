@@ -21,7 +21,6 @@
             this.LaunchDelay = 0;
             this.LaunchTimeout = 10000;
             this.DebugConnectToRunningApp = false;
-            this.InnerPort = 9998;
             this.TakesScreenshot = true;
         }
 
@@ -49,9 +48,6 @@
 
         [JsonProperty("files")]
         public Dictionary<string, string> Files { get; set; }
-
-        [JsonProperty("innerPort")]
-        public int InnerPort { get; set; }
 
         [JsonProperty("launchDelay")]
         public int LaunchDelay { get; set; }

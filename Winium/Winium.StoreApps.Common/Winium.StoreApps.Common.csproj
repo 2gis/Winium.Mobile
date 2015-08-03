@@ -39,6 +39,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="CommandInfo.cs" />
     <Compile Include="CommandResponse.cs" />
+    <Compile Include="ConnectionInformation.cs" />
     <Compile Include="DriverCommand.cs" />
     <Compile Include="Exceptions\AutomationException.cs" />
     <Compile Include="Exceptions\InnerDriverRequestException.cs" />

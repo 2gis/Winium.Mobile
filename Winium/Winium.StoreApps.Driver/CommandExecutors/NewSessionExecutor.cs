@@ -4,6 +4,7 @@
 
     using System;
     using System.Diagnostics;
+    using System.IO;
     using System.Threading;
 
     using Microsoft.Xde.Wmi;
@@ -11,6 +12,7 @@
     using Newtonsoft.Json;
 
     using Winium.StoreApps.Common;
+    using Winium.StoreApps.Common.Exceptions;
     using Winium.StoreApps.Driver.Automator;
     using Winium.StoreApps.Driver.EmulatorHelpers;
 
@@ -30,7 +32,10 @@
 
             var innerIp = this.InitializeApplication(this.Automator.ActualCapabilities.DebugConnectToRunningApp);
 
-            this.Automator.CommandForwarder = new Requester(innerIp, this.Automator.ActualCapabilities.InnerPort);
+            var connectionInformation = this.GetConnectionInformation();
+            Logger.Info("Received connection information from device {0}", connectionInformation);
+
+            this.Automator.CommandForwarder = new Requester(innerIp, connectionInformation.RemotePort);
 
             long timeout = this.Automator.ActualCapabilities.LaunchTimeout;
 
@@ -62,6 +67,17 @@
             return this.JsonResponse(ResponseStatus.Success, this.Automator.ActualCapabilities);
         }
 
+        private ConnectionInformation GetConnectionInformation()
+        {
+            var filePath = Path.GetTempFileName();
+            this.Automator.Deployer.ReceiveFile("Temp", ConnectionInformation.FileName, filePath);
+            using (var file = File.OpenText(filePath))
+            {
+                var serializer = new JsonSerializer();
+                return (ConnectionInformation)serializer.Deserialize(file, typeof(ConnectionInformation));
+            }
+        }
+
         private EmulatorController CreateEmulatorController(bool withFallback)
         {
             try
@@ -84,6 +100,12 @@
         private string InitializeApplication(bool debugDoNotDeploy = false)
         {
             var appPath = this.Automator.ActualCapabilities.App;
+
+            if (string.IsNullOrWhiteSpace(appPath))
+            {
+                throw new AutomationException("app capability is not set.", ResponseStatus.SessionNotCreatedException);
+            }
+
             this.Automator.Deployer = new Deployer81(this.Automator.ActualCapabilities.DeviceName, appPath);
             if (!debugDoNotDeploy)
             {
