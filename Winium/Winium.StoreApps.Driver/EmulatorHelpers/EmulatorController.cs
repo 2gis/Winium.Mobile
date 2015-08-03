@@ -167,7 +167,7 @@
 
         public string TakeScreenshot()
         {
-            var size = this.emulatorVm.GetCurrentResolution();
+            var size = this.virtualScreenSize;
             var screen = this.emulatorVm.GetScreenShot(0, 0, size.Width, size.Height);
 
             var base64 = ImageToBase64String(screen, ImageFormat.Png);
