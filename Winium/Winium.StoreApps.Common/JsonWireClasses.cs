@@ -38,7 +38,7 @@ namespace Winium.StoreApps.Common
             this.SessionId = sessionId;
             this.Status = responseCode;
 
-            this.Value = responseCode == ResponseStatus.Success ? value : this.PrepareErrorResponse(value);
+            this.Value = (responseCode == ResponseStatus.Success) ? value : this.PrepareErrorResponse(value);
         }
 
         private object PrepareErrorResponse(object value)

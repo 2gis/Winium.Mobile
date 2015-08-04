@@ -46,10 +46,12 @@
             {
                 return CommandResponse.Create(HttpStatusCode.OK, this.JsonResponse(exception.Status, exception));
             }
-            catch (InnerDriverRequestException ex)
+            catch (InnerDriverRequestException exception)
             {
                 // Bad status returned by Inner Driver when trying to forward command
-                return CommandResponse.Create(ex.StatusCode, ex.Message);
+                return CommandResponse.Create(
+                    exception.StatusCode,
+                    this.JsonResponse(ResponseStatus.UnknownError, exception));
             }
             catch (NotImplementedException exception)
             {
