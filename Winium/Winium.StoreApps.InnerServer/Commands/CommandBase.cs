@@ -43,11 +43,11 @@
             }
             catch (AutomationException exception)
             {
-                response = this.JsonResponse(exception.Status, exception.Message);
+                response = this.JsonResponse(exception.Status, exception);
             }
             catch (Exception exception)
             {
-                response = this.JsonResponse(ResponseStatus.UnknownError, "Unknown error: " + exception.Message);
+                response = this.JsonResponse(ResponseStatus.UnknownError, exception);
             }
 
             return response;

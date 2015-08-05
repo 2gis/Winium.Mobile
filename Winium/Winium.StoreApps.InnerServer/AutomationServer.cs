@@ -121,9 +121,13 @@
                     HttpStatusCode.OK, 
                     this.automator.ProcessCommand(acceptedRequest.Content));
             }
-            catch (NotImplementedException ex)
+            catch (NotImplementedException exception)
             {
-                response = HttpResponseHelper.ResponseString(HttpStatusCode.NotImplemented, ex.Message);
+                response = HttpResponseHelper.ResponseString(HttpStatusCode.NotImplemented, exception.Message);
+            }
+            catch (Exception exception)
+            {
+                response = HttpResponseHelper.ResponseString(HttpStatusCode.InternalServerError, exception.Message);
             }
 
             writer.WriteString(response);
