@@ -12,7 +12,6 @@
 
     using Microsoft.Xde.Common;
     using Microsoft.Xde.Interface;
-    using Microsoft.Xde.Wmi;
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
@@ -25,7 +24,7 @@
 
         private readonly IXdeAutomation client;
 
-        private readonly IXdeVirtualMachine emulatorVm;
+        private readonly VirtualMachine emulatorVm;
 
         private Point cursor;
 
@@ -37,9 +36,7 @@
 
         public EmulatorController(string emulatorName)
         {
-            this.emulatorVm = GetEmulatorVm(emulatorName);
-            this.client = AutomationClient.CreateAutomationClient(this.emulatorVm.Name);
-            this.cursor = new Point(0, 0);
+            this.emulatorVm = EmulatorFactory.Instance.GetVm(emulatorName);
 
             if (this.emulatorVm == null)
             {
@@ -47,6 +44,9 @@
                     string.Format("Could not get running XDE virtual machine {0}", emulatorName));
             }
 
+            this.client = AutomationClient.CreateAutomationClient(this.emulatorVm.Name);
+
+            this.cursor = new Point(0, 0);
             this.PhoneScreenSize = this.emulatorVm.GetCurrentResolution();
         }
 
@@ -201,23 +201,6 @@
         #endregion
 
         #region Methods
-
-        private static IXdeVirtualMachine GetEmulatorVm(string emulatorName)
-        {
-            var factory = new XdeWmiFactory();
-            var vm = factory.GetVirtualMachine(emulatorName + "." + Environment.UserName);
-            if (vm == null)
-            {
-                throw new XdeVirtualMachineException("Emulator not found.");
-            }
-
-            if (vm.EnabledState != VirtualMachineEnabledState.Enabled)
-            {
-                throw new XdeVirtualMachineException("Emulator is not running.");
-            }
-
-            return vm;
-        }
 
         private static string ImageToBase64String(Image image, ImageFormat imageFormat)
         {

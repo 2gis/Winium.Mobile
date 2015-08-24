@@ -7,6 +7,9 @@
 - Add `--version` option to a driver CLI. Fix exit codes
 - Add `SetOrientation` command (Note that orientation is preserved between sessions)
 - Fix `GetOrientation` command
+- Add Emulator VMs caching (i.e. speed up session creation when same emulator is requested)
+- Fix Emulator VMs disposing on Driver exit (note that VM will not be closed)
+- Fix Driver failing to create a new session if user name is not lower case (bug introduced in 778ca88)
 
 
 ## v1.2.0

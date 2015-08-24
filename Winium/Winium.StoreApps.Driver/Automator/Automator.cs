@@ -32,8 +32,6 @@
 
         #region Fields
 
-        private EmulatorController emulatorController;
-
         #endregion
 
         #region Constructors and Destructors
@@ -53,18 +51,7 @@
 
         public IDeployer Deployer { get; set; }
 
-        public EmulatorController EmulatorController
-        {
-            get
-            {
-                return this.emulatorController;
-            }
-
-            set
-            {
-                this.emulatorController = value;
-            }
-        }
+        public EmulatorController EmulatorController { get; set; }
 
         public string InnerIp { get; set; }
 
