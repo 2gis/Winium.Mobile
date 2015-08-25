@@ -6,11 +6,11 @@
     using System.Net;
     using System.Threading.Tasks;
 
+    using Newtonsoft.Json;
+
     using Windows.Networking.Sockets;
     using Windows.Storage;
     using Windows.Storage.Streams;
-
-    using Newtonsoft.Json;
 
     using Winium.StoreApps.Common;
 
@@ -34,7 +34,28 @@
 
         #endregion
 
+        #region Public Properties
+
+        public string Port
+        {
+            get
+            {
+                return this.listener.Information.LocalPort;
+            }
+        }
+
+        #endregion
+
         #region Public Methods and Operators
+
+        /// <summary>
+        /// Initialize <see cref="AutomationServer"/>.
+        /// This method must be called on UI thread.
+        /// </summary>
+        public void Initialize()
+        {
+            this.automator = new Automator();
+        }
 
         /// <summary>
         /// Initialize and starts <see cref="AutomationServer"/> with specified parameters.
@@ -44,17 +65,9 @@
         /// </remarks>
         public void InitializeAndStart()
         {
+            // TODO Consider adding ability to specify InnerServer port and turn off dynamic port
             this.Initialize();
             this.Start();
-        }
-        
-        /// <summary>
-        /// Initialize <see cref="AutomationServer"/>.
-        /// This method must be called on UI thread.
-        /// </summary>
-        public void Initialize()
-        {
-            this.automator = new Automator();
         }
 
         /// <summary>
@@ -97,14 +110,6 @@
         #endregion
 
         #region Methods
-
-        private async Task WriteConnectionData()
-        {
-            var file = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(ConnectionInformation.FileName, CreationCollisionOption.ReplaceExisting);
-
-            var information = new ConnectionInformation { RemotePort = this.listener.Information.LocalPort };
-            await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(information));
-        }
 
         private async void HandleRequest(StreamSocket socket)
         {
@@ -151,6 +156,18 @@
             StreamSocketListenerConnectionReceivedEventArgs args)
         {
             await Task.Run(() => this.HandleRequest(args.Socket));
+        }
+
+        private async Task WriteConnectionData()
+        {
+            var file =
+                await
+                ApplicationData.Current.TemporaryFolder.CreateFileAsync(
+                    ConnectionInformation.FileName, 
+                    CreationCollisionOption.ReplaceExisting);
+
+            var information = new ConnectionInformation { RemotePort = this.listener.Information.LocalPort };
+            await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(information));
         }
 
         #endregion
