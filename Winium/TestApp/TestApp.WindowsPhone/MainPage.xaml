@@ -7,7 +7,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="MainPageOnLoaded">
-    <Pivot Title="MY APPLICATION" AutomationProperties.AutomationId="MainPivot">
+    <Pivot Title="MY APPLICATION" AutomationProperties.AutomationId="MainPivot" x:Name="Pivot">
 
         <!--Pivot item one-->
         <PivotItem Header="first" AutomationProperties.AutomationId="FirstTab">
