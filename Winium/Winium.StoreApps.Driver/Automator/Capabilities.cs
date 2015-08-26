@@ -15,6 +15,7 @@
 
         internal Capabilities()
         {
+            this.AutoLaunch = true;
             this.App = string.Empty;
             this.Files = new Dictionary<string, string>();
             this.DeviceName = string.Empty;
@@ -36,6 +37,9 @@
                 return "WindowsPhone";
             }
         }
+
+        [JsonProperty("autoLaunch")]
+        public bool AutoLaunch { get; set; }
 
         [JsonProperty("app")]
         public string App { get; set; }

@@ -1,6 +1,6 @@
 # coding: utf-8
 import pytest
-from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException, WebDriverException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -294,6 +294,17 @@ class TestInputChains(WuaTestCase):
     def test_touch_actions(self):
         # TODO TouchSingleTap, TouchScroll, TouchFlick
         pytest.skip('TODO')
+
+
+class TestAppLifeCycle(WuaTestCase):
+    def test_app_launch(self):
+        self.driver.execute_script('mobile: App.Open')
+        assert 'March' == self.driver.find_element_by_name('March').text
+        self.driver.execute_script('mobile: App.Close')
+        with pytest.raises(WebDriverException):
+            self.driver.find_element_by_name('March')
+        self.driver.execute_script('mobile: App.Open')
+        assert 'March' == self.driver.find_element_by_name('March').text
 
 
 class TestAutoSuggestBox(WuaTestCase):

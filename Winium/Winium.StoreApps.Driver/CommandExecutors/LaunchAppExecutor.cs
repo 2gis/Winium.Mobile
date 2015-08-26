@@ -9,6 +9,7 @@
         public static void LaunchApp(Automator automator)
         {
             automator.Deployer.Launch();
+            automator.ConnectToApp();
         }
 
         #endregion

@@ -50,7 +50,32 @@
             throw new InnerDriverRequestException(response.Value, response.Key);
         }
 
-        public KeyValuePair<HttpStatusCode, string> SendRequest(string requestContent, bool verbose, int timeout)
+        #endregion
+
+        #region Methods
+
+        private static HttpWebRequest CreateWebRequest(string uri, string content, int timeout)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(uri);
+            request.ContentType = "application/json";
+            request.Method = "POST";
+
+            if (timeout != 0)
+            {
+                request.Timeout = timeout;
+            }
+
+            if (!string.IsNullOrEmpty(content))
+            {
+                var writer = new StreamWriter(request.GetRequestStream());
+                writer.Write(content);
+                writer.Close();
+            }
+
+            return request;
+        }
+
+        private KeyValuePair<HttpStatusCode, string> SendRequest(string requestContent, bool verbose, int timeout)
         {
             var result = string.Empty;
             StreamReader reader = null;
@@ -58,20 +83,15 @@
             var status = HttpStatusCode.OK;
             try
             {
-                // create the request
+                // TODO Refactor error handling
                 var uri = string.Format(CultureInfo.InvariantCulture, "http://{0}:{1}", this.ip, this.port);
-                var request = CreateWebRequest(uri, requestContent);
-                if (timeout != 0)
-                {
-                    request.Timeout = timeout;
-                }
+                var request = CreateWebRequest(uri, requestContent, timeout);
 
                 if (verbose)
                 {
                     Logger.Debug("Sending request to inner driver: {0}", uri);
                 }
 
-                // send the request and get the response
                 try
                 {
                     response = request.GetResponse() as HttpWebResponse;
@@ -101,6 +121,7 @@
                 {
                     // No need to log exceptions raised when sending service commands like ping.
                     Logger.Error("Error occurred while trying to send request to inner driver: {0}", ex);
+                    throw;
                 }
             }
             finally
@@ -117,29 +138,6 @@
             }
 
             return new KeyValuePair<HttpStatusCode, string>(status, result);
-        }
-
-        #endregion
-
-        #region Methods
-
-        private static HttpWebRequest CreateWebRequest(string uri, string content)
-        {
-            // create request
-            var request = (HttpWebRequest)WebRequest.Create(uri);
-            request.ContentType = "application/json";
-            request.Method = "POST";
-            request.KeepAlive = false;
-
-            // write request body
-            if (!string.IsNullOrEmpty(content))
-            {
-                var writer = new StreamWriter(request.GetRequestStream());
-                writer.Write(content);
-                writer.Close();
-            }
-
-            return request;
         }
 
         #endregion
