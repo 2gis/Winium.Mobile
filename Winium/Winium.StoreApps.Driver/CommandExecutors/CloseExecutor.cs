@@ -9,6 +9,7 @@
             if (!this.Automator.ActualCapabilities.DebugConnectToRunningApp)
             {
                 // TODO close should only close app, not uninstall
+                this.Automator.EmulatorController.Disconnect();
                 this.Automator.Deployer.Uninstall();
             }
 

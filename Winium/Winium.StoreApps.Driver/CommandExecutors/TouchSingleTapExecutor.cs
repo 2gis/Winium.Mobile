@@ -13,8 +13,6 @@
 
         protected override string DoImpl()
         {
-            this.Automator.UpdatedOrientationForEmulatorController();
-
             var elementId = Automator.GetValue<string>(this.ExecutedCommand.Parameters, "element");
             if (elementId == null)
             {

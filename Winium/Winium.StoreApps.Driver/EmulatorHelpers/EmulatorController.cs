@@ -11,6 +11,7 @@
     using System.Windows.Forms;
 
     using Microsoft.Xde.Common;
+    using Microsoft.Xde.Interface;
     using Microsoft.Xde.Wmi;
 
     using Winium.StoreApps.Common;
@@ -21,6 +22,8 @@
     internal class EmulatorController
     {
         #region Fields
+
+        private readonly IXdeAutomation client;
 
         private readonly IXdeVirtualMachine emulatorVm;
 
@@ -35,8 +38,8 @@
         public EmulatorController(string emulatorName)
         {
             this.emulatorVm = GetEmulatorVm(emulatorName);
+            this.client = AutomationClient.CreateAutomationClient(this.emulatorVm.Name);
             this.cursor = new Point(0, 0);
-            this.PhoneOrientationToUse = PhoneOrientation.Landscape;
 
             if (this.emulatorVm == null)
             {
@@ -51,22 +54,11 @@
 
         #region Enums
 
-        [Flags]
         public enum PhoneOrientation
         {
-            None = 0, 
-
             Portrait = 1, 
 
             Landscape = 2, 
-
-            PortraitUp = 5, 
-
-            PortraitDown = 9, 
-
-            LandscapeLeft = 18, 
-
-            LandscapeRight = 34, 
         }
 
         #endregion
@@ -77,13 +69,30 @@
         /// Current phone orientation to be used when translating phone screen coordinates into virtual machine screen coordinates.
         /// Should be set before using PhoneScreenSize or any mouse moving methods
         /// </summary>
-        public PhoneOrientation PhoneOrientationToUse { get; set; }
+        public PhoneOrientation Orientation
+        {
+            get
+            {
+                return this.client.DisplayOrientation == DisplayOrientation.Portrait
+                           ? PhoneOrientation.Portrait
+                           : PhoneOrientation.Landscape;
+            }
+
+            set
+            {
+                this.client.DisplayOrientation = (value == PhoneOrientation.Portrait)
+                                                     ? DisplayOrientation.Portrait
+                                                     : DisplayOrientation.LandscapeLeft;
+                Thread.Sleep(1500);
+            }
+        }
 
         public Size PhoneScreenSize
         {
             get
             {
-                return (this.PhoneOrientationToUse & PhoneOrientation.Landscape) == PhoneOrientation.Landscape
+                var landscape = this.Orientation.HasFlag(PhoneOrientation.Landscape);
+                return landscape
                            ? new Size(this.virtualScreenSize.Height, this.virtualScreenSize.Width)
                            : this.virtualScreenSize;
             }
@@ -94,9 +103,23 @@
             }
         }
 
+        public string VmName
+        {
+            get
+            {
+                return this.emulatorVm.Name;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
+
+        public void Disconnect()
+        {
+            this.client.Dispose();
+            this.emulatorVm.Dispose();
+        }
 
         public string GetIpAddress()
         {
@@ -122,6 +145,7 @@
             }
 
             this.LeftButtonDown();
+            Thread.Sleep(250);
             this.LeftButtonUp();
         }
 
@@ -157,12 +181,6 @@
 
             this.MoveCursorTo(array.Last());
             this.LeftButtonUp();
-        }
-
-        public bool PhonePointVisibleOnScreen(Point phonePoint)
-        {
-            var phoneScreen = new Rectangle(new Point(0, 0), this.PhoneScreenSize);
-            return phoneScreen.Contains(phonePoint);
         }
 
         public string TakeScreenshot()
@@ -223,19 +241,14 @@
         private Point TranslatePhoneToVirtualmachinePoint(Point location)
         {
             var translatedPoint = location;
-            switch (this.PhoneOrientationToUse)
+            switch (this.client.DisplayOrientation)
             {
-                case PhoneOrientation.PortraitDown:
-                    translatedPoint.X = this.virtualScreenSize.Width - location.X;
-                    translatedPoint.Y = this.virtualScreenSize.Height - location.Y;
-                    break;
-
-                case PhoneOrientation.LandscapeLeft:
+                case DisplayOrientation.LandscapeLeft:
                     translatedPoint.X = this.virtualScreenSize.Width - location.Y;
                     translatedPoint.Y = location.X;
                     break;
 
-                case PhoneOrientation.LandscapeRight:
+                case DisplayOrientation.LandscapeRight:
                     translatedPoint.X = location.Y;
                     translatedPoint.Y = this.virtualScreenSize.Height - location.X;
                     break;

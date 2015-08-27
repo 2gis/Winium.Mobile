@@ -2,11 +2,8 @@
 {
     #region
 
-    using System;
-
-    using Newtonsoft.Json;
-
     using Winium.StoreApps.Common;
+    using Winium.StoreApps.Driver.EmulatorHelpers;
 
     #endregion
 
@@ -16,18 +13,13 @@
 
         protected override string DoImpl()
         {
-            var orientation = string.Empty;
-            var responseBody = this.Automator.CommandForwarder.ForwardCommand(this.ExecutedCommand);
-            var deserializeObject = JsonConvert.DeserializeObject<JsonResponse>(responseBody);
-            if (deserializeObject.Status == ResponseStatus.Success)
-            {
-                var value = deserializeObject.Value.ToString();
-                orientation = value.StartsWith("landscape", StringComparison.OrdinalIgnoreCase)
-                                  ? "LANDSCAPE"
-                                  : "PORTRAIT";
-            }
+            var orientation = this.Automator.EmulatorController.Orientation;
 
-            return this.JsonResponse(ResponseStatus.Success, orientation);
+            var orientationName = (orientation == EmulatorController.PhoneOrientation.Portrait)
+                                      ? "PORTRAIT"
+                                      : "LANDSCAPE";
+
+            return this.JsonResponse(ResponseStatus.Success, orientationName);
         }
 
         #endregion
