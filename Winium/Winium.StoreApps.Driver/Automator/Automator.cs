@@ -290,7 +290,7 @@
 
             this.CommandForwarder = new Requester(this.InnerIp, connectionInformation.RemotePort);
             var pingCommand = new Command("ping");
-            var responseBody = this.CommandForwarder.ForwardCommand(pingCommand, false, 500);
+            var responseBody = this.CommandForwarder.ForwardCommand(pingCommand, false, 1500);
             if (responseBody.StartsWith("<pong>", StringComparison.Ordinal))
             {
                 Logger.Info("Received connection information from device {0}.", connectionInformation);
