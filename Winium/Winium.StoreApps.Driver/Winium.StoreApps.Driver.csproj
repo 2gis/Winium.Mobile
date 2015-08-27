@@ -68,6 +68,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft XDE\8.1\Microsoft.Xde.Common.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Xde.Interface, Version=8.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft XDE\8.1\Microsoft.Xde.Interface.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xde.Wmi">
       <HintPath>C:\Program Files (x86)\Microsoft XDE\8.1\Microsoft.Xde.Wmi.dll</HintPath>
     </Reference>
@@ -93,6 +97,7 @@
     <Compile Include="Automator\Capabilities.cs" />
     <Compile Include="CommandExecutors\CloseAppExecutor.cs" />
     <Compile Include="CommandExecutors\LaunchAppExecutor.cs" />
+    <Compile Include="CommandExecutors\SetOrientationExecutor.cs" />
     <Compile Include="CommandExecutors\SubmitElementExecutor.cs" />
     <Compile Include="CommandExecutorDispatchTable.cs" />
     <Compile Include="CommandExecutors\ClickElementExecutor.cs" />

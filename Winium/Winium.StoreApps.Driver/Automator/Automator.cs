@@ -211,27 +211,6 @@
             return new Point(x, y);
         }
 
-        /// <summary>
-        /// This method should be called before any EmulatorController methods that move cursor or use screen size.
-        /// Orientation value is used by EmulatorController to translate phone screen coordinates into virtual machine coordinates
-        /// </summary>
-        public void UpdatedOrientationForEmulatorController()
-        {
-            var command = new Command(DriverCommand.GetOrientation);
-            var responseBody = this.CommandForwarder.ForwardCommand(command);
-            var deserializeObject = JsonConvert.DeserializeObject<JsonResponse>(responseBody);
-            if (deserializeObject.Status != ResponseStatus.Success)
-            {
-                return;
-            }
-
-            EmulatorController.PhoneOrientation orientation;
-            if (Enum.TryParse(deserializeObject.Value.ToString(), true, out orientation))
-            {
-                this.emulatorController.PhoneOrientationToUse = orientation;
-            }
-        }
-
         #endregion
 
         #region Methods

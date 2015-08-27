@@ -20,7 +20,6 @@
                 return false;
             }
 
-            automator.UpdatedOrientationForEmulatorController();
             automator.EmulatorController.LeftButtonClick(location.Value);
 
             return true;

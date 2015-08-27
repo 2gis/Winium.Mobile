@@ -16,8 +16,6 @@
 
         protected override string DoImpl()
         {
-            this.Automator.UpdatedOrientationForEmulatorController();
-
             var elementId = Automator.GetValue<string>(this.ExecutedCommand.Parameters, "element");
             Point coordinates;
             if (elementId != null)
@@ -31,7 +29,6 @@
                 coordinates = new Point(xOffset, yOffset);
             }
 
-            this.Automator.UpdatedOrientationForEmulatorController();
             this.Automator.EmulatorController.MoveCursorTo(coordinates);
 
             return this.JsonResponse();

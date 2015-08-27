@@ -5,6 +5,8 @@
 - Add dynamic port assigment for InnerServer #39 
 - Add `autoLaunch` capability: whether to launch the app automatically. Default `true`
 - Add `--version` option to a driver CLI. Fix exit codes
+- Add `SetOrientation` command (Note that orientation is preserved between sessions)
+- Fix `GetOrientation` command
 
 
 ## v1.2.0
