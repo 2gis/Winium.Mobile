@@ -41,6 +41,15 @@
 
         #endregion
 
+        #region Public Methods and Operators
+
+        public override string ToString()
+        {
+            return string.Format("Version: {0}, Revision: {1}", this.Version, this.Revision);
+        }
+
+        #endregion
+
         #region Methods
 
         private static string ReadGitRevision()
