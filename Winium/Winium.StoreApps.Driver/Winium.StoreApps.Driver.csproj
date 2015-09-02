@@ -126,14 +126,17 @@
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="EmulatorHelpers\Deployer81.cs" />
     <Compile Include="EmulatorHelpers\EmulatorController.cs" />
+    <Compile Include="EmulatorHelpers\EmulatorFactory.cs" />
     <Compile Include="EmulatorHelpers\FlickGesture.cs" />
     <Compile Include="EmulatorHelpers\IDeployer.cs" />
     <Compile Include="EmulatorHelpers\IGesture.cs" />
     <Compile Include="EmulatorHelpers\ScrollGesture.cs" />
     <Compile Include="EmulatorHelpers\TapGesture.cs" />
+    <Compile Include="EmulatorHelpers\VirtualMachine.cs" />
     <Compile Include="HttpRequest.cs" />
     <Compile Include="Listener.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="ExitHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requester.cs" />
