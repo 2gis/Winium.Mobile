@@ -1,6 +1,9 @@
 # Change Log
 
-## Unreleased
+<!--## Unreleased-->
+
+
+## v1.3.0
 
 - Add dynamic port assigment for InnerServer #39 
 - Add `autoLaunch` capability: whether to launch the app automatically. Default `true`
