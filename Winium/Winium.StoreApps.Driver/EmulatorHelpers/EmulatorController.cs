@@ -145,7 +145,6 @@
             }
 
             this.LeftButtonDown();
-            Thread.Sleep(250);
             this.LeftButtonUp();
         }
 
