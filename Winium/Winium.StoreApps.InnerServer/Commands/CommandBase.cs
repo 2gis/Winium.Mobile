@@ -93,7 +93,7 @@
 
             if (exception != null)
             {
-                throw exception;
+                throw new Exception("An exception occured while execuiting a command. ", exception);
             }
         }
 
