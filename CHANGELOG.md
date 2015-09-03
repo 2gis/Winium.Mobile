@@ -2,6 +2,9 @@
 
 <!--## Unreleased-->
 
+## v1.3.1
+- Fix click command for custom controls
+
 
 ## v1.3.0
 
