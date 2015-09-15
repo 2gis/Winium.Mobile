@@ -63,6 +63,7 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 	element.click()
 	assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
 	```
+	> Make sure to set `deviceName` capability to `Emulator` if you are using the driver on a system where Visula Studio 2015 or Winodws 10 SDK is installed.
 
 4. Start `Winium.StoreApps.Driver.exe` ([download release from github](https://github.com/2gis/Winium.StoreApps/releases) or build it yourself)
 
