@@ -46,8 +46,7 @@
 
             while (true)
             {
-                if (currentElement.Visibility != Visibility.Visible || !currentElement.IsHitTestVisible
-                    || !(currentElement.Opacity > 0))
+                if (currentElement.Visibility != Visibility.Visible || !(currentElement.Opacity > 0))
                 {
                     return false;
                 }
