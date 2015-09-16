@@ -2,9 +2,12 @@
 {
     #region
 
+    using System;
+
     using Newtonsoft.Json;
 
     using Winium.StoreApps.Common;
+    using Winium.StoreApps.Common.Exceptions;
     using Winium.StoreApps.Driver.Automator;
 
     #endregion
@@ -15,20 +18,27 @@
 
         protected override string DoImpl()
         {
-            // It is easier to reparse desired capabilities as JSON instead of re-mapping keys to attributes and calling type conversions, 
-            // so we will take possible one time performance hit by serializing Dictionary and deserializing it as Capabilities object
-            var serializedCapability =
-                JsonConvert.SerializeObject(this.ExecutedCommand.Parameters["desiredCapabilities"]);
-            this.Automator.ActualCapabilities = Capabilities.CapabilitiesFromJsonString(serializedCapability);
-
-            this.Automator.InitializeApp();
-            if (this.Automator.ActualCapabilities.AutoLaunch)
+            try
             {
-                this.Automator.Deployer.Launch();
-                this.Automator.ConnectToApp();
-            }
+                // It is easier to reparse desired capabilities as JSON instead of re-mapping keys to attributes and calling type conversions, 
+                // so we will take possible one time performance hit by serializing Dictionary and deserializing it as Capabilities object
+                var serializedCapability =
+                    JsonConvert.SerializeObject(this.ExecutedCommand.Parameters["desiredCapabilities"]);
+                this.Automator.ActualCapabilities = Capabilities.CapabilitiesFromJsonString(serializedCapability);
 
-            return this.JsonResponse(ResponseStatus.Success, this.Automator.ActualCapabilities);
+                this.Automator.InitializeApp();
+                if (this.Automator.ActualCapabilities.AutoLaunch)
+                {
+                    this.Automator.Deployer.Launch();
+                    this.Automator.ConnectToApp();
+                }
+
+                return this.JsonResponse(ResponseStatus.Success, this.Automator.ActualCapabilities);
+            }
+            catch (Exception ex)
+            {
+                throw new AutomationException(ex.Message, ex);
+            }
         }
 
         #endregion

@@ -7,10 +7,19 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
+    using Winium.StoreApps.Common.Exceptions;
+    using Winium.StoreApps.Driver.EmulatorHelpers;
+
     #endregion
 
-    internal class Capabilities
+    public class Capabilities
     {
+        #region Static Fields
+
+        private static string boundDeviceName;
+
+        #endregion
+
         #region Constructors and Destructors
 
         internal Capabilities()
@@ -29,6 +38,34 @@
 
         #region Public Properties
 
+        public static string BoundDeviceName
+        {
+            get
+            {
+                return boundDeviceName;
+            }
+
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return;
+                }
+
+                if (Devices.Instance.IsValidDeviceName(value))
+                {
+                    boundDeviceName = value;
+                    return;
+                }
+
+                throw new AutomationException(
+                    string.Format(
+                        "Could not find a device by strict name. You requested '{0}', but the available devices were:\n{1}", 
+                        value, 
+                        Devices.Instance));
+            }
+        }
+
         [JsonProperty("platformName")]
         public static string PlatformName
         {
@@ -38,11 +75,11 @@
             }
         }
 
-        [JsonProperty("autoLaunch")]
-        public bool AutoLaunch { get; set; }
-
         [JsonProperty("app")]
         public string App { get; set; }
+
+        [JsonProperty("autoLaunch")]
+        public bool AutoLaunch { get; set; }
 
         [JsonProperty("debugConnectToRunningApp")]
         public bool DebugConnectToRunningApp { get; set; }
@@ -78,13 +115,7 @@
                                     args.ErrorContext.Handled = true;
                                 }
                     });
-
             return capabilities;
-        }
-
-        public string CapabilitiesToJsonString()
-        {
-            return JsonConvert.SerializeObject(this);
         }
 
         #endregion

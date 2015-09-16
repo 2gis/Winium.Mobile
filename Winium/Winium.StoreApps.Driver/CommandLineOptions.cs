@@ -27,6 +27,9 @@
         [Option("version", Required = false, HelpText = "print version number and exit")]
         public bool Version { get; set; }
 
+        [Option("bound-device-name", Required = false, HelpText = "strict name of emulator to bind with driver. Driver will be able to start sessions only on this device, if session will specify deviceName that is not a substring of bound device name, then an error will occur. Use this option to run tests in parallel on differen driver-emulator pairs connected to Selenium Grid on same host.")]
+        public string BoundDeviceName { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
