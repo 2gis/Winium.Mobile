@@ -62,25 +62,14 @@
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// The JsonResponse with SUCCESS status and NULL value.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        protected string JsonResponse()
-        {
-            return JsonConvert.SerializeObject(new JsonResponse(this.Session, ResponseStatus.Success, null));
-        }
-
-        protected string JsonResponse(ResponseStatus status, object value)
+        protected string JsonResponse(ResponseStatus status = ResponseStatus.Success, object value = null)
         {
             if (status != ResponseStatus.Success && value == null)
             {
                 value = string.Format("WebDriverException {0}", Enum.GetName(typeof(ResponseStatus), status));
             }
 
-            return JsonConvert.SerializeObject(new JsonResponse(this.Session, status, value));
+            return JsonConvert.SerializeObject(new JsonResponse(this.Session, status, value), Formatting.Indented);
         }
 
         private static void InvokeSync(CoreDispatcher dispatcher, Action action)
