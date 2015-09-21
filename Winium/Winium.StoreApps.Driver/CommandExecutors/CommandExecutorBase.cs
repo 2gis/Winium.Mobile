@@ -50,7 +50,7 @@
             {
                 // Bad status returned by Inner Driver when trying to forward command
                 return CommandResponse.Create(
-                    exception.StatusCode,
+                    exception.StatusCode, 
                     this.JsonResponse(ResponseStatus.UnknownError, exception));
             }
             catch (NotImplementedException exception)
@@ -76,20 +76,11 @@
             throw new InvalidOperationException("DoImpl should never be called in CommandExecutorBase");
         }
 
-        /// <summary>
-        /// The JsonResponse with SUCCESS status and NULL value.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        protected string JsonResponse()
+        protected string JsonResponse(ResponseStatus status = ResponseStatus.Success, object value = null)
         {
-            return this.JsonResponse(ResponseStatus.Success, null);
-        }
-
-        protected string JsonResponse(ResponseStatus status, object value)
-        {
-            return JsonConvert.SerializeObject(new JsonResponse(this.Automator.Session, status, value));
+            return JsonConvert.SerializeObject(
+                new JsonResponse(this.Automator.Session, status, value), 
+                Formatting.Indented);
         }
 
         #endregion
