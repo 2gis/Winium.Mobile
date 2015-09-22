@@ -32,11 +32,6 @@
 
         #region Constructors and Destructors
 
-        private Automator(string session)
-        {
-            this.Session = session;
-        }
-
         #endregion
 
         #region Public Properties
@@ -51,7 +46,7 @@
 
         public string InnerIp { get; set; }
 
-        public string Session { get; private set; }
+        public string Session { get; set; }
 
         #endregion
 
@@ -83,13 +78,8 @@
                 {
                     if (instance == null)
                     {
-                        if (sessionId == null)
-                        {
-                            sessionId = "AwesomeSession";
-                        }
-
-                        // TODO: Add actual support for sessions. Temporary return single Automator for any season
-                        instance = new Automator(sessionId);
+                        // TODO: Add actual support for sessions. Temporary return single Automator for any session
+                        instance = new Automator();
                     }
                 }
             }

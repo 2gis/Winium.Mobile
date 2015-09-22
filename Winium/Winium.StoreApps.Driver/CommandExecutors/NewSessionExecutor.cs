@@ -20,6 +20,8 @@
         {
             try
             {
+                this.Automator.Session = Guid.NewGuid().ToString();
+
                 // It is easier to reparse desired capabilities as JSON instead of re-mapping keys to attributes and calling type conversions, 
                 // so we will take possible one time performance hit by serializing Dictionary and deserializing it as Capabilities object
                 var serializedCapability =
