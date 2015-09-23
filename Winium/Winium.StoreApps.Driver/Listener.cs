@@ -110,19 +110,19 @@
                     }
 
                     client.Close();
-
                     Logger.Debug("Client closed\n");
                 }
             }
             catch (SocketException ex)
             {
-                Logger.Error("SocketException occurred while trying to start listner: {0}", ex);
-                throw;
-            }
-            catch (ArgumentException ex)
-            {
-                Logger.Error("ArgumentException occurred while trying to start listner: {0}", ex);
-                throw;
+                if (ex.SocketErrorCode != SocketError.Interrupted)
+                {
+                    throw;
+                }
+                else
+                {
+                    Logger.Debug(ex.ToString());
+                }
             }
             finally
             {
