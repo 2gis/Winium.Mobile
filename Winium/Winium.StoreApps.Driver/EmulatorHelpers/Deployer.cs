@@ -22,7 +22,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
     /// App Deploy for 8.1 or greater (uses  Microsoft.Phone.Tools.Deploy shipped with Microsoft SDKs\Windows Phone\v8.1\Tools\AppDeploy)
     /// </summary>
     /// TODO: do not copy Microsoft.Phone.Tools.Deploy assembly on build. Set Copy Local to false and use specified path to assembly.
-    public class Deployer81 : IDeployer
+    public class Deployer
     {
         #region Fields
 
@@ -44,7 +44,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         #region Constructors and Destructors
 
-        public Deployer81(string desiredDevice, bool strict, string appPath)
+        public Deployer(string desiredDevice, bool strict, string appPath)
         {
             this.appPath = appPath;
 
@@ -64,7 +64,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
             this.connectableDevice =
                 new MultiTargetingConnectivity(CultureInfo.CurrentUICulture.LCID).GetConnectableDevice(deviceId);
 
-            Logger.Info("Target emulator: {0}", this.DeviceName);
+            Logger.Info("Target emulator: '{0}'", this.DeviceName);
         }
 
         #endregion
@@ -157,7 +157,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         public void Terminate()
         {
-            throw new NotImplementedException("Deployer81.Terminate");
+            throw new NotImplementedException("Deployer.Terminate");
         }
 
         public void Uninstall()

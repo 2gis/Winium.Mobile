@@ -45,7 +45,7 @@
 
         public Requester CommandForwarder { get; set; }
 
-        public IDeployer Deployer { get; set; }
+        public Deployer Deployer { get; set; }
 
         public EmulatorController EmulatorController { get; set; }
 
@@ -169,7 +169,7 @@
                 }
             }
 
-            this.Deployer = new Deployer81(this.ActualCapabilities.DeviceName, strictMatchDeviceName, appPath);
+            this.Deployer = new Deployer(this.ActualCapabilities.DeviceName, strictMatchDeviceName, appPath);
             if (!debugDoNotDeploy)
             {
                 this.Deployer.Install();
