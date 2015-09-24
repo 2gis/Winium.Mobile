@@ -3,7 +3,6 @@
     #region
 
     using System;
-    using System.Globalization;
     using System.IO;
     using System.Net;
     using System.Net.Sockets;
@@ -14,13 +13,11 @@
 
     public class Listener
     {
-        #region Static Fields
-
-        private static string urnPrefix;
-
-        #endregion
-
         #region Fields
+
+        private readonly Uri baseAddress;
+
+        private readonly NodeRegistrar nodeRegistrar;
 
         private UriDispatchTables dispatcher;
 
@@ -32,35 +29,33 @@
 
         #region Constructors and Destructors
 
-        public Listener(int listenerPort)
+        public Listener(int listenerPort, string urlBase, string nodeConfigFile)
         {
+            urlBase = NormalizePrefix(urlBase);
             this.Port = listenerPort;
+
+            if (!string.IsNullOrWhiteSpace(nodeConfigFile))
+            {
+                if (!urlBase.Equals("wd/hub"))
+                {
+                    Logger.Warn(
+                        "--url-base '{0}' will be overriden and set to 'wd/hub' because --nodeconfig option was specified", 
+                        urlBase);
+                }
+
+                urlBase = "wd/hub";
+
+                this.nodeRegistrar = new NodeRegistrar(nodeConfigFile, "localhost", this.Port);
+            }
+
+            this.baseAddress = new UriBuilder("http", "localhost", this.Port, urlBase).Uri;
         }
 
         #endregion
 
         #region Public Properties
 
-        public static string UrnPrefix
-        {
-            get
-            {
-                return urnPrefix;
-            }
-
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    // Normalize prefix
-                    urnPrefix = "/" + value.Trim('/');
-                }
-            }
-        }
-
         public int Port { get; private set; }
-
-        public Uri Prefix { get; private set; }
 
         #endregion
 
@@ -71,13 +66,17 @@
             try
             {
                 this.listener = new TcpListener(IPAddress.Any, this.Port);
-
-                this.Prefix = new Uri(string.Format(CultureInfo.InvariantCulture, "http://localhost:{0}", this.Port));
-                this.dispatcher = new UriDispatchTables(new Uri(this.Prefix, UrnPrefix));
+                this.dispatcher = new UriDispatchTables(this.baseAddress);
                 this.executorDispatcher = new CommandExecutorDispatchTable();
 
                 // Start listening for client requests.
                 this.listener.Start();
+                Logger.Info("RemoteWebDriver instances should connect to: {0}", this.baseAddress);
+
+                if (this.nodeRegistrar != null)
+                {
+                    this.nodeRegistrar.Register();
+                }
 
                 // Enter the listening loop
                 while (true)
@@ -141,13 +140,18 @@
 
         #region Methods
 
+        private static string NormalizePrefix(string prefix)
+        {
+            return string.IsNullOrWhiteSpace(prefix) ? string.Empty : prefix.Trim('/');
+        }
+
         private string HandleRequest(HttpRequest acceptedRequest)
         {
             var firstHeaderTokens = acceptedRequest.StartingLine.Split(' ');
             var method = firstHeaderTokens[0];
             var resourcePath = firstHeaderTokens[1];
 
-            var uriToMatch = new Uri(this.Prefix, resourcePath);
+            var uriToMatch = new Uri(this.baseAddress, resourcePath);
             var matched = this.dispatcher.Match(method, uriToMatch);
 
             if (matched == null)

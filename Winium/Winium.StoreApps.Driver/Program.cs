@@ -4,7 +4,6 @@
 
     using System;
     using System.Collections.Generic;
-    using System.IO;
 
     using Winium.StoreApps.Driver.Automator;
     using Winium.StoreApps.Driver.CommandHelpers;
@@ -59,12 +58,11 @@
                     Logger.Warn("Colud not set OnExit cleanup handlers.");
                 }
 
-                var listeningPort = options.Port;
                 AppLifetimeDisposables.Add(EmulatorFactory.Instance);
-                listener = new Listener(listeningPort);
-                Listener.UrnPrefix = options.UrlBase;
 
-                Console.WriteLine("Starting {0} on port {1}\n", appName, listeningPort);
+                listener = new Listener(options.Port, options.UrlBase, options.NodeConfig);
+
+                Console.WriteLine("Starting {0} on port {1}\n", appName, listener.Port);
 
                 listener.StartListening();
             }
