@@ -4,7 +4,9 @@
 
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
+    using Winium.StoreApps.Driver.Automator;
     using Winium.StoreApps.Driver.CommandHelpers;
     using Winium.StoreApps.Driver.EmulatorHelpers;
 
@@ -28,10 +30,7 @@
             try
             {
                 var options = new CommandLineOptions();
-                if (!CommandLine.Parser.Default.ParseArguments(args, options))
-                {
-                    Environment.Exit(1);
-                }
+                CommandLine.Parser.Default.ParseArgumentsStrict(args, options);
 
                 var appName = typeof(Program).Assembly.GetName().Name;
                 var versionInfo = string.Format("{0}, {1}", appName, new BuildInfo());
@@ -50,6 +49,8 @@
                 {
                     Logger.TargetConsole(options.Verbose);
                 }
+
+                Capabilities.BoundDeviceName = options.BoundDeviceName;
 
                 Logger.Info(versionInfo);
 

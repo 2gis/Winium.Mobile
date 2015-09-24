@@ -124,11 +124,11 @@
     <Compile Include="CommandHelpers\BuildInfo.cs" />
     <Compile Include="CommandHelpers\SendKeysHelper.cs" />
     <Compile Include="CommandLineOptions.cs" />
-    <Compile Include="EmulatorHelpers\Deployer81.cs" />
+    <Compile Include="EmulatorHelpers\Deployer.cs" />
+    <Compile Include="EmulatorHelpers\Devices.cs" />
     <Compile Include="EmulatorHelpers\EmulatorController.cs" />
     <Compile Include="EmulatorHelpers\EmulatorFactory.cs" />
     <Compile Include="EmulatorHelpers\FlickGesture.cs" />
-    <Compile Include="EmulatorHelpers\IDeployer.cs" />
     <Compile Include="EmulatorHelpers\IGesture.cs" />
     <Compile Include="EmulatorHelpers\ScrollGesture.cs" />
     <Compile Include="EmulatorHelpers\TapGesture.cs" />

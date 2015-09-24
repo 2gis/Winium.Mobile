@@ -14,13 +14,15 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
     using Microsoft.SmartDevice.Connectivity.Interface;
     using Microsoft.SmartDevice.MultiTargeting.Connectivity;
 
+    using Winium.StoreApps.Common.Exceptions;
+
     #endregion
 
     /// <summary>
     /// App Deploy for 8.1 or greater (uses  Microsoft.Phone.Tools.Deploy shipped with Microsoft SDKs\Windows Phone\v8.1\Tools\AppDeploy)
     /// </summary>
     /// TODO: do not copy Microsoft.Phone.Tools.Deploy assembly on build. Set Copy Local to false and use specified path to assembly.
-    public class Deployer81 : IDeployer
+    public class Deployer
     {
         #region Fields
 
@@ -34,7 +36,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         private IDevice device;
 
-        private bool installed = false;
+        private bool installed;
 
         private IRemoteApplication remoteApplication;
 
@@ -42,24 +44,19 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         #region Constructors and Destructors
 
-        public Deployer81(string desiredDevice, string appPath)
+        public Deployer(string desiredDevice, bool strict, string appPath)
         {
             this.appPath = appPath;
 
-            var devices = Utils.GetDevices();
+            this.deviceInfo = Devices.Instance.GetMatchingDevice(desiredDevice, strict);
 
-            this.deviceInfo =
-                devices.FirstOrDefault(
-                    x =>
-                    x.ToString().StartsWith(desiredDevice, StringComparison.OrdinalIgnoreCase)
-                    && !x.ToString().Equals("Device"));
-
-            // Exclude device
             if (this.deviceInfo == null)
             {
-                Logger.Warn("Desired target {0} not found. Using default instead.", desiredDevice);
-
-                this.deviceInfo = devices.First(x => !x.ToString().Equals("Device"));
+                throw new AutomationException(
+                    string.Format(
+                        "Could not find a device to launch. You requested '{0}', but the available devices were:\n{1}", 
+                        desiredDevice, 
+                        Devices.Instance));
             }
 
             var propertyInfo = this.deviceInfo.GetType().GetTypeInfo().GetDeclaredProperty("DeviceId");
@@ -67,7 +64,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
             this.connectableDevice =
                 new MultiTargetingConnectivity(CultureInfo.CurrentUICulture.LCID).GetConnectableDevice(deviceId);
 
-            Logger.Info("Target emulator: {0}", this.DeviceName);
+            Logger.Info("Target emulator: '{0}'", this.DeviceName);
         }
 
         #endregion
@@ -133,7 +130,8 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         public void ReceiveFile(string isoStoreRoot, string sourceDeviceFilePath, string targetDesktopFilePath)
         {
-            this.RemoteApplication.GetIsolatedStore(isoStoreRoot).ReceiveFile(sourceDeviceFilePath, targetDesktopFilePath, true);
+            this.RemoteApplication.GetIsolatedStore(isoStoreRoot)
+                .ReceiveFile(sourceDeviceFilePath, targetDesktopFilePath, true);
         }
 
         public void SendFiles(Dictionary<string, string> files)
@@ -159,7 +157,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         public void Terminate()
         {
-            throw new NotImplementedException("Deployer81.Terminate");
+            throw new NotImplementedException("Deployer.Terminate");
         }
 
         public void Uninstall()

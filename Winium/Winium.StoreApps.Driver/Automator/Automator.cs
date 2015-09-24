@@ -30,10 +30,6 @@
 
         #endregion
 
-        #region Fields
-
-        #endregion
-
         #region Constructors and Destructors
 
         private Automator(string session)
@@ -49,7 +45,7 @@
 
         public Requester CommandForwarder { get; set; }
 
-        public IDeployer Deployer { get; set; }
+        public Deployer Deployer { get; set; }
 
         public EmulatorController EmulatorController { get; set; }
 
@@ -133,7 +129,9 @@
 
             if (!connected)
             {
-                throw new AutomationException("Could not connect to the InnerServer.", ResponseStatus.SessionNotCreatedException);
+                throw new AutomationException(
+                    "Could not connect to the InnerServer.", 
+                    ResponseStatus.SessionNotCreatedException);
             }
 
             // Gives sometime to load visuals (needed only in case of slow emulation)
@@ -152,11 +150,38 @@
                 throw new AutomationException("app capability is not set.", ResponseStatus.SessionNotCreatedException);
             }
 
-            this.Deployer = new Deployer81(this.ActualCapabilities.DeviceName, appPath);
+            var strictMatchDeviceName = Capabilities.BoundDeviceName != null;
+            if (strictMatchDeviceName)
+            {
+                if (Capabilities.BoundDeviceName.StartsWith(
+                    this.ActualCapabilities.DeviceName, 
+                    StringComparison.OrdinalIgnoreCase))
+                {
+                    this.ActualCapabilities.DeviceName = Capabilities.BoundDeviceName;
+                }
+                else
+                {
+                    throw new AutomationException(
+                        string.Format(
+                            "Driver was bound to '{0}' at launch with --bound-device-name option, but another device '{1}' was requested by session.", 
+                            Capabilities.BoundDeviceName, 
+                            this.ActualCapabilities.DeviceName));
+                }
+            }
+
+            this.Deployer = new Deployer(this.ActualCapabilities.DeviceName, strictMatchDeviceName, appPath);
             if (!debugDoNotDeploy)
             {
                 this.Deployer.Install();
                 this.Deployer.SendFiles(this.ActualCapabilities.Files);
+            }
+
+            if (!this.ActualCapabilities.DeviceName.Equals(this.Deployer.DeviceName, StringComparison.OrdinalIgnoreCase))
+            {
+                Logger.Warn(
+                    "Device was found using partail deviceName '{0}',"
+                    + " this behavior might be deprecated in favor of specifying strict deviceName or platformVersion (when implemented).", 
+                    this.ActualCapabilities.DeviceName);
             }
 
             this.ActualCapabilities.DeviceName = this.Deployer.DeviceName;
