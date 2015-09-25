@@ -33,6 +33,9 @@
         [Option("nodeconfig", Required = false, HelpText = "configuration JSON file to register driver with selenium grid")]
         public string NodeConfig { get; set; }
 
+        [Option("dependency", Required = false, HelpText = "dependencies to be installed before main app")]
+        public string Dependency { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
