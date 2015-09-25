@@ -155,6 +155,25 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
             }
         }
 
+        public void InstallDependencies(List<string> dependencies )
+        {
+            if (dependencies == null || !dependencies.Any())
+            {
+                return;
+            }
+
+            foreach (var dependency in dependencies)
+            {
+                InstallDependency(dependency);
+            }
+        }
+
+        public void InstallDependency(string path)
+        {
+            var appManifest = Utils.ReadAppManifestInfoFromPackage(path);
+            Utils.InstallApplication(this.deviceInfo, appManifest, DeploymentOptions.None, path);
+        }
+
         public void Terminate()
         {
             throw new NotImplementedException("Deployer.Terminate");
