@@ -68,7 +68,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Fatal("Failed to start driver: {0}", ex);
+                Logger.Fatal(ex.ToString());
                 Environment.Exit(ex.HResult);
             }
         }
