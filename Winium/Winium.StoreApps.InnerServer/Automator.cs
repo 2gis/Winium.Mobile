@@ -113,6 +113,10 @@
             {
                 commandToExecute = new DisplayedCommand { ElementId = elementId };
             }
+            else if (command.Equals(DriverCommand.IsElementEnabled))
+            {
+                commandToExecute = new IsElementEnabledCommand { ElementId = elementId };
+            }
             else if (command.Equals(DriverCommand.GetElementLocation))
             {
                 commandToExecute = new LocationCommand { ElementId = elementId };

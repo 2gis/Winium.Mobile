@@ -27,15 +27,6 @@
             this.weakElement = new WeakReference<FrameworkElement>(element);
         }
 
-        public bool IsStale
-        {
-            get
-            {
-                FrameworkElement element;
-                return !this.weakElement.TryGetTarget(out element);
-            }
-        }
-
         #endregion
 
         #region Public Properties
@@ -75,6 +66,23 @@
                 }
 
                 throw new AutomationException("Stale element reference", ResponseStatus.StaleElementReference);
+            }
+        }
+
+        public bool IsEnabled
+        {
+            get
+            {
+                return this.Element.GetAutomationPeer().IsEnabled();
+            }
+        }
+
+        public bool IsStale
+        {
+            get
+            {
+                FrameworkElement element;
+                return !this.weakElement.TryGetTarget(out element);
             }
         }
 
