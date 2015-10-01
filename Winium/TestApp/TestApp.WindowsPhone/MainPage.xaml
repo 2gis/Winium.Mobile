@@ -44,6 +44,9 @@
                 <Button Content="Show Msg" 
                         Click="ButtonClick"
                         AutomationProperties.AutomationId="MsgBtn" />
+                <Button Content="Disabled" 
+                        IsEnabled="False"
+                        AutomationProperties.AutomationId="DisabledBtn" />
             </StackPanel>
         </PivotItem>
     </Pivot>

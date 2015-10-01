@@ -169,9 +169,7 @@ class TestGetCommands(WuaTestCase):
         assert not self.driver.find_element_by_name('August').is_displayed()
 
 
-class TestAlert(WuaTestCase):
-    # __shared_session__ = False
-
+class UsesSecondTab(WuaTestCase):
     @pytest.fixture
     def second_tab(self, waiter):
         pivots = self.driver.find_elements_by_class_name("Windows.UI.Xaml.Controls.Primitives.PivotHeaderItem")
@@ -179,6 +177,16 @@ class TestAlert(WuaTestCase):
         tab = self.driver.find_element_by_id('SecondTab')
         waiter.until(EC.visibility_of(tab))
         return tab
+
+
+class TestGetCommandsEx(UsesSecondTab):
+    def test_is_element_enabled(self, second_tab):
+        assert second_tab.find_element_by_id('MsgBtn').is_enabled()
+        assert not second_tab.find_element_by_id('DisabledBtn').is_enabled()
+
+
+class TestAlert(UsesSecondTab):
+    # __shared_session__ = False
 
     @pytest.fixture
     def alert(self, second_tab, waiter):
@@ -286,6 +294,7 @@ class TestBasicInput(WuaTestCase):
         assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
 
 
+@pytest.mark.skipif(True, reason="TODO")
 class TestInputChains(WuaTestCase):
     def test_action_chain(self):
         # TODO MouseMoveTo, MouseClick, MouseDown, MouseUp
