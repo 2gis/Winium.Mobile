@@ -5,6 +5,7 @@
     using Windows.Foundation;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Media;
+    using Windows.UI.Xaml.Controls;
 
     #endregion
 
@@ -24,6 +25,9 @@
             var currentElement = this.Element;
 
             var currentElementSize = new Size(currentElement.ActualWidth, currentElement.ActualHeight);
+
+            if (CommandBarCheck(currentElement))
+                return true;
 
             // Check if currentElement is of zero size
             if (currentElementSize.Width <= 0 || currentElementSize.Height <= 0)
@@ -80,6 +84,39 @@
 
                 currentElement = container;
             }
+        }
+
+        private CommandBar FindCommandBar(FrameworkElement element)
+        {
+            DependencyObject parent = element;
+
+            while ( parent != null  )
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+
+                if (parent.GetType() == typeof(AppBar) || parent.GetType() == typeof(CommandBar))
+                    return parent as CommandBar;
+            }
+
+            return null;
+        }
+
+        private bool CommandBarCheck(FrameworkElement element)
+        {
+            AppBarButton appBarButton = element as AppBarButton;
+
+            if ( appBarButton == null)
+                return false;
+
+            if (appBarButton.IsCompact || !appBarButton.IsEnabled || appBarButton.Visibility != Visibility.Visible )
+                return false;
+
+            CommandBar bar = FindCommandBar(element);
+
+            if ( bar == null|| !bar.IsEnabled || bar.Visibility != Visibility.Visible )
+                return false;
+
+            return true;
         }
 
         #endregion
