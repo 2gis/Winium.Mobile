@@ -16,7 +16,7 @@
         {
             var element = this.Element;
 
-            var propertyNames = new List<string> { "Text", "Content" };
+            var propertyNames = new List<string> { "Text", "Content", "Label" };
 
             foreach (var textProperty in from propertyName in propertyNames
                                          select element.GetType().GetRuntimeProperty(propertyName)
