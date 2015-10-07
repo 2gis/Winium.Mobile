@@ -26,8 +26,11 @@
 
             var currentElementSize = new Size(currentElement.ActualWidth, currentElement.ActualHeight);
 
-            if (CommandBarCheck(currentElement))
-                return true;
+            if (currentElement is AppBarButton)
+                return CheckAppBarButton(currentElement as AppBarButton);
+
+            if (currentElement is CommandBar)
+                return CheckCommandBar(currentElement as CommandBar);
 
             // Check if currentElement is of zero size
             if (currentElementSize.Width <= 0 || currentElementSize.Height <= 0)
@@ -86,13 +89,18 @@
             }
         }
 
-        private CommandBar FindCommandBar(FrameworkElement element)
+        private CommandBar FindCommandBar(AppBarButton element)
         {
             DependencyObject parent = element;
 
             while ( parent != null  )
             {
                 parent = VisualTreeHelper.GetParent(parent);
+
+                FrameworkElement parentElement = parent as FrameworkElement;
+
+                if (parentElement != null && parentElement.Visibility == Visibility.Collapsed )
+                    return null;
 
                 if (parent.GetType() == typeof(AppBar) || parent.GetType() == typeof(CommandBar))
                     return parent as CommandBar;
@@ -101,22 +109,20 @@
             return null;
         }
 
-        private bool CommandBarCheck(FrameworkElement element)
+        private bool CheckAppBarButton(AppBarButton appBarButton )
         {
-            AppBarButton appBarButton = element as AppBarButton;
-
             if ( appBarButton == null)
                 return false;
 
             if (appBarButton.IsCompact || !appBarButton.IsEnabled || appBarButton.Visibility != Visibility.Visible )
                 return false;
 
-            CommandBar bar = FindCommandBar(element);
+            return CheckCommandBar(FindCommandBar(appBarButton));
+        }
 
-            if ( bar == null|| !bar.IsEnabled || bar.Visibility != Visibility.Visible )
-                return false;
-
-            return true;
+        private bool CheckCommandBar(CommandBar bar)
+        {
+            return ( bar != null && bar.IsEnabled && bar.Visibility == Visibility.Visible );
         }
 
         #endregion
