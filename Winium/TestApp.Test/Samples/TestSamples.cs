@@ -3,9 +3,10 @@
     #region
 
     using System;
+    using System.Diagnostics;
     using System.IO;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OpenQA.Selenium;
     using OpenQA.Selenium.Interactions;
@@ -14,7 +15,7 @@
 
     #endregion
 
-    [TestClass]
+    [TestFixture]
     public class TestSamples
     {
         #region Fields
@@ -25,13 +26,13 @@
 
         #region Public Methods and Operators
 
-        [TestCleanup]
+        [TearDown]
         public void CleanUp()
         {
             this.driver.Quit();
         }
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             var capabillities = new DesiredCapabilities();
@@ -46,7 +47,7 @@
             this.driver = new WpDriver(new Uri("http://localhost:9999"), capabillities);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFindChilds()
         {
             var parent = this.driver.FindElementById("MyListBox");
@@ -55,7 +56,7 @@
             Assert.AreEqual(21, elements.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void TestScreenshot()
         {
             var scr = this.driver.GetScreenshot().AsBase64EncodedString;
@@ -63,7 +64,7 @@
             Assert.AreNotEqual(string.Empty, scr);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTouchActions()
         {
             var touches = new TouchActions(this.driver);
