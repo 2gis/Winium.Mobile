@@ -5,6 +5,7 @@
     using Windows.Foundation;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Media;
+    using Windows.UI.Xaml.Controls;
 
     #endregion
 
@@ -24,6 +25,12 @@
             var currentElement = this.Element;
 
             var currentElementSize = new Size(currentElement.ActualWidth, currentElement.ActualHeight);
+
+            if (currentElement is AppBarButton)
+                return CheckAppBarButtonVisible(currentElement as AppBarButton);
+
+            if (currentElement is CommandBar)
+                return CheckCommandBarVisible(currentElement as CommandBar);
 
             // Check if currentElement is of zero size
             if (currentElementSize.Width <= 0 || currentElementSize.Height <= 0)
@@ -80,6 +87,40 @@
 
                 currentElement = container;
             }
+        }
+
+        private CommandBar FindCommandBarIfVisible(AppBarButton element)
+        {
+            FrameworkElement parent = element;
+
+            while ( parent != null  )
+            {
+                if (parent.Visibility == Visibility.Collapsed )
+                    return null;
+
+                if (parent.GetType() == typeof(AppBar) || parent.GetType() == typeof(CommandBar))
+                    return parent as CommandBar;
+
+                parent = VisualTreeHelper.GetParent(parent) as FrameworkElement;
+            }
+
+            return null;
+        }
+
+        private bool CheckAppBarButtonVisible(AppBarButton appBarButton )
+        {
+            if ( appBarButton == null)
+                return false;
+
+            if (appBarButton.IsCompact || !appBarButton.IsEnabled || appBarButton.Visibility != Visibility.Visible )
+                return false;
+
+            return CheckCommandBarVisible(FindCommandBarIfVisible(appBarButton));
+        }
+
+        private bool CheckCommandBarVisible(CommandBar bar)
+        {
+            return ( bar != null && bar.IsEnabled && bar.Visibility == Visibility.Visible );
         }
 
         #endregion
