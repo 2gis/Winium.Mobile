@@ -32,13 +32,9 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         private readonly DeviceInfo deviceInfo;
 
-        private IAppManifestInfo appManifestInfo;
-
         private IDevice device;
 
         private bool installed;
-
-        private IRemoteApplication remoteApplication;
 
         #endregion
 
@@ -83,15 +79,6 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         #region Properties
 
-        private IAppManifestInfo AppManifestInfo
-        {
-            get
-            {
-                return this.appManifestInfo
-                       ?? (this.appManifestInfo = Utils.ReadAppManifestInfoFromPackage(this.appPath));
-            }
-        }
-
         private IDevice Device
         {
             get
@@ -100,14 +87,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
             }
         }
 
-        private IRemoteApplication RemoteApplication
-        {
-            get
-            {
-                return this.remoteApplication
-                       ?? (this.remoteApplication = this.Device.GetApplication(this.AppManifestInfo.ProductId));
-            }
-        }
+        private IRemoteApplication RemoteApplication { get; set; }
 
         #endregion
 
@@ -115,10 +95,22 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         public void Install()
         {
-            Utils.InstallApplication(this.deviceInfo, this.AppManifestInfo, DeploymentOptions.None, this.appPath);
+            var appManifestInfo = this.InstallApplicationPackage(this.appPath);
             this.installed = true;
+            this.RemoteApplication = this.Device.GetApplication(appManifestInfo.ProductId);
+        }
 
-            Logger.Info("Successfully deployed using Microsoft.Phone.Tools.Deploy");
+        public void InstallDependencies(List<string> dependencies)
+        {
+            if (dependencies == null || !dependencies.Any())
+            {
+                return;
+            }
+
+            foreach (var dependency in dependencies)
+            {
+                this.InstallApplicationPackage(dependency);
+            }
         }
 
         public void Launch()
@@ -168,10 +160,23 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
                 return;
             }
 
-            this.remoteApplication.Uninstall();
-            this.remoteApplication = null;
+            this.RemoteApplication.Uninstall();
+            this.RemoteApplication = null;
 
             this.device.Disconnect();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private IAppManifestInfo InstallApplicationPackage(string path)
+        {
+            var appManifest = Utils.ReadAppManifestInfoFromPackage(path);
+            Utils.InstallApplication(this.deviceInfo, appManifest, DeploymentOptions.None, path);
+
+            Logger.Info("{0} was successfully deployed using Microsoft.Phone.Tools.Deploy", appManifest.Name);
+            return appManifest;
         }
 
         #endregion

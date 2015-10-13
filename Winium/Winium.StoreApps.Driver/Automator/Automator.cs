@@ -162,6 +162,7 @@
             this.Deployer = new Deployer(this.ActualCapabilities.DeviceName, strictMatchDeviceName, appPath);
             if (!debugDoNotDeploy)
             {
+                this.Deployer.InstallDependencies(this.ActualCapabilities.Dependencies);
                 this.Deployer.Install();
                 this.Deployer.SendFiles(this.ActualCapabilities.Files);
             }

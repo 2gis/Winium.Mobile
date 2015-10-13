@@ -32,6 +32,7 @@
             this.LaunchTimeout = 10000;
             this.DebugConnectToRunningApp = false;
             this.TakesScreenshot = true;
+            this.Dependencies = new List<string>();
         }
 
         #endregion
@@ -98,6 +99,9 @@
 
         [JsonProperty("takesScreenshot")]
         public bool TakesScreenshot { get; set; }
+
+        [JsonProperty("dependencies")]
+        public List<string> Dependencies { get; set; }
 
         #endregion
 
