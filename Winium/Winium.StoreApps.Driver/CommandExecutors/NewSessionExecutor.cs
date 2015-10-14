@@ -39,7 +39,7 @@
             }
             catch (Exception ex)
             {
-                throw new AutomationException(ex.Message, ex);
+                throw new AutomationException(ex.Message, ex, ResponseStatus.SessionNotCreatedException);
             }
         }
 

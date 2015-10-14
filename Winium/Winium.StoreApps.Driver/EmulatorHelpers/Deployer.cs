@@ -24,6 +24,12 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
     /// TODO: do not copy Microsoft.Phone.Tools.Deploy assembly on build. Set Copy Local to false and use specified path to assembly.
     public class Deployer
     {
+        #region Constants
+
+        private const int MaxRetries = 3;
+
+        #endregion
+
         #region Fields
 
         private readonly string appPath;
@@ -116,8 +122,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
         public void Launch()
         {
             this.Device.Activate();
-
-            this.RemoteApplication.Launch();
+            WithRetry(() => this.RemoteApplication.Launch());
         }
 
         public void ReceiveFile(string isoStoreRoot, string sourceDeviceFilePath, string targetDesktopFilePath)
@@ -169,6 +174,35 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
         #endregion
 
         #region Methods
+
+        private static void WithRetry(Action action, uint maxRetries = MaxRetries)
+        {
+            var triesLeft = maxRetries;
+            while (true)
+            {
+                --triesLeft;
+                try
+                {
+                    action();
+                    return;
+                }
+                catch (Exception exception)
+                {
+                    if (triesLeft > 0)
+                    {
+                        Logger.Warn(
+                            "Exception {0} {1} caught, going to retry. Retries left {2}.", 
+                            exception.GetType().ToString(), 
+                            exception.Message, 
+                            triesLeft);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
 
         private IAppManifestInfo InstallApplicationPackage(string path)
         {
