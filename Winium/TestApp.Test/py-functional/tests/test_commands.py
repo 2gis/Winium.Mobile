@@ -1,4 +1,5 @@
 # coding: utf-8
+from time import sleep
 import pytest
 from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException, WebDriverException
 from selenium.webdriver import ActionChains
@@ -272,11 +273,12 @@ class TestBasicInput(WuaTestCase):
         assert actual_input.replace(Keys.ENTER, '\r\n') == element.text
 
     def test_send_keys_to_active_element(self, waiter):
-        locator = (By.ID, 'MyTextBox')
-        element = self.driver.find_element(*locator)
+        element = self.driver.find_element_by_id('MyTextBox')
         element.click()
+        #FIXME
+        sleep(0.5)
         ActionChains(self.driver).send_keys(Keys.ENTER).perform()
-        waiter.until(EC.text_to_be_present_in_element(locator, '\r\n'))
+        assert '\r\n' == element.text
 
     def test_submit_element(self):
         element = self.driver.find_element_by_id('MyTextBox')
