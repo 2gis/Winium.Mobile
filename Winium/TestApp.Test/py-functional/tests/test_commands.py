@@ -271,11 +271,12 @@ class TestBasicInput(WuaTestCase):
         element.send_keys(actual_input)
         assert actual_input.replace(Keys.ENTER, '\r\n') == element.text
 
-    def test_send_keys_to_active_element(self):
-        element = self.driver.find_element_by_id('MyTextBox')
+    def test_send_keys_to_active_element(self, waiter):
+        locator = (By.ID, 'MyTextBox')
+        element = self.driver.find_element(*locator)
         element.click()
         ActionChains(self.driver).send_keys(Keys.ENTER).perform()
-        assert '\r\n' == element.text
+        waiter.until(EC.text_to_be_present_in_element(locator, '\r\n'))
 
     def test_submit_element(self):
         element = self.driver.find_element_by_id('MyTextBox')
