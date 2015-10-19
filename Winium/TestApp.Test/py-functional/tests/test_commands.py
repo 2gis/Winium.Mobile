@@ -272,7 +272,7 @@ class TestBasicInput(WuaTestCase):
         element.send_keys(actual_input)
         assert actual_input.replace(Keys.ENTER, '\r\n') == element.text
 
-    def test_send_keys_to_active_element(self, waiter):
+    def test_send_keys_to_active_element(self):
         element = self.driver.find_element_by_id('MyTextBox')
         element.click()
         #FIXME
