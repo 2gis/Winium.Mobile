@@ -2,6 +2,19 @@
 
 <!--## Unreleased-->
 
+## v1.4.0
+- Fix `Remote Procedure Call Failed` when trying to launch app under test by retrying it
+- Fix `sessionId` being `null` in response for some commands (thanks to [@tkurnosova](https://github.com/tkurnosova))
+- Add support for deployment of dependenecies (thanks to [@ole-vegard](https://github.com/ole-vegard))
+- Add `IsElementEnabled` command
+- Fix socket interrupt handling
+- Add Selenium Grid support and autoregistering Winium as Selenium Grid node ([Running tests in parallel](https://github.com/2gis/Winium.StoreApps/wiki/Running-tests-in-parallel))
+- Fix sessionId not being unique
+- Add `--bound-device-name` command line option
+- Use indented formatting for JSON responses for pretty logging
+- Fix logger timestamp format (thanks to [@magnarn](https://github.com/magnarn))
+
+
 ## v1.3.1
 - Fix click command for custom controls
 
