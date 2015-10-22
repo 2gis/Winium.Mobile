@@ -3,6 +3,7 @@
     #region
 
     using Winium.StoreApps.Driver.Automator;
+    using System;
 
     #endregion
 
@@ -27,9 +28,12 @@
 
         protected override string DoImpl()
         {
-            ClickElement(this.Automator, this.ExecutedCommand.Parameters["ID"].ToString());
-
-            return this.JsonResponse();
+            try {
+                return this.Automator.CommandForwarder.ForwardCommand(this.ExecutedCommand);
+            } catch (Exception e) {
+                ClickElement(this.Automator, this.ExecutedCommand.Parameters["ID"].ToString());
+                return this.JsonResponse();
+            }
         }
 
         #endregion
