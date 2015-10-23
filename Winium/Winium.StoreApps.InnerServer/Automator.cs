@@ -153,6 +153,10 @@
             {
                 commandToExecute = new CloseAppCommand();
             }
+            else if (command.Equals(DriverCommand.ClickElement))
+            {
+                commandToExecute = new ClickCommand {ElementId = elementId};
+            }
             else
             {
                 throw new NotImplementedException("Not implemented: " + command);
