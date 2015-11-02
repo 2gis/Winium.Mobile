@@ -161,14 +161,22 @@
             }
 
             var commandName = matched.Data.ToString();
-            var commandToExecute = new Command(commandName, acceptedRequest.MessageBody);
-            foreach (string variableName in matched.BoundVariables.Keys)
+            try
             {
-                commandToExecute.Parameters[variableName] = matched.BoundVariables[variableName];
-            }
+                var commandToExecute = new Command(commandName, acceptedRequest.MessageBody);
+                foreach (string variableName in matched.BoundVariables.Keys)
+                {
+                    commandToExecute.Parameters[variableName] = matched.BoundVariables[variableName];
+                }
 
-            var commandResponse = this.ProcessCommand(commandToExecute);
-            return HttpResponseHelper.ResponseString(commandResponse.HttpStatusCode, commandResponse.Content);
+                var commandResponse = this.ProcessCommand(commandToExecute);
+                return HttpResponseHelper.ResponseString(commandResponse.HttpStatusCode, commandResponse.Content);
+            }
+            catch (Newtonsoft.Json.JsonReaderException exception)
+            {
+                Logger.Error("{0}\r\nRAW REQUEST BODY:\r\n{1}", exception.ToString(), acceptedRequest.MessageBody);
+                return HttpResponseHelper.ResponseString(HttpStatusCode.BadRequest, exception.ToString());
+            }
         }
 
         private CommandResponse ProcessCommand(Command command)
