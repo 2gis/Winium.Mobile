@@ -7,6 +7,7 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Text;
 
     #endregion
 
@@ -55,12 +56,17 @@
             return contentLength;
         }
 
-        // reads the content of a request depending on its length
         private static string ReadContent(TextReader textReader, int contentLength)
         {
+            var sb = new StringBuilder();
             var readBuffer = new char[contentLength];
-            textReader.Read(readBuffer, 0, readBuffer.Length);
-            return readBuffer.Aggregate(string.Empty, (current, ch) => current + ch);
+            var bytesRead = 0;
+            while (bytesRead < contentLength)
+            {
+                bytesRead += textReader.Read(readBuffer, bytesRead, contentLength - bytesRead);
+            }
+            
+            return sb.Append(readBuffer).ToString();
         }
 
         private static Dictionary<string, string> ReadHeaders(TextReader textReader)
