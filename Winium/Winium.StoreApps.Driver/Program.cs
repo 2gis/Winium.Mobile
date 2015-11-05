@@ -50,6 +50,7 @@
                 }
 
                 Capabilities.BoundDeviceName = options.BoundDeviceName;
+                Capabilities.DefaultPingTimeout = options.PingTimeout;
 
                 Logger.Info(versionInfo);
 

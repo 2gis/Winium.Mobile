@@ -33,6 +33,7 @@
             this.DebugConnectToRunningApp = false;
             this.TakesScreenshot = true;
             this.Dependencies = new List<string>();
+            this.PingTimeout = DefaultPingTimeout;
         }
 
         #endregion
@@ -53,19 +54,18 @@
                     return;
                 }
 
-                if (Devices.Instance.IsValidDeviceName(value))
+                if (!Devices.Instance.IsValidDeviceName(value))
                 {
-                    boundDeviceName = value;
-                    return;
+                    const string MsgFormat =
+                        "Could not find a device by strict name. You requested '{0}', but the available devices were:\n{1}";
+                    throw new AutomationException(string.Format(MsgFormat, value, Devices.Instance));
                 }
 
-                throw new AutomationException(
-                    string.Format(
-                        "Could not find a device by strict name. You requested '{0}', but the available devices were:\n{1}", 
-                        value, 
-                        Devices.Instance));
+                boundDeviceName = value;
             }
         }
+
+        public static int DefaultPingTimeout { get; set; }
 
         [JsonProperty("platformName")]
         public static string PlatformName
@@ -85,6 +85,9 @@
         [JsonProperty("debugConnectToRunningApp")]
         public bool DebugConnectToRunningApp { get; set; }
 
+        [JsonProperty("dependencies")]
+        public List<string> Dependencies { get; set; }
+
         [JsonProperty("deviceName")]
         public string DeviceName { get; set; }
 
@@ -97,11 +100,11 @@
         [JsonProperty("launchTimeout")]
         public int LaunchTimeout { get; set; }
 
+        [JsonProperty("pingTimeout")]
+        public int PingTimeout { get; set; }
+
         [JsonProperty("takesScreenshot")]
         public bool TakesScreenshot { get; set; }
-
-        [JsonProperty("dependencies")]
-        public List<string> Dependencies { get; set; }
 
         #endregion
 
