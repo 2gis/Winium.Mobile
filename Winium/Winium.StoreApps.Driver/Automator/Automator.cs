@@ -260,6 +260,11 @@
             }
             catch (Exception)
             {
+                if (this.ActualCapabilities.NoFallback)
+                {
+                    return false;
+                }
+
                 // TODO Limit catch clause from broad Exception, to specific ones
                 // We expect FileNotFound exception, but in rare cases other exceptions can be thrown by SmartDevice API
                 usingFallbackPort = true;
