@@ -30,10 +30,6 @@
 
         #endregion
 
-        #region Constructors and Destructors
-
-        #endregion
-
         #region Public Properties
 
         public Capabilities ActualCapabilities { get; set; }
@@ -101,7 +97,7 @@
             {
                 stopWatch.Restart();
                 Logger.Trace("Pinging InnerServer");
-                connected = this.TryConnectToApp();
+                connected = this.TryConnectToApp(this.ActualCapabilities.PingTimeout);
 
                 if (connected)
                 {
@@ -249,7 +245,7 @@
             }
         }
 
-        private bool TryConnectToApp()
+        private bool TryConnectToApp(int timeout)
         {
             var usingFallbackPort = false;
             const string FallbackPort = "9998";
@@ -264,31 +260,38 @@
             }
             catch (Exception)
             {
+                if (this.ActualCapabilities.NoFallback)
+                {
+                    return false;
+                }
+
                 // TODO Limit catch clause from broad Exception, to specific ones
                 // We expect FileNotFound exception, but in rare cases other exceptions can be thrown by SmartDevice API
                 usingFallbackPort = true;
                 connectionInformation = new ConnectionInformation { RemotePort = FallbackPort };
             }
 
-            this.CommandForwarder = new Requester(this.InnerIp, connectionInformation.RemotePort);
+            var port = Convert.ToInt32(connectionInformation.RemotePort);
+            this.CommandForwarder = new Requester(this.InnerIp, port);
             var pingCommand = new Command("ping");
-            var responseBody = this.CommandForwarder.ForwardCommand(pingCommand, false, 1500);
-            if (responseBody.StartsWith("<pong>", StringComparison.Ordinal))
-            {
-                Logger.Info("Received connection information from device {0}.", connectionInformation);
-                if (usingFallbackPort)
-                {
-                    Logger.Warn(
-                        "DEPRICATION: ConnectionInformation file was not found."
-                        + " Make sure that you are using same versions of Driver and InnerServer."
-                        + " Fallback to standard innerPort == {0}. This will be depricated in later versions.", 
-                        FallbackPort);
-                }
 
-                return true;
+            var responseBody = this.CommandForwarder.ForwardCommand(pingCommand, false, timeout);
+            if (!responseBody.StartsWith("<pong>", StringComparison.Ordinal))
+            {
+                return false;
             }
 
-            return false;
+            Logger.Info("Received connection information from device {0}.", connectionInformation);
+            if (usingFallbackPort)
+            {
+                Logger.Warn(
+                    "DEPRICATION: ConnectionInformation file was not found."
+                    + " Make sure that you are using same versions of Driver and InnerServer."
+                    + " Fallback to standard innerPort == {0}. This will be depricated in later versions.", 
+                    FallbackPort);
+            }
+
+            return true;
         }
 
         #endregion

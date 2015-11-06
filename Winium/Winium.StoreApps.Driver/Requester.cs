@@ -4,7 +4,6 @@
 
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
     using System.Net;
 
@@ -19,18 +18,15 @@
     {
         #region Fields
 
-        private readonly string ip;
-
-        private readonly string port;
+        private readonly UriBuilder uriBuilder;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public Requester(string ip, string port)
+        public Requester(string ip, int port)
         {
-            this.ip = ip;
-            this.port = port;
+            this.uriBuilder = new UriBuilder("http", ip, port, string.Empty);
         }
 
         #endregion
@@ -40,7 +36,6 @@
         public string ForwardCommand(Command commandToForward, bool verbose = true, int timeout = 0)
         {
             var serializedCommand = JsonConvert.SerializeObject(commandToForward);
-
             var response = this.SendRequest(serializedCommand, verbose, timeout);
             if (response.Key == HttpStatusCode.OK)
             {
@@ -54,7 +49,7 @@
 
         #region Methods
 
-        private static HttpWebRequest CreateWebRequest(string uri, string content, int timeout)
+        private static HttpWebRequest CreateWebRequest(Uri uri, string content, int timeout)
         {
             var request = (HttpWebRequest)WebRequest.Create(uri);
             request.ContentType = "application/json";
@@ -84,13 +79,14 @@
             try
             {
                 // TODO Refactor error handling
-                var uri = string.Format(CultureInfo.InvariantCulture, "http://{0}:{1}", this.ip, this.port);
-                var request = CreateWebRequest(uri, requestContent, timeout);
+                var uri = this.uriBuilder.Uri;
 
                 if (verbose)
                 {
                     Logger.Debug("Sending request to inner driver: {0}", uri);
                 }
+
+                var request = CreateWebRequest(uri, requestContent, timeout);
 
                 try
                 {

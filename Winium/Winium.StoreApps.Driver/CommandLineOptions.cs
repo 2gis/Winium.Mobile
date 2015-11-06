@@ -33,6 +33,9 @@
         [Option("nodeconfig", Required = false, HelpText = "configuration JSON file to register driver with selenium grid")]
         public string NodeConfig { get; set; }
 
+        [Option("ping-timeout", Required = false, DefaultValue = 2500, HelpText = "timeout for pinging InnerServer")]
+        public int PingTimeout { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
