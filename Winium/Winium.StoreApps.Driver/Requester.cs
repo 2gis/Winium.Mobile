@@ -11,6 +11,7 @@
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
+    using Winium.StoreApps.Logging;
 
     #endregion
 

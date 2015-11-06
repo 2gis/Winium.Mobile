@@ -1,4 +1,4 @@
-﻿namespace Winium.StoreApps.Driver.EmulatorHelpers
+﻿namespace Winium.Mobile.Connectivity.Emulator
 {
     #region
 
@@ -12,13 +12,15 @@
 
     using Microsoft.Xde.Common;
     using Microsoft.Xde.Interface;
+    using Microsoft.Xde.Wmi;
 
+    using Winium.Mobile.Connectivity.Gestures;
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
 
     #endregion
 
-    internal class EmulatorController
+    public class EmulatorController
     {
         #region Fields
 
@@ -36,18 +38,27 @@
 
         public EmulatorController(string emulatorName)
         {
-            this.emulatorVm = EmulatorFactory.Instance.GetVm(emulatorName);
-
-            if (this.emulatorVm == null)
+            try
             {
-                throw new NullReferenceException(
-                    string.Format("Could not get running XDE virtual machine {0}", emulatorName));
+                this.emulatorVm = EmulatorFactory.Instance.GetVm(emulatorName);
+
+                if (this.emulatorVm == null)
+                {
+                    throw new NullReferenceException(
+                        string.Format("Could not get running XDE virtual machine {0}", emulatorName));
+                }
+
+                this.client = AutomationClient.CreateAutomationClient(this.emulatorVm.Name);
+
+                this.cursor = new Point(0, 0);
+                this.PhoneScreenSize = this.emulatorVm.GetCurrentResolution();
             }
-
-            this.client = AutomationClient.CreateAutomationClient(this.emulatorVm.Name);
-
-            this.cursor = new Point(0, 0);
-            this.PhoneScreenSize = this.emulatorVm.GetCurrentResolution();
+            catch (XdeVirtualMachineException exception)
+            {
+                throw new VirtualMachineException(
+                    string.Format("Could not get Virtual Machine for {0}", emulatorName),
+                    exception);
+            }
         }
 
         #endregion
@@ -56,9 +67,9 @@
 
         public enum PhoneOrientation
         {
-            Portrait = 1, 
+            Portrait = 1,
 
-            Landscape = 2, 
+            Landscape = 2,
         }
 
         #endregion

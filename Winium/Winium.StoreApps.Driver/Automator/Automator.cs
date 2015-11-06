@@ -9,14 +9,14 @@
     using System.IO;
     using System.Threading;
 
-    using Microsoft.Xde.Wmi;
-
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    using Winium.Mobile.Connectivity;
+    using Winium.Mobile.Connectivity.Emulator;
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
-    using Winium.StoreApps.Driver.EmulatorHelpers;
+    using Winium.StoreApps.Logging;
 
     #endregion
 
@@ -220,7 +220,7 @@
             {
                 return new EmulatorController(this.ActualCapabilities.DeviceName);
             }
-            catch (XdeVirtualMachineException)
+            catch (VirtualMachineException)
             {
                 if (!withFallback)
                 {

@@ -1,4 +1,4 @@
-﻿namespace Winium.StoreApps.Driver.EmulatorHelpers
+﻿namespace Winium.Mobile.Connectivity.Emulator
 {
     #region
 
@@ -8,9 +8,11 @@
     using Microsoft.Xde.Common;
     using Microsoft.Xde.Wmi;
 
+    using Winium.StoreApps.Logging;
+
     #endregion
 
-    internal class EmulatorFactory : IDisposable
+    public class EmulatorFactory : IDisposable
     {
         #region Static Fields
 

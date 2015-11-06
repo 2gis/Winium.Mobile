@@ -5,9 +5,10 @@
     using System;
     using System.Collections.Generic;
 
+    using Winium.Mobile.Connectivity.Emulator;
     using Winium.StoreApps.Driver.Automator;
     using Winium.StoreApps.Driver.CommandHelpers;
-    using Winium.StoreApps.Driver.EmulatorHelpers;
+    using Winium.StoreApps.Logging;
 
     #endregion
 

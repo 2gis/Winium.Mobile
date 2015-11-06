@@ -1,5 +1,5 @@
 ﻿// Library needed to connect to the Windows Phone X Emulator
-namespace Winium.StoreApps.Driver.EmulatorHelpers
+namespace Winium.Mobile.Connectivity
 {
     #region
 
@@ -15,6 +15,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
     using Microsoft.SmartDevice.MultiTargeting.Connectivity;
 
     using Winium.StoreApps.Common.Exceptions;
+    using Winium.StoreApps.Logging;
 
     #endregion
 

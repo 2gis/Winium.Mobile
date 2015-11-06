@@ -8,6 +8,7 @@
     using System.Net.Sockets;
 
     using Winium.StoreApps.Common;
+    using Winium.StoreApps.Logging;
 
     #endregion
 

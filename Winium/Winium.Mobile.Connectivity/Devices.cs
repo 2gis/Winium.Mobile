@@ -1,4 +1,4 @@
-﻿namespace Winium.StoreApps.Driver.EmulatorHelpers
+﻿namespace Winium.Mobile.Connectivity
 {
     #region
 
