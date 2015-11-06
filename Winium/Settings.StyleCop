@@ -1,12 +1,16 @@
 <StyleCopSettings Version="105">
+  <GlobalSettings>
+    <StringProperty Name="MergeSettingsFiles">NoMerge</StringProperty>
+  </GlobalSettings>
   <Analyzers>
     <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">
       <AnalyzerSettings>
         <CollectionProperty Name="Hungarian">
           <Value>ip</Value>
+          <Value>is</Value>
+          <Value>j</Value>
           <Value>x</Value>
           <Value>y</Value>
-          <Value>j</Value>
         </CollectionProperty>
       </AnalyzerSettings>
     </Analyzer>
