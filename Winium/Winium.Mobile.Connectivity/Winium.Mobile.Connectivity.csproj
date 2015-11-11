@@ -31,7 +31,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Phone.Tools.Deploy">
+    <Reference Include="Microsoft.Phone.Tools.Deploy, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v8.1\Tools\AppDeploy\Microsoft.Phone.Tools.Deploy.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SmartDevice.Connectivity.Interface, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -49,17 +50,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WinAppDeploy">
-      <HintPath>C:\Program Files (x86)\Windows Kits\10\bin\x86\WinAppDeploy.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Deployer.cs" />
+    <Compile Include="DeployerFactory.cs" />
     <Compile Include="Gestures\FlickGesture.cs" />
     <Compile Include="Gestures\IGesture.cs" />
     <Compile Include="Emulator\EmulatorController.cs" />
@@ -68,10 +62,16 @@
     <Compile Include="Gestures\TapGesture.cs" />
     <Compile Include="Emulator\VirtualMachine.cs" />
     <Compile Include="Devices.cs" />
+    <Compile Include="IDeployer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Emulator\VirtualMachineException.cs" />
+    <Compile Include="Retry.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Phone.Tools.Deploy.Patched\Microsoft.Phone.Tools.Deploy.Patched.csproj">
+      <Project>{13B4DF5C-E542-4A7A-8F00-929D423B522C}</Project>
+      <Name>Microsoft.Phone.Tools.Deploy.Patched</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Winium.StoreApps.Common\Winium.StoreApps.Common.csproj">
       <Project>{3C8D0B9C-576B-4778-97B1-6839AA944AEE}</Project>
       <Name>Winium.StoreApps.Common</Name>

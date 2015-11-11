@@ -17,13 +17,16 @@ namespace Winium.Mobile.Connectivity
     using Winium.StoreApps.Common.Exceptions;
     using Winium.StoreApps.Logging;
 
+    using DeviceInfo = Microsoft.Phone.Tools.Deploy.Patched.DeviceInfo;
+    using Utils = Microsoft.Phone.Tools.Deploy.Patched.Utils;
+
     #endregion
 
     /// <summary>
     /// App Deploy for 8.1 or greater (uses  Microsoft.Phone.Tools.Deploy shipped with Microsoft SDKs\Windows Phone\v8.1\Tools\AppDeploy)
     /// </summary>
     /// TODO: do not copy Microsoft.Phone.Tools.Deploy assembly on build. Set Copy Local to false and use specified path to assembly.
-    public class Deployer
+    public class Deployer : IDeployer
     {
         #region Constants
 
@@ -33,13 +36,7 @@ namespace Winium.Mobile.Connectivity
 
         #region Fields
 
-        private readonly string appPath;
-
-        private readonly ConnectableDevice connectableDevice;
-
         private readonly DeviceInfo deviceInfo;
-
-        private IDevice device;
 
         private bool installed;
 
@@ -47,10 +44,8 @@ namespace Winium.Mobile.Connectivity
 
         #region Constructors and Destructors
 
-        public Deployer(string desiredDevice, bool strict, string appPath)
+        public Deployer(string desiredDevice, bool strict)
         {
-            this.appPath = appPath;
-
             this.deviceInfo = Devices.Instance.GetMatchingDevice(desiredDevice, strict);
 
             if (this.deviceInfo == null)
@@ -64,9 +59,9 @@ namespace Winium.Mobile.Connectivity
 
             var propertyInfo = this.deviceInfo.GetType().GetTypeInfo().GetDeclaredProperty("DeviceId");
             var deviceId = (string)propertyInfo.GetValue(this.deviceInfo);
-            this.connectableDevice =
+            var connectableDevice =
                 new MultiTargetingConnectivity(CultureInfo.CurrentUICulture.LCID).GetConnectableDevice(deviceId);
-
+            this.Device = connectableDevice.Connect(true);
             Logger.Info("Target emulator: '{0}'", this.DeviceName);
         }
 
@@ -86,13 +81,7 @@ namespace Winium.Mobile.Connectivity
 
         #region Properties
 
-        private IDevice Device
-        {
-            get
-            {
-                return this.device ?? (this.device = this.connectableDevice.Connect(true));
-            }
-        }
+        private IDevice Device { get; set; }
 
         private IRemoteApplication RemoteApplication { get; set; }
 
@@ -100,30 +89,16 @@ namespace Winium.Mobile.Connectivity
 
         #region Public Methods and Operators
 
-        public void Install()
+        public void Install(string appPath, List<string> dependencies)
         {
-            var appManifestInfo = this.InstallApplicationPackage(this.appPath);
-            this.installed = true;
-            this.RemoteApplication = this.Device.GetApplication(appManifestInfo.ProductId);
-        }
-
-        public void InstallDependencies(List<string> dependencies)
-        {
-            if (dependencies == null || !dependencies.Any())
-            {
-                return;
-            }
-
-            foreach (var dependency in dependencies)
-            {
-                this.InstallApplicationPackage(dependency);
-            }
+            this.InstallDependencies(dependencies);
+            this.InstallApp(appPath);
         }
 
         public void Launch()
         {
             this.Device.Activate();
-            WithRetry(() => this.RemoteApplication.Launch());
+            Retry.WithRetry(() => this.RemoteApplication.Launch(), MaxRetries);
         }
 
         public void ReceiveFile(string isoStoreRoot, string sourceDeviceFilePath, string targetDesktopFilePath)
@@ -169,40 +144,18 @@ namespace Winium.Mobile.Connectivity
             this.RemoteApplication.Uninstall();
             this.RemoteApplication = null;
 
-            this.device.Disconnect();
+            this.Device.Disconnect();
         }
 
         #endregion
 
         #region Methods
 
-        private static void WithRetry(Action action, uint maxRetries = MaxRetries)
+        private void InstallApp(string appPath)
         {
-            var triesLeft = maxRetries;
-            while (true)
-            {
-                --triesLeft;
-                try
-                {
-                    action();
-                    return;
-                }
-                catch (Exception exception)
-                {
-                    if (triesLeft > 0)
-                    {
-                        Logger.Warn(
-                            "Exception {0} {1} caught, going to retry. Retries left {2}.", 
-                            exception.GetType().ToString(), 
-                            exception.Message, 
-                            triesLeft);
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
+            var appManifestInfo = this.InstallApplicationPackage(appPath);
+            this.installed = true;
+            this.RemoteApplication = this.Device.GetApplication(appManifestInfo.ProductId);
         }
 
         private IAppManifestInfo InstallApplicationPackage(string path)
@@ -212,6 +165,19 @@ namespace Winium.Mobile.Connectivity
 
             Logger.Info("{0} was successfully deployed using Microsoft.Phone.Tools.Deploy", appManifest.Name);
             return appManifest;
+        }
+
+        private void InstallDependencies(List<string> dependencies)
+        {
+            if (dependencies == null || !dependencies.Any())
+            {
+                return;
+            }
+
+            foreach (var dependency in dependencies)
+            {
+                this.InstallApplicationPackage(dependency);
+            }
         }
 
         #endregion

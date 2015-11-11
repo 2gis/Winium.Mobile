@@ -17,7 +17,6 @@ class TestGetCommands(WuaTestCase):
     """
     Test GET commands that do not change anything in app, meaning they can all be run in one session.
     """
-
     def test_get_current_window_handle(self):
         """
         GET /session/:sessionId/window_handle Retrieve the current window handle.
@@ -187,7 +186,7 @@ class TestGetCommandsEx(UsesSecondTab):
 
 
 class TestAlert(UsesSecondTab):
-    # __shared_session__ = False
+    __shared_session__ = False
 
     @pytest.fixture
     def alert(self, second_tab, waiter):
@@ -224,6 +223,7 @@ class TestExecuteScript(WuaTestCase):
     https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script
     Tested scripts do affect app interface, but test methods are made in such way that they can be run in one session.
     """
+    __shared_session__ = False
 
     @pytest.mark.parametrize("command_alias", ["automation: invoke", "automation: InvokePattern.Invoke"])
     def test_automation_invoke(self, command_alias):
@@ -285,6 +285,8 @@ class TestBasicInput(WuaTestCase):
         assert '\r\n' == element.text
 
     def test_back(self):
+        if self.desired_capabilities['deviceName'].startswith('Mobile'):
+            pytest.skip("Clicking GoAppBarButton does not open app bar on Mobile Emulators, need fix in test app")
         self.driver.find_element_by_id('GoAppBarButton').click()
         text_box = self.driver.find_element_by_id('MyTextBox')
         self.driver.back()

@@ -56,7 +56,7 @@
             catch (XdeVirtualMachineException exception)
             {
                 throw new VirtualMachineException(
-                    string.Format("Could not get Virtual Machine for {0}", emulatorName),
+                    string.Format("Could not get Virtual Machine for {0}", emulatorName), 
                     exception);
             }
         }
@@ -67,9 +67,9 @@
 
         public enum PhoneOrientation
         {
-            Portrait = 1,
+            Portrait = 1, 
 
-            Landscape = 2,
+            Landscape = 2, 
         }
 
         #endregion

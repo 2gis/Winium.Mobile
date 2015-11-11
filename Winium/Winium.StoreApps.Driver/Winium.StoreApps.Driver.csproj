@@ -106,7 +106,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Winium.Mobile.Connectivity\Winium.Mobile.Connectivity.csproj">
       <Project>{DA38085E-F3DB-46EF-8889-D89283924917}</Project>
-      <Name>Winium.StoreApps.Tools.Connectivity</Name>
+      <Name>Winium.Mobile.Connectivity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Winium.StoreApps.Logging\Winium.StoreApps.Logging.csproj">
       <Project>{DAC0EAFE-2FE0-4F33-B173-736C1BAFD707}</Project>

@@ -440,7 +440,7 @@ namespace Microsoft.Phone.Tools.Deploy.Patched
                     throw new Exception(Resources.ExceptionManifestNotFound);
                 }
 
-                // NOTE: Patched version
+                // NOTE: Following line is patched replacement of original code
                 return ReadAppManifestInfoFromEntry(fromBundle, entry);
             }
             catch (Exception ex)
@@ -452,6 +452,7 @@ namespace Microsoft.Phone.Tools.Deploy.Patched
 
         /// <summary>
         /// Reads AppManifest from zip entry. Supports both 8.1 and pre 8.1 appx manifest format and UWP 10 manifest format.
+        /// Patched version of code responsible for reading manifest from ZipEntry. Patch adds support for UWP 10 manifest.
         /// </summary>
         /// <param name="fromBundle"></param>
         /// <param name="entry"></param>

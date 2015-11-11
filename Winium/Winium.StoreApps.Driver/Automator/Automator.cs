@@ -36,7 +36,7 @@
 
         public Requester CommandForwarder { get; set; }
 
-        public Deployer Deployer { get; set; }
+        public IDeployer Deployer { get; set; }
 
         public EmulatorController EmulatorController { get; set; }
 
@@ -155,11 +155,12 @@
                 }
             }
 
-            this.Deployer = new Deployer(this.ActualCapabilities.DeviceName, strictMatchDeviceName, appPath);
+            var appFileInfo = new FileInfo(this.ActualCapabilities.App);
+            this.Deployer = DeployerFactory.DeployerForPackage(appFileInfo, this.ActualCapabilities.DeviceName, strictMatchDeviceName);
+
             if (!debugDoNotDeploy)
             {
-                this.Deployer.InstallDependencies(this.ActualCapabilities.Dependencies);
-                this.Deployer.Install();
+                this.Deployer.Install(appPath, this.ActualCapabilities.Dependencies);
                 this.Deployer.SendFiles(this.ActualCapabilities.Files);
             }
 

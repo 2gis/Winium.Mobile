@@ -6,7 +6,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Microsoft.Phone.Tools.Deploy;
+    using Microsoft.Phone.Tools.Deploy.Patched;
 
     #endregion
 
