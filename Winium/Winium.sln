@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winium.Mobile.Connectivity"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winium.StoreApps.Logging", "Winium.StoreApps.Logging\Winium.StoreApps.Logging.csproj", "{DAC0EAFE-2FE0-4F33-B173-736C1BAFD707}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Phone.Tools.Deploy.Patched", "Microsoft.Phone.Tools.Deploy.Patched\Microsoft.Phone.Tools.Deploy.Patched.csproj", "{13B4DF5C-E542-4A7A-8F00-929D423B522C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TestApp\TestApp.Shared\TestApp.Shared.projitems*{10a0b15d-ca68-4a4f-83bc-639a62b5ef1e}*SharedItemsImports = 4
@@ -171,6 +173,16 @@ Global
 		{DAC0EAFE-2FE0-4F33-B173-736C1BAFD707}.Release|ARM.ActiveCfg = Release|Any CPU
 		{DAC0EAFE-2FE0-4F33-B173-736C1BAFD707}.Release|x64.ActiveCfg = Release|Any CPU
 		{DAC0EAFE-2FE0-4F33-B173-736C1BAFD707}.Release|x86.ActiveCfg = Release|Any CPU
+		{13B4DF5C-E542-4A7A-8F00-929D423B522C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{13B4DF5C-E542-4A7A-8F00-929D423B522C}.Debug|ARM.ActiveCfg = Debug|x86
+		{13B4DF5C-E542-4A7A-8F00-929D423B522C}.Debug|x64.ActiveCfg = Debug|x86
+		{13B4DF5C-E542-4A7A-8F00-929D423B522C}.Debug|x86.ActiveCfg = Debug|x86
+		{13B4DF5C-E542-4A7A-8F00-929D423B522C}.Debug|x86.Build.0 = Debug|x86
+		{13B4DF5C-E542-4A7A-8F00-929D423B522C}.Release|Any CPU.ActiveCfg = Release|x86
+		{13B4DF5C-E542-4A7A-8F00-929D423B522C}.Release|ARM.ActiveCfg = Release|x86
+		{13B4DF5C-E542-4A7A-8F00-929D423B522C}.Release|x64.ActiveCfg = Release|x86
+		{13B4DF5C-E542-4A7A-8F00-929D423B522C}.Release|x86.ActiveCfg = Release|x86
+		{13B4DF5C-E542-4A7A-8F00-929D423B522C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
