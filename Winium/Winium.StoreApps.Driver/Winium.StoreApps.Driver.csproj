@@ -16,25 +16,6 @@
     <RestorePackages>true</RestorePackages>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
@@ -59,38 +40,15 @@
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Phone.Tools.Deploy">
-      <HintPath>C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v8.1\Tools\AppDeploy\Microsoft.Phone.Tools.Deploy.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SmartDevice.Connectivity.Interface, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.SmartDevice.MultiTargeting.Connectivity, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Xde.Common, Version=8.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft XDE\8.1\Microsoft.Xde.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xde.Interface, Version=8.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft XDE\8.1\Microsoft.Xde.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xde.Wmi">
-      <HintPath>C:\Program Files (x86)\Microsoft XDE\8.1\Microsoft.Xde.Wmi.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Automator\Automator.cs" />
@@ -124,18 +82,8 @@
     <Compile Include="CommandHelpers\BuildInfo.cs" />
     <Compile Include="CommandHelpers\SendKeysHelper.cs" />
     <Compile Include="CommandLineOptions.cs" />
-    <Compile Include="EmulatorHelpers\Deployer.cs" />
-    <Compile Include="EmulatorHelpers\Devices.cs" />
-    <Compile Include="EmulatorHelpers\EmulatorController.cs" />
-    <Compile Include="EmulatorHelpers\EmulatorFactory.cs" />
-    <Compile Include="EmulatorHelpers\FlickGesture.cs" />
-    <Compile Include="EmulatorHelpers\IGesture.cs" />
-    <Compile Include="EmulatorHelpers\ScrollGesture.cs" />
-    <Compile Include="EmulatorHelpers\TapGesture.cs" />
-    <Compile Include="EmulatorHelpers\VirtualMachine.cs" />
     <Compile Include="HttpRequest.cs" />
     <Compile Include="Listener.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="ExitHandler.cs" />
     <Compile Include="NodeRegistrar.cs" />
     <Compile Include="Program.cs" />
@@ -155,6 +103,14 @@
     <ProjectReference Include="..\Winium.StoreApps.Common\Winium.StoreApps.Common.csproj">
       <Project>{3c8d0b9c-576b-4778-97b1-6839aa944aee}</Project>
       <Name>Winium.StoreApps.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Winium.Mobile.Connectivity\Winium.Mobile.Connectivity.csproj">
+      <Project>{DA38085E-F3DB-46EF-8889-D89283924917}</Project>
+      <Name>Winium.Mobile.Connectivity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Winium.StoreApps.Logging\Winium.StoreApps.Logging.csproj">
+      <Project>{DAC0EAFE-2FE0-4F33-B173-736C1BAFD707}</Project>
+      <Name>Winium.StoreApps.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

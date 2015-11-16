@@ -7,8 +7,8 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
+    using Winium.Mobile.Connectivity;
     using Winium.StoreApps.Common.Exceptions;
-    using Winium.StoreApps.Driver.EmulatorHelpers;
 
     #endregion
 

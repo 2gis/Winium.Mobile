@@ -1,4 +1,4 @@
-﻿namespace Winium.StoreApps.Driver
+﻿namespace Winium.StoreApps.Logging
 {
     #region
 
@@ -9,7 +9,7 @@
 
     #endregion
 
-    internal static class Logger
+    public static class Logger
     {
         #region Constants
 

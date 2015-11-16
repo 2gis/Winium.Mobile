@@ -11,6 +11,8 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    using Winium.StoreApps.Logging;
+
     using Timer = System.Timers.Timer;
 
     #endregion

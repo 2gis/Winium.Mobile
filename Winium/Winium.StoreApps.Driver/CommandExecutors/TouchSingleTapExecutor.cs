@@ -2,8 +2,8 @@
 {
     #region
 
+    using Winium.Mobile.Connectivity.Gestures;
     using Winium.StoreApps.Driver.Automator;
-    using Winium.StoreApps.Driver.EmulatorHelpers;
 
     #endregion
 

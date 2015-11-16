@@ -9,14 +9,14 @@
     using System.IO;
     using System.Threading;
 
-    using Microsoft.Xde.Wmi;
-
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    using Winium.Mobile.Connectivity;
+    using Winium.Mobile.Connectivity.Emulator;
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
-    using Winium.StoreApps.Driver.EmulatorHelpers;
+    using Winium.StoreApps.Logging;
 
     #endregion
 
@@ -36,7 +36,7 @@
 
         public Requester CommandForwarder { get; set; }
 
-        public Deployer Deployer { get; set; }
+        public IDeployer Deployer { get; set; }
 
         public EmulatorController EmulatorController { get; set; }
 
@@ -155,11 +155,12 @@
                 }
             }
 
-            this.Deployer = new Deployer(this.ActualCapabilities.DeviceName, strictMatchDeviceName, appPath);
+            var appFileInfo = new FileInfo(this.ActualCapabilities.App);
+            this.Deployer = DeployerFactory.DeployerForPackage(appFileInfo, this.ActualCapabilities.DeviceName, strictMatchDeviceName);
+
             if (!debugDoNotDeploy)
             {
-                this.Deployer.InstallDependencies(this.ActualCapabilities.Dependencies);
-                this.Deployer.Install();
+                this.Deployer.Install(appPath, this.ActualCapabilities.Dependencies);
                 this.Deployer.SendFiles(this.ActualCapabilities.Files);
             }
 
@@ -220,7 +221,7 @@
             {
                 return new EmulatorController(this.ActualCapabilities.DeviceName);
             }
-            catch (XdeVirtualMachineException)
+            catch (VirtualMachineException)
             {
                 if (!withFallback)
                 {
