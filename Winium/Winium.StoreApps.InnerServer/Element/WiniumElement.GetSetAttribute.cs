@@ -9,6 +9,7 @@
     using Newtonsoft.Json.Linq;
 
     using Winium.StoreApps.Common.Exceptions;
+    using Winium.StoreApps.InnerServer.Commands.Helpers;
 
     #endregion
 
@@ -25,8 +26,19 @@
             {
                 return targetPropertyInfo.GetValue(targetObject, null);
             }
-
+            // TODO: Use DependencyProperty lookup instead of FrameworkElementExtensions.
+            object attribute = this.GetExtensionAttribute(attributeName);
+            if (attribute != null) {
+                return attribute;
+            }
             throw new AutomationException("Could not access attribute {0}.", attributeName);
+        }
+
+        private object GetExtensionAttribute(string attributeName)
+        {
+            MethodInfo method = typeof(FrameworkElementExtensions).GetRuntimeMethods().First(m => m.Name.Equals(attributeName));
+            object[] parameters = { this.Element };
+            return method?.Invoke(null, parameters);
         }
 
         internal void SetAttribute(string attributeName, JToken value)
