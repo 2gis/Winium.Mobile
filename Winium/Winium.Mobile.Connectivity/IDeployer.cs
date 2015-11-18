@@ -18,6 +18,8 @@ namespace Winium.Mobile.Connectivity
 
         void Install(string appPath, List<string> dependencies);
 
+        void UsePreInstalledApplication(string appPath);
+
         void Launch();
 
         void ReceiveFile(string isoStoreRoot, string sourceDeviceFilePath, string targetDesktopFilePath);

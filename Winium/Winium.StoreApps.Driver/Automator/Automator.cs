@@ -126,7 +126,7 @@
             // TODO throw AutomationException with SessionNotCreatedException if timeout and uninstall the app
         }
 
-        public void InitializeApp()
+        public void Deploy()
         {
             var appPath = this.ActualCapabilities.App;
             var debugDoNotDeploy = this.ActualCapabilities.DebugConnectToRunningApp;
@@ -136,11 +136,49 @@
                 throw new AutomationException("app capability is not set.", ResponseStatus.SessionNotCreatedException);
             }
 
+            this.InitializeDeployer();
+            this.ActualCapabilities.DeviceName = this.Deployer.DeviceName;
+
+            this.InitializeApplication(appPath);
+            
+            this.EmulatorController = this.CreateEmulatorController(debugDoNotDeploy);
+
+            this.InnerIp = this.EmulatorController.GetIpAddress();
+
+            this.LaunchAppIfNeeded();
+        }
+
+        private void LaunchAppIfNeeded()
+        {
+            if (!this.ActualCapabilities.AutoLaunch)
+            {
+                return;
+            }
+
+            this.Deployer.Launch();
+            this.ConnectToApp();
+        }
+
+        private void InitializeApplication(string appPath)
+        {
+            if (this.ActualCapabilities.DebugConnectToRunningApp)
+            {
+                this.Deployer.UsePreInstalledApplication(appPath);
+            }
+            else
+            {
+                this.Deployer.Install(appPath, this.ActualCapabilities.Dependencies);
+                this.Deployer.SendFiles(this.ActualCapabilities.Files);
+            }
+        }
+
+        private void InitializeDeployer()
+        {
             var strictMatchDeviceName = Capabilities.BoundDeviceName != null;
             if (strictMatchDeviceName)
             {
                 if (Capabilities.BoundDeviceName.StartsWith(
-                    this.ActualCapabilities.DeviceName, 
+                    this.ActualCapabilities.DeviceName,
                     StringComparison.OrdinalIgnoreCase))
                 {
                     this.ActualCapabilities.DeviceName = Capabilities.BoundDeviceName;
@@ -149,33 +187,25 @@
                 {
                     throw new AutomationException(
                         string.Format(
-                            "Driver was bound to '{0}' at launch with --bound-device-name option, but another device '{1}' was requested by session.", 
-                            Capabilities.BoundDeviceName, 
+                            "Driver was bound to '{0}' at launch with --bound-device-name option, but another device '{1}' was requested by session.",
+                            Capabilities.BoundDeviceName,
                             this.ActualCapabilities.DeviceName));
                 }
             }
 
             var appFileInfo = new FileInfo(this.ActualCapabilities.App);
-            this.Deployer = DeployerFactory.DeployerForPackage(appFileInfo, this.ActualCapabilities.DeviceName, strictMatchDeviceName);
-
-            if (!debugDoNotDeploy)
-            {
-                this.Deployer.Install(appPath, this.ActualCapabilities.Dependencies);
-                this.Deployer.SendFiles(this.ActualCapabilities.Files);
-            }
+            this.Deployer = DeployerFactory.DeployerForPackage(
+                appFileInfo,
+                this.ActualCapabilities.DeviceName,
+                strictMatchDeviceName);
 
             if (!this.ActualCapabilities.DeviceName.Equals(this.Deployer.DeviceName, StringComparison.OrdinalIgnoreCase))
             {
                 Logger.Warn(
                     "Device was found using partail deviceName '{0}',"
-                    + " this behavior might be deprecated in favor of specifying strict deviceName or platformVersion (when implemented).", 
+                    + " this behavior might be deprecated in favor of specifying strict deviceName or platformVersion (when implemented).",
                     this.ActualCapabilities.DeviceName);
             }
-
-            this.ActualCapabilities.DeviceName = this.Deployer.DeviceName;
-            this.EmulatorController = this.CreateEmulatorController(debugDoNotDeploy);
-
-            this.InnerIp = this.EmulatorController.GetIpAddress();
         }
 
         public Point? RequestElementLocation(JToken element)
