@@ -28,12 +28,8 @@
                     JsonConvert.SerializeObject(this.ExecutedCommand.Parameters["desiredCapabilities"]);
                 this.Automator.ActualCapabilities = Capabilities.CapabilitiesFromJsonString(serializedCapability);
 
-                this.Automator.InitializeApp();
-                if (this.Automator.ActualCapabilities.AutoLaunch)
-                {
-                    this.Automator.Deployer.Launch();
-                    this.Automator.ConnectToApp();
-                }
+                this.Automator.Deploy();
+                
 
                 return this.JsonResponse(ResponseStatus.Success, this.Automator.ActualCapabilities);
             }

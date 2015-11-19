@@ -95,6 +95,12 @@ namespace Winium.Mobile.Connectivity
             this.InstallApp(appPath);
         }
 
+        public void UsePreInstalledApplication(string appPath)
+        {
+            var appManifest = Utils.ReadAppManifestInfoFromPackage(appPath);
+            this.RemoteApplication = this.Device.GetApplication(appManifest.ProductId);
+        }
+
         public void Launch()
         {
             this.Device.Activate();
