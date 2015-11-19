@@ -64,6 +64,11 @@
                 this.registredElements.Add(registeredKey, element);
             }
 
+            var staleElements = registredElements.Where(x => x.Value.IsStale).ToList();
+            foreach (var staleElement in staleElements) {
+                this.registredElements.Remove(staleElement.Key);
+            }
+
             return registeredKey;
         }
 
