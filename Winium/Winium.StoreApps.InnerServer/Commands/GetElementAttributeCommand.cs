@@ -9,7 +9,6 @@
     using Newtonsoft.Json.Linq;
 
     using Winium.StoreApps.Common;
-    using Winium.StoreApps.Common.Exceptions;
 
     #endregion
 
@@ -21,7 +20,7 @@
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Methods
 
         protected override string DoImpl()
         {
@@ -43,21 +42,15 @@
              * property value as plain string if property is scalar or string,
              * JSON encoded property if property is Lists, Dictionary or other nonscalar types 
              */
-            try
-            {
-                var propertyObject = element.GetAttribute(attributeName);
+            object propertyObject;
 
-                return this.JsonResponse(ResponseStatus.Success, SerializeObjectAsString(propertyObject));
-            }
-            catch (AutomationException)
+            if (!element.TryGetAutomationProperty(attributeName, out propertyObject))
             {
-                return this.JsonResponse();
+                element.TryGetProperty(attributeName, out propertyObject);
             }
+
+            return this.JsonResponse(ResponseStatus.Success, SerializeObjectAsString(propertyObject));
         }
-
-        #endregion
-
-        #region Methods
 
         private static bool IsTypeSerializedUsingToString(Type type)
         {

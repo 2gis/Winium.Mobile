@@ -69,6 +69,9 @@
     <Compile Include="Commands\GetElementTagNameCommand.cs" />
     <Compile Include="Commands\TextCommand.cs" />
     <Compile Include="Commands\ValueCommand.cs" />
+    <Compile Include="Element\Helpers\AutomationPropertiesAccessor.cs" />
+    <Compile Include="Element\Helpers\AutomationPropertiesHelper.cs" />
+    <Compile Include="Element\Helpers\PropertiesAccessor.cs" />
     <Compile Include="Element\ISearchable.cs" />
     <Compile Include="Element\WiniumElement.GetText.cs" />
     <Compile Include="Element\WiniumElement.Find.cs" />

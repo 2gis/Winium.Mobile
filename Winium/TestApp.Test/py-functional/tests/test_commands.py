@@ -108,7 +108,8 @@ class TestGetCommands(WuaTestCase):
     @pytest.mark.parametrize(("attr_name", "expected_value"), [
         ('Width', '300'),
         ('DesiredSize.Width', '300'),
-    ], ids=['simple property', 'nested property'])
+        ('AutomationIdProperty', 'MyTextBox')
+    ], ids=['simple property', 'nested property', 'automation property'])
     def test_get_element_attribute(self, attr_name, expected_value):
         """
         GET /session/:sessionId/element/:id/attribute/:name Get the value of an element's attribute.
