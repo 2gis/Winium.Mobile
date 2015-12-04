@@ -4,11 +4,14 @@
 
     using System;
 
+    using Newtonsoft.Json.Linq;
+
     using Windows.UI.Xaml;
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
     using Winium.StoreApps.InnerServer.Commands.Helpers;
+    using Winium.StoreApps.InnerServer.Element.Helpers;
 
     #endregion
 
@@ -133,6 +136,24 @@
         public override int GetHashCode()
         {
             return this.weakElement != null ? this.weakElement.GetHashCode() : 0;
+        }
+
+        public void SetProperty(string attributeName, JToken value)
+        {
+            PropertiesAccessor.SetProperty(this.Element, attributeName, value);
+        }
+
+        public bool TryGetAutomationProperty(string automationPropertyName, out object value)
+        {
+            return AutomationPropertiesAccessor.TryGetAutomationProperty(
+                this.Element, 
+                automationPropertyName, 
+                out value);
+        }
+
+        public bool TryGetProperty(string attributeName, out object value)
+        {
+            return PropertiesAccessor.TryGetProperty(this.Element, attributeName, out value);
         }
 
         #endregion
