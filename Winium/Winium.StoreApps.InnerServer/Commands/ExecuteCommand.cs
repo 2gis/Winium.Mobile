@@ -180,7 +180,7 @@
             var attributeName = args[1].ToString();
             var value = args[2];
 
-            element.SetAttribute(attributeName, value);
+            element.SetProperty(attributeName, value);
 
             return null;
         }

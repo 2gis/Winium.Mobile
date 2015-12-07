@@ -1,4 +1,4 @@
-﻿namespace Winium.StoreApps.InnerServer.Element
+﻿namespace Winium.StoreApps.InnerServer.Element.Helpers
 {
     #region
 
@@ -8,44 +8,53 @@
 
     using Newtonsoft.Json.Linq;
 
+    using Windows.UI.Xaml;
+
     using Winium.StoreApps.Common.Exceptions;
 
     #endregion
 
-    internal partial class WiniumElement
+    internal static class PropertiesAccessor
     {
-        #region Methods
+        #region Public Methods and Operators
 
-        internal object GetAttribute(string attributeName)
+        public static void SetProperty(FrameworkElement element, string propertyName, JToken value)
         {
             object targetObject;
             PropertyInfo targetPropertyInfo;
 
-            if (this.GetAttributeTarget(attributeName, out targetObject, out targetPropertyInfo))
-            {
-                return targetPropertyInfo.GetValue(targetObject, null);
-            }
-
-            throw new AutomationException("Could not access attribute {0}.", attributeName);
-        }
-
-        internal void SetAttribute(string attributeName, JToken value)
-        {
-            object targetObject;
-            PropertyInfo targetPropertyInfo;
-
-            if (this.GetAttributeTarget(attributeName, out targetObject, out targetPropertyInfo))
+            if (GetPropertyTarget(element, propertyName, out targetObject, out targetPropertyInfo))
             {
                 targetPropertyInfo.SetValue(targetObject, value.ToObject(targetPropertyInfo.PropertyType));
             }
             else
             {
-                throw new AutomationException("Could not access attribute {0}.", attributeName);
+                throw new AutomationException("Could not access attribute {0}.", propertyName);
             }
         }
 
-        private bool GetAttributeTarget(
-            string attributeName, 
+        public static bool TryGetProperty(FrameworkElement element, string propertyName, out object value)
+        {
+            value = null;
+            object targetObject;
+            PropertyInfo targetPropertyInfo;
+
+            if (!GetPropertyTarget(element, propertyName, out targetObject, out targetPropertyInfo))
+            {
+                return false;
+            }
+
+            value = targetPropertyInfo.GetValue(targetObject, null);
+            return true;
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static bool GetPropertyTarget(
+            object sourceObject, 
+            string propertyName, 
             out object targetObject, 
             out PropertyInfo targetPropertyInfo)
         {
@@ -53,10 +62,10 @@
             targetPropertyInfo = null;
 
             object parent = null;
-            var curObject = (object)this.Element;
+            var curObject = sourceObject;
             PropertyInfo propertyInfo = null;
 
-            var properties = attributeName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            var properties = propertyName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (!properties.Any())
             {
