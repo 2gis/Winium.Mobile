@@ -2,6 +2,17 @@
 
 <!--## Unreleased-->
 
+## v1.5.0
+- Fix crash on bad JSON request body
+- Fix not reading http request body to end in certain cases
+- Increase default ping timeout
+- Add `--ping-timeout` option and `pingTimeout` desired capability to set ping timeout
+- Add `noFallback` desired capability to prevent driver from trying to connect to `9998` port
+- Add support for deployment of UWP apps (Windows 10 apps)
+- Fix error when `debugConnectToRunningApp` is set to `true`
+- Add support for accessing `AutomationProperties` with `GetElementAttribute` command
+
+
 ## v1.4.0
 - Fix `Remote Procedure Call Failed` when trying to launch app under test by retrying it
 - Fix `sessionId` being `null` in response for some commands (thanks to [@tkurnosova](https://github.com/tkurnosova))
