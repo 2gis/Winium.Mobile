@@ -1,5 +1,6 @@
 # coding: utf-8
 from time import sleep
+
 import pytest
 from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException, WebDriverException
 from selenium.webdriver import ActionChains
@@ -9,7 +10,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from tests import WuaTestCase
 
-
 By.XNAME = 'xname'
 
 
@@ -17,6 +17,7 @@ class TestGetCommands(WuaTestCase):
     """
     Test GET commands that do not change anything in app, meaning they can all be run in one session.
     """
+
     def test_get_current_window_handle(self):
         """
         GET /session/:sessionId/window_handle Retrieve the current window handle.
@@ -108,8 +109,9 @@ class TestGetCommands(WuaTestCase):
     @pytest.mark.parametrize(("attr_name", "expected_value"), [
         ('Width', '300'),
         ('DesiredSize.Width', '300'),
-        ('AutomationIdProperty', 'MyTextBox')
-    ], ids=['simple property', 'nested property', 'automation property'])
+        ('AutomationIdProperty', 'MyTextBox'),
+        ('Visibility', '0'),
+    ], ids=['simple property', 'nested property', 'automation property', 'enum'])
     def test_get_element_attribute(self, attr_name, expected_value):
         """
         GET /session/:sessionId/element/:id/attribute/:name Get the value of an element's attribute.
@@ -252,7 +254,7 @@ class TestExecuteScript(WuaTestCase):
 
         assert start_state != end_state
 
-    @pytest.mark.parametrize(("attribute", "value"), [('Width', 10, ), ('Background.Opacity', 0, )],
+    @pytest.mark.parametrize(("attribute", "value"), [('Width', 10,), ('Background.Opacity', 0,)],
                              ids=["should set basic properties", "should set nested properties"])
     def test_attribute_set(self, attribute, value):
         element = self.driver.find_element_by_id('SetButton')

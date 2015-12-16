@@ -151,6 +151,11 @@
                 out value);
         }
 
+        public bool TryGetDependencyProperty(string propertyName, out object value)
+        {
+            return PropertiesAccessor.TryGetDependencyProperty(this.Element, propertyName, out value);
+        }
+
         public bool TryGetProperty(string attributeName, out object value)
         {
             return PropertiesAccessor.TryGetProperty(this.Element, attributeName, out value);

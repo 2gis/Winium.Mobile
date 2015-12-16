@@ -8,6 +8,7 @@
     using Newtonsoft.Json.Serialization;
 
     using Winium.Mobile.Connectivity;
+    using Winium.StoreApps.Common.CommandSettings;
     using Winium.StoreApps.Common.Exceptions;
 
     #endregion
@@ -35,6 +36,7 @@
             this.Dependencies = new List<string>();
             this.PingTimeout = DefaultPingTimeout;
             this.NoFallback = true;
+            this.CommandSettings = new CommandSettings();
         }
 
         #endregion
@@ -109,6 +111,9 @@
 
         [JsonProperty("takesScreenshot")]
         public bool TakesScreenshot { get; set; }
+
+        [JsonProperty("commandSettings")]
+        public CommandSettings CommandSettings { get; set; }
 
         #endregion
 
