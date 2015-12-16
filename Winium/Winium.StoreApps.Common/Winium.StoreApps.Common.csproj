@@ -39,11 +39,13 @@
     <Compile Include="Command.cs" />
     <Compile Include="CommandInfo.cs" />
     <Compile Include="CommandResponse.cs" />
+    <Compile Include="CommandSettings\ElementAttributeCommandSettings.cs" />
     <Compile Include="ConnectionInformation.cs" />
     <Compile Include="DriverCommand.cs" />
     <Compile Include="Exceptions\AutomationException.cs" />
     <Compile Include="Exceptions\InnerDriverRequestException.cs" />
     <Compile Include="HttpResponseHelper.cs" />
+    <Compile Include="CommandSettings\CommandSettings.cs" />
     <Compile Include="JsonErrorCodes.cs" />
     <Compile Include="JsonWireClasses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
