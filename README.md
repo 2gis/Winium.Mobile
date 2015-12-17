@@ -17,6 +17,7 @@ Winium.StoreApps is an open source test automation tool for Windows Store apps, 
 
 ## Supported Platforms
 - Windows Phone 8.1
+- Windows 10 Mobile
 
 For Windows Phone 8 Silverlight test automation tool see [Windows Phone Driver](https://github.com/2gis/winphonedriver).
 For Windows Desktop (WPF, WinForms) test automation tool see [Winium Desktop](https://github.com/2gis/cruciatus).
@@ -29,7 +30,7 @@ You have Selenium WebDriver for testing of web apps, Appium for testing of iOS a
 ## Requirements
 * Windows 8 or higher
 * Visual Studio 2013 with Update 2 or higher
-* Windows phone 8.1 SDK
+* Windows phone 8.1 SDK and/or Windows 10 SDK
 
 You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/en-us/develop/download-phone-sdk).
 
@@ -51,9 +52,9 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 		AutomationServer.Instance.InitializeAndStart();
 	#endif // DEBUG
 	```
+3. Assure that `Internet (Client & Server)` capability is enabled in package manifest of your AUT. It should be enabled by default for Windows 8.1 apps. In UWP (Windows Mobile 10) it is disabled by default (only `Internet (Client)` is enabled).
 
-
-3. Write your tests using you favorite language. In your tests use `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) to set path to tested app's appx file. Here is python example:
+4. Write your tests using you favorite language. In your tests use `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) to set path to tested app's appx file. Here is python example:
 	```python
 	# put it in setUp
 	self.driver = webdriver.Remote(command_executor='http://localhost:9999',
@@ -65,9 +66,9 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 	```
 	> Make sure to set `deviceName` capability to `Emulator` if you are using the driver on a system where Visula Studio 2015 or Winodws 10 SDK is installed.
 
-4. Start `Winium.StoreApps.Driver.exe` ([download release from github](https://github.com/2gis/Winium.StoreApps/releases) or build it yourself)
+5. Start `Winium.StoreApps.Driver.exe` ([download release from github](https://github.com/2gis/Winium.StoreApps/releases) or build it yourself)
 
-5. Run your tests and watch the magic happening
+6. Run your tests and watch the magic happening
 
 ## Writing tests
 Essentially, Winium.StoreApps supports limited subset of [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol), which means that you can write tests just like you would write for Selenium or Appium, here are some [docs](http://docs.seleniumhq.org/docs/03_webdriver.jsp).
