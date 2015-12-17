@@ -109,7 +109,7 @@ class TestGetCommands(WuaTestCase):
     @pytest.mark.parametrize(("attr_name", "expected_value"), [
         ('Width', '300'),
         ('DesiredSize.Width', '300'),
-        ('AutomationIdProperty', 'MyTextBox'),
+        ('AutomationProperties.AutomationId', 'MyTextBox'),
         ('Visibility', '0'),
     ], ids=['simple property', 'nested property', 'automation property', 'enum'])
     def test_get_element_attribute(self, attr_name, expected_value):

@@ -55,6 +55,6 @@ class TestElementAttributeCommandSettings(object):
 
         element = driver.find_element_by_id('MyTextBox')
 
-        for i, attr in enumerate(['AutomationIdProperty', 'IsReadOnlyProperty', 'Width']):
+        for i, attr in enumerate(['AutomationProperties.AutomationId', 'IsReadOnly', 'Width']):
             value = element.get_attribute(attr)
             assert expected[i] == value

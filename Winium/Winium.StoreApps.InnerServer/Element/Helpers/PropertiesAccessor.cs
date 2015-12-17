@@ -35,6 +35,7 @@
 
         public static bool TryGetDependencyProperty(FrameworkElement element, string propertyName, out object value)
         {
+            propertyName = string.Format("{0}Property", propertyName);
             value = null;
             var propertyInfo =
                 element.GetType()
