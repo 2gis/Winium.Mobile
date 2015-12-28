@@ -145,6 +145,15 @@
 
         public bool TryGetAutomationProperty(string automationPropertyName, out object value)
         {
+            const string Prefix = "AutomationProperties.";
+            value = null;
+            if (!automationPropertyName.StartsWith(Prefix))
+            {
+                return false;
+            }
+
+            automationPropertyName = automationPropertyName.Remove(0, Prefix.Length);
+
             return AutomationPropertiesAccessor.TryGetAutomationProperty(
                 this.Element, 
                 automationPropertyName, 
