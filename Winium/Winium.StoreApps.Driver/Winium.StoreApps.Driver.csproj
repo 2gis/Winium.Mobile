@@ -46,6 +46,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Abstractions">
+      <HintPath>..\packages\System.IO.Abstractions.2.0.0.120\lib\net40\System.IO.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,6 +84,7 @@
     <Compile Include="CommandExecutors\TouchScrollExecutor.cs" />
     <Compile Include="CommandExecutors\TouchSingleTapExecutor.cs" />
     <Compile Include="CommandHelpers\BuildInfo.cs" />
+    <Compile Include="CommandHelpers\FilesCapabilityExpander.cs" />
     <Compile Include="CommandHelpers\SendKeysHelper.cs" />
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="HttpRequest.cs" />

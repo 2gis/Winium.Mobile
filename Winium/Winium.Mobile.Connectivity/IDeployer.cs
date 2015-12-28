@@ -24,7 +24,7 @@ namespace Winium.Mobile.Connectivity
 
         void ReceiveFile(string isoStoreRoot, string sourceDeviceFilePath, string targetDesktopFilePath);
 
-        void SendFiles(Dictionary<string, string> files);
+        void SendFiles(List<KeyValuePair<string, string>> files);
 
         void Terminate();
 

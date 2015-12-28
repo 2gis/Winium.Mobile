@@ -113,7 +113,7 @@ namespace Winium.Mobile.Connectivity
                 .ReceiveFile(sourceDeviceFilePath, targetDesktopFilePath, true);
         }
 
-        public void SendFiles(Dictionary<string, string> files)
+        public void SendFiles(List<KeyValuePair<string, string>> files)
         {
             if (files == null || !files.Any())
             {
@@ -123,14 +123,8 @@ namespace Winium.Mobile.Connectivity
             var isolatedStore = this.RemoteApplication.GetIsolatedStore("Local");
             foreach (var file in files)
             {
-                var phoneDirectoryName = Path.GetDirectoryName(file.Value);
-                var phoneFileName = Path.GetFileName(file.Value);
-                if (string.IsNullOrEmpty(phoneFileName))
-                {
-                    phoneFileName = Path.GetFileName(file.Key);
-                }
-
-                isolatedStore.SendFile(file.Key, Path.Combine(phoneDirectoryName, phoneFileName), true);
+                Logger.Debug("Sending file \"{0}\" to \"{1}\"", file.Key, file.Value);
+                isolatedStore.SendFile(file.Key, file.Value, true);
             }
         }
 
