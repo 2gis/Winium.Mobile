@@ -7,6 +7,7 @@
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Threading;
 
     using Newtonsoft.Json;
@@ -16,6 +17,7 @@
     using Winium.Mobile.Connectivity.Emulator;
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
+    using Winium.StoreApps.Driver.CommandHelpers;
     using Winium.StoreApps.Logging;
 
     #endregion
@@ -168,7 +170,8 @@
             else
             {
                 this.Deployer.Install(appPath, this.ActualCapabilities.Dependencies);
-                this.Deployer.SendFiles(this.ActualCapabilities.Files);
+                var expandedFiles = new FilesCapabilityExpander().ExpandFiles(this.ActualCapabilities.Files).ToList();
+                this.Deployer.SendFiles(expandedFiles);
             }
         }
 
