@@ -2,13 +2,18 @@
 <package>
   <metadata>
     <id>Winium.StoreApps.InnerServer</id>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <authors>2GIS</authors>
     <owners>2GIS</owners>
     <projectUrl>https://github.com/2gis/Winium.StoreApps</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Essential part of Winium StoreApps (Selenium Remote WebDriver implementation) that should be included in tested app to enable automation.</description>
     <releaseNotes>
+		v1.6.0
+			+ Addd path expansion for files capability to make it easier to deploy folders to app's local storage #128
+			+ Add setting to limit access to Automation, Dependency or CLR properties for `GetElementAttribute` command #120
+			+ Add setting to serialize `Enums` by name, not value for `GetElementAttribute` command #120
+			* Change the way Automation Properties names are handled by `GetElementAttribute` command #123
 		v1.5.0
 			* Fix crash on bad JSON request body
 			* Fix not reading http request body to end in certain cases
@@ -29,16 +34,7 @@
 			+ Add `--bound-device-name` command line option
 			* Use indented formatting for JSON responses for pretty logging
 			* Fix logger timestamp format (thanks to @magnarn)
-		v1.3.0
-			+ Add dynamic port assigment for InnerServer #39 
-			+ Add `autoLaunch` capability: whether to launch the app automatically. Default `true`
-			+ Add `--version` option to a driver CLI. Fix exit codes
-			+ Add `SetOrientation` command (Note that orientation is preserved between sessions)
-			* Fix `GetOrientation` command
-			+ Add Emulator VMs caching (i.e. speed up session creation when same emulator is requested)
-			* Fix Emulator VMs disposing on Driver exit (note that VM will not be closed)
-			* Fix Driver failing to create a new session if user name is not lower case (bug introduced in 778ca88)
-	</releaseNotes>
+    </releaseNotes>
     <copyright>Copyright ©  2015</copyright>
     <tags></tags>
   </metadata>

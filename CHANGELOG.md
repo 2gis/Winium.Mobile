@@ -2,6 +2,13 @@
 
 <!--## Unreleased-->
 
+## v1.6.0
+- Addd path expansion for files capability to make it easier to deploy folders to app's local storage #128
+- Add setting to limit access to Automation, Dependency or CLR properties for `GetElementAttribute` command #120
+- Add setting to serialize `Enums` by name, not value for `GetElementAttribute` command #120
+- Change the way Automation Properties names are handled by `GetElementAttribute` command #123
+
+
 ## v1.5.0
 - Fix crash on bad JSON request body
 - Fix not reading http request body to end in certain cases
