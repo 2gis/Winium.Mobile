@@ -2,6 +2,7 @@
 
 using System.Reflection;
 using System.Resources;
+using System.Runtime.CompilerServices;
 
 #endregion
 
@@ -31,3 +32,6 @@ using System.Resources;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.6.0.*")]
 [assembly: AssemblyFileVersionAttribute("1.6.0.0")]
+
+[assembly: InternalsVisibleTo("Winium.StoreApps.InnerServer.Tests")]
+[assembly: InternalsVisibleTo("UnitTestApp1")]

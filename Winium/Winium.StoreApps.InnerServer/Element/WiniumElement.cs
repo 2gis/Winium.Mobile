@@ -162,7 +162,7 @@
 
         public bool TryGetDependencyProperty(string propertyName, out object value)
         {
-            return PropertiesAccessor.TryGetDependencyProperty(this.Element, propertyName, out value);
+            return DependencyPropertiesAccessor.TryGetDependencyProperty(this.Element, propertyName, out value);
         }
 
         public bool TryGetProperty(string attributeName, out object value)

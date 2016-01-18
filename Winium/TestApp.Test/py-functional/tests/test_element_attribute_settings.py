@@ -48,13 +48,15 @@ class TestElementAttributeCommandSettings(object):
     ], indirect=True)
     def test_get_element_attribute_access_modifier(self, driver):
         expected = {
-            'AutomationProperties': ['MyTextBox', None, None],
-            'DependencyProperties': ['MyTextBox', 'false', None],
-            'ClrProperties': ['MyTextBox', 'false', '300'],
+            'AutomationProperties': ['UserCtrl', None, None],
+            'DependencyProperties': ['UserCtrl', '0', None],
+            'ClrProperties': ['UserCtrl', '0', 'Test'],
         }[driver.desired_capabilities['commandSettings']['elementAttributeSettings']['accessModifier']]
 
-        element = driver.find_element_by_id('MyTextBox')
+        element = driver.find_element_by_id('UserCtrl')
 
-        for i, attr in enumerate(['AutomationProperties.AutomationId', 'IsReadOnly', 'Width']):
-            value = element.get_attribute(attr)
-            assert expected[i] == value
+        ap, dp, clr = expected
+
+        assert ap == element.get_attribute('AutomationProperties.AutomationId')
+        assert dp == element.get_attribute('Height')
+        assert clr == element.get_attribute('ClrProperty')
