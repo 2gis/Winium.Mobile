@@ -33,27 +33,6 @@
             }
         }
 
-        public static bool TryGetDependencyProperty(FrameworkElement element, string propertyName, out object value)
-        {
-            propertyName = string.Format("{0}Property", propertyName);
-            value = null;
-            var propertyInfo =
-                element.GetType()
-                    .GetRuntimeProperties()
-                    .Where(x => x.PropertyType == typeof(DependencyProperty))
-                    .FirstOrDefault(x => x.Name == propertyName);
-
-            if (propertyInfo == null)
-            {
-                return false;
-            }
-
-            var dp = propertyInfo.GetValue(null) as DependencyProperty;
-            value = element.GetValue(dp);
-
-            return true;
-        }
-
         public static bool TryGetProperty(FrameworkElement element, string propertyName, out object value)
         {
             value = null;

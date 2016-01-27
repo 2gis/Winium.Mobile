@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winium.StoreApps.Common", "Winium.StoreApps.Common\Winium.StoreApps.Common.csproj", "{3C8D0B9C-576B-4778-97B1-6839AA944AEE}"
 EndProject
@@ -43,6 +43,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Phone.Tools.Deplo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winium.StoreApps.Driver.Tests", "Winium.StoreApps.Driver.Tests\Winium.StoreApps.Driver.Tests.csproj", "{07168ED9-C12A-43F5-898F-84AB113A9441}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winium.StoreApps.InnerServer.Tests", "Winium.StoreApps.InnerServer.Tests\Winium.StoreApps.InnerServer.Tests.csproj", "{E5DEE502-3D2D-42BA-9505-632F6C304380}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2BC2993B-C942-49BB-9D7D-D64ABE19DECE}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TestApp\TestApp.Shared\TestApp.Shared.projitems*{10a0b15d-ca68-4a4f-83bc-639a62b5ef1e}*SharedItemsImports = 4
@@ -67,8 +71,8 @@ Global
 		{E8683025-E703-4293-AA7E-3A9A3555BC40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8683025-E703-4293-AA7E-3A9A3555BC40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8683025-E703-4293-AA7E-3A9A3555BC40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{89E0F534-8622-42DD-9846-5514E390694D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{89E0F534-8622-42DD-9846-5514E390694D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89E0F534-8622-42DD-9846-5514E390694D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{89E0F534-8622-42DD-9846-5514E390694D}.Release|Any CPU.ActiveCfg = Release|x86
 		{10A0B15D-CA68-4A4F-83BC-639A62B5EF1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10A0B15D-CA68-4A4F-83BC-639A62B5EF1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A0B15D-CA68-4A4F-83BC-639A62B5EF1E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -98,6 +102,11 @@ Global
 		{07168ED9-C12A-43F5-898F-84AB113A9441}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{07168ED9-C12A-43F5-898F-84AB113A9441}.Debug|Any CPU.Build.0 = Debug|x86
 		{07168ED9-C12A-43F5-898F-84AB113A9441}.Release|Any CPU.ActiveCfg = Release|x86
+		{07168ED9-C12A-43F5-898F-84AB113A9441}.Release|Any CPU.Build.0 = Release|x86
+		{E5DEE502-3D2D-42BA-9505-632F6C304380}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E5DEE502-3D2D-42BA-9505-632F6C304380}.Debug|Any CPU.Build.0 = Debug|x86
+		{E5DEE502-3D2D-42BA-9505-632F6C304380}.Release|Any CPU.ActiveCfg = Release|x86
+		{E5DEE502-3D2D-42BA-9505-632F6C304380}.Release|Any CPU.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,5 +116,7 @@ Global
 		{89E0F534-8622-42DD-9846-5514E390694D} = {FFEB6900-C198-494F-A915-4F6B23D942A1}
 		{10A0B15D-CA68-4A4F-83BC-639A62B5EF1E} = {FFEB6900-C198-494F-A915-4F6B23D942A1}
 		{2D005293-6FF8-4FE0-B6DD-73CA0A2C71F5} = {D446A9F7-47F1-463D-8F44-C7F982C4FEB4}
+		{07168ED9-C12A-43F5-898F-84AB113A9441} = {2BC2993B-C942-49BB-9D7D-D64ABE19DECE}
+		{E5DEE502-3D2D-42BA-9505-632F6C304380} = {2BC2993B-C942-49BB-9D7D-D64ABE19DECE}
 	EndGlobalSection
 EndGlobal

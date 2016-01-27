@@ -25,34 +25,9 @@
 
         #region Methods
 
-        protected override string DoImpl()
-        {
-            var element = this.Automator.ElementsRegistry.GetRegisteredElement(this.ElementId);
-
-            string attributeName;
-            if (!this.Parameters.TryGetValue("NAME", out attributeName))
-            {
-                return this.JsonResponse();
-            }
-
-            ElementAttributeCommandSettings settings;
-            if (!this.Parameters.TryGetValue(CommandSettings.ElementAttributeSettingsParameter, out settings))
-            {
-                settings = new ElementAttributeCommandSettings();
-            }
-
-            /* GetAttribute command should return: null if no property was found,
-             * property value as plain string if property is scalar or string,
-             * JSON encoded property if property is Lists, Dictionary or other nonscalar types 
-             */
-            var value = GetPropertyCascade(element, attributeName, settings.AccessModifier);
-
-            return this.JsonResponse(ResponseStatus.Success, SerializeObjectAsString(value, settings.EnumAsString));
-        }
-
-        private static object GetPropertyCascade(
-            WiniumElement element, 
-            string key, 
+        internal static object GetPropertyCascade(
+            WiniumElement element,
+            string key,
             ElementAttributeAccessModifier options)
         {
             object propertyObject;
@@ -82,6 +57,31 @@
             }
 
             return null;
+        }
+
+        protected override string DoImpl()
+        {
+            var element = this.Automator.ElementsRegistry.GetRegisteredElement(this.ElementId);
+
+            string attributeName;
+            if (!this.Parameters.TryGetValue("NAME", out attributeName))
+            {
+                return this.JsonResponse();
+            }
+
+            ElementAttributeCommandSettings settings;
+            if (!this.Parameters.TryGetValue(CommandSettings.ElementAttributeSettingsParameter, out settings))
+            {
+                settings = new ElementAttributeCommandSettings();
+            }
+
+            /* GetAttribute command should return: null if no property was found,
+             * property value as plain string if property is scalar or string,
+             * JSON encoded property if property is Lists, Dictionary or other nonscalar types 
+             */
+            var value = GetPropertyCascade(element, attributeName, settings.AccessModifier);
+
+            return this.JsonResponse(ResponseStatus.Success, SerializeObjectAsString(value, settings.EnumAsString));
         }
 
         private static bool IsTypeSerializedUsingToString(Type type)
