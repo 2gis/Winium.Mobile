@@ -2,6 +2,10 @@
 
 <!--## Unreleased-->
 
+## v1.6.1
+- Fix `GetElementAttribute` not returning some Dependency Properties.
+
+
 ## v1.6.0
 - Addd path expansion for files capability to make it easier to deploy folders to app's local storage #128
 - Add setting to limit access to Automation, Dependency or CLR properties for `GetElementAttribute` command #120

@@ -2,13 +2,15 @@
 <package>
   <metadata>
     <id>Winium.StoreApps.InnerServer</id>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
     <authors>2GIS</authors>
     <owners>2GIS</owners>
     <projectUrl>https://github.com/2gis/Winium.StoreApps</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Essential part of Winium StoreApps (Selenium Remote WebDriver implementation) that should be included in tested app to enable automation.</description>
     <releaseNotes>
+		v1.6.1
+			* Fix `GetElementAttribute` not returning some Dependency Properties.
 		v1.6.0
 			+ Addd path expansion for files capability to make it easier to deploy folders to app's local storage #128
 			+ Add setting to limit access to Automation, Dependency or CLR properties for `GetElementAttribute` command #120
@@ -23,17 +25,6 @@
 			+ Add support for deployment of UWP apps (Windows 10 apps)
 			* Fix error when `debugConnectToRunningApp` is set to `true`
 			+ Add support for accessing `AutomationProperties` with `GetElementAttribute` command
-		v1.4.0
-			* Fix `Remote Procedure Call Failed` when trying to launch app under test by retrying it
-			* Fix `sessionId` being `null` in response for some commands (thanks to @tkurnosova)
-			+ Add support for deployment of dependenecies (thanks to @ole-vegard)
-			+ Add `IsElementEnabled` command
-			* Fix socket interrupt handling
-			+ Add Selenium Grid support and autoregistering Winium as Selenium Grid node
-			* Fix sessionId not being unique
-			+ Add `--bound-device-name` command line option
-			* Use indented formatting for JSON responses for pretty logging
-			* Fix logger timestamp format (thanks to @magnarn)
     </releaseNotes>
     <copyright>Copyright ©  2015</copyright>
     <tags></tags>
