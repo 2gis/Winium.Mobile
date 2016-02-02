@@ -2,6 +2,10 @@
 
 <!--## Unreleased-->
 
+## v1.6.2
+- Fix `PageSource` failing to serialize nested classes
+
+
 ## v1.6.1
 - Fix `GetElementAttribute` not returning some Dependency Properties.
 
