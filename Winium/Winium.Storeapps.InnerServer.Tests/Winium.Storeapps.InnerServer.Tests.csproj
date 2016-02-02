@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GetElementAttributeCommandTests.cs" />
+    <Compile Include="PageSourceCommandTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UiDispatch.cs" />
     <Compile Include="PropertyAccessorsTests\DependencyPropertiesAccessorTests.cs" />
