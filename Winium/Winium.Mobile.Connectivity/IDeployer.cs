@@ -26,6 +26,8 @@ namespace Winium.Mobile.Connectivity
 
         void SendFiles(List<KeyValuePair<string, string>> files);
 
+        void SendFile(string isoStoreRoot, string sourceDesktopFilePath, string targetDeviceFilePath);
+
         void Terminate();
 
         void Uninstall();

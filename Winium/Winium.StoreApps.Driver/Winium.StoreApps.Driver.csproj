@@ -59,6 +59,8 @@
     <Compile Include="CommandExecutors\GetElementAttributeExecutor.cs" />
     <Compile Include="CommandExecutors\CloseAppExecutor.cs" />
     <Compile Include="CommandExecutors\LaunchAppExecutor.cs" />
+    <Compile Include="CommandExecutors\PullFileExecutor.cs" />
+    <Compile Include="CommandExecutors\PushFileExecutor.cs" />
     <Compile Include="CommandExecutors\SetOrientationExecutor.cs" />
     <Compile Include="CommandExecutors\SubmitElementExecutor.cs" />
     <Compile Include="CommandExecutorDispatchTable.cs" />
