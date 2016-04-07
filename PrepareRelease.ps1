@@ -16,6 +16,7 @@ Function Test()
     $runTestsPath = Join-Path $solutionDir 'TestApp.Test\py-functional'
 
     $env:RELEASE=1
+    $env:REMOTE_RUN=1
     $proc = Start-Process "$runTestsPath/run_tests.bat" -PassThru -Wait -WorkingDirectory $runTestsPath
     Write-Host $proc.ExitCode
 

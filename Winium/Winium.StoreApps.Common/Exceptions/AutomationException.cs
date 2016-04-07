@@ -36,6 +36,12 @@
         {
         }
 
+        public AutomationException(string message, Exception innerException, ResponseStatus status)
+            : base(message, innerException)
+        {
+            this.Status = status;
+        }
+
         #endregion
 
         #region Public Properties

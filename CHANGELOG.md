@@ -2,6 +2,45 @@
 
 <!--## Unreleased-->
 
+## v1.6.2
+- Fix `PageSource` failing to serialize nested classes
+
+
+## v1.6.1
+- Fix `GetElementAttribute` not returning some Dependency Properties.
+
+
+## v1.6.0
+- Addd path expansion for files capability to make it easier to deploy folders to app's local storage #128
+- Add setting to limit access to Automation, Dependency or CLR properties for `GetElementAttribute` command #120
+- Add setting to serialize `Enums` by name, not value for `GetElementAttribute` command #120
+- Change the way Automation Properties names are handled by `GetElementAttribute` command #123
+
+
+## v1.5.0
+- Fix crash on bad JSON request body
+- Fix not reading http request body to end in certain cases
+- Increase default ping timeout
+- Add `--ping-timeout` option and `pingTimeout` desired capability to set ping timeout
+- Add `noFallback` desired capability to prevent driver from trying to connect to `9998` port
+- Add support for deployment of UWP apps (Windows 10 apps)
+- Fix error when `debugConnectToRunningApp` is set to `true`
+- Add support for accessing `AutomationProperties` with `GetElementAttribute` command
+
+
+## v1.4.0
+- Fix `Remote Procedure Call Failed` when trying to launch app under test by retrying it
+- Fix `sessionId` being `null` in response for some commands (thanks to [@tkurnosova](https://github.com/tkurnosova))
+- Add support for deployment of dependenecies (thanks to [@ole-vegard](https://github.com/ole-vegard))
+- Add `IsElementEnabled` command
+- Fix socket interrupt handling
+- Add Selenium Grid support and autoregistering Winium as Selenium Grid node ([Running tests in parallel](https://github.com/2gis/Winium.StoreApps/wiki/Running-tests-in-parallel))
+- Fix sessionId not being unique
+- Add `--bound-device-name` command line option
+- Use indented formatting for JSON responses for pretty logging
+- Fix logger timestamp format (thanks to [@magnarn](https://github.com/magnarn))
+
+
 ## v1.3.1
 - Fix click command for custom controls
 

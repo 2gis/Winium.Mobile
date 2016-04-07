@@ -4,11 +4,14 @@
 
     using System;
 
+    using Newtonsoft.Json.Linq;
+
     using Windows.UI.Xaml;
 
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
     using Winium.StoreApps.InnerServer.Commands.Helpers;
+    using Winium.StoreApps.InnerServer.Element.Helpers;
 
     #endregion
 
@@ -25,15 +28,6 @@
         public WiniumElement(FrameworkElement element)
         {
             this.weakElement = new WeakReference<FrameworkElement>(element);
-        }
-
-        public bool IsStale
-        {
-            get
-            {
-                FrameworkElement element;
-                return !this.weakElement.TryGetTarget(out element);
-            }
         }
 
         #endregion
@@ -75,6 +69,23 @@
                 }
 
                 throw new AutomationException("Stale element reference", ResponseStatus.StaleElementReference);
+            }
+        }
+
+        public bool IsEnabled
+        {
+            get
+            {
+                return this.Element.GetAutomationPeer().IsEnabled();
+            }
+        }
+
+        public bool IsStale
+        {
+            get
+            {
+                FrameworkElement element;
+                return !this.weakElement.TryGetTarget(out element);
             }
         }
 
@@ -125,6 +136,38 @@
         public override int GetHashCode()
         {
             return this.weakElement != null ? this.weakElement.GetHashCode() : 0;
+        }
+
+        public void SetProperty(string attributeName, JToken value)
+        {
+            PropertiesAccessor.SetProperty(this.Element, attributeName, value);
+        }
+
+        public bool TryGetAutomationProperty(string automationPropertyName, out object value)
+        {
+            const string Prefix = "AutomationProperties.";
+            value = null;
+            if (!automationPropertyName.StartsWith(Prefix))
+            {
+                return false;
+            }
+
+            automationPropertyName = automationPropertyName.Remove(0, Prefix.Length);
+
+            return AutomationPropertiesAccessor.TryGetAutomationProperty(
+                this.Element, 
+                automationPropertyName, 
+                out value);
+        }
+
+        public bool TryGetDependencyProperty(string propertyName, out object value)
+        {
+            return DependencyPropertiesAccessor.TryGetDependencyProperty(this.Element, propertyName, out value);
+        }
+
+        public bool TryGetProperty(string attributeName, out object value)
+        {
+            return PropertiesAccessor.TryGetProperty(this.Element, attributeName, out value);
         }
 
         #endregion

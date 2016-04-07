@@ -21,43 +21,24 @@
 
         #endregion
 
-        #region Public Methods and Operators
-
-        protected override string DoImpl()
-        {
-            string source;
-            var settings = new XmlWriterSettings { Indent = true, Encoding = new UTF8Encoding(false) };
-
-            using (var writer = new MemoryStream())
-            {
-                var xmlWriter = XmlWriter.Create(writer, settings);
-                this.WriteElementsToXml(xmlWriter);
-                xmlWriter.Flush();
-
-                var buffer = writer.ToArray();
-                source = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
-            }
-
-            return this.JsonResponse(ResponseStatus.Success, source);
-        }
-
-        #endregion
-
         #region Methods
 
-        private void WriteElementToXml(XmlWriter writer, WiniumElement element)
+        internal static void WriteElementToXml(XmlWriter writer, WiniumElement element)
         {
             if (element == null)
             {
                 return;
             }
 
-            writer.WriteStartElement(element.ClassName);
+            var className = element.ClassName;
+            var tagName = XmlConvert.EncodeNmToken(className);
+            writer.WriteStartElement(tagName);
             var rect = element.GetRect();
             var attributes = new Dictionary<string, string>
                                  {
                                      { "name", element.AutomationName }, 
                                      { "id", element.AutomationId }, 
+                                     { "class_name", className }, 
                                      { "xname", element.XName }, 
                                      {
                                          "visible", 
@@ -87,19 +68,37 @@
 
             foreach (var child in element.Find(TreeScope.Children, x => true))
             {
-                this.WriteElementToXml(writer, child);
+                WriteElementToXml(writer, child);
             }
 
             writer.WriteEndElement();
         }
 
-        private void WriteElementsToXml(XmlWriter writer)
+        protected override string DoImpl()
+        {
+            string source;
+            var settings = new XmlWriterSettings { Indent = true, Encoding = new UTF8Encoding(false) };
+
+            using (var writer = new MemoryStream())
+            {
+                var xmlWriter = XmlWriter.Create(writer, settings);
+                WriteElementsToXml(xmlWriter);
+                xmlWriter.Flush();
+
+                var buffer = writer.ToArray();
+                source = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+            }
+
+            return this.JsonResponse(ResponseStatus.Success, source);
+        }
+
+        private static void WriteElementsToXml(XmlWriter writer)
         {
             writer.WriteStartElement("root");
 
             foreach (var element in WiniumVirtualRoot.Current.Find(TreeScope.Children, x => true))
             {
-                this.WriteElementToXml(writer, element);
+                WriteElementToXml(writer, element);
             }
 
             writer.WriteEndElement();

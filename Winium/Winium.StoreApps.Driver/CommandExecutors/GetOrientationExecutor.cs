@@ -2,8 +2,8 @@
 {
     #region
 
+    using Winium.Mobile.Connectivity.Emulator;
     using Winium.StoreApps.Common;
-    using Winium.StoreApps.Driver.EmulatorHelpers;
 
     #endregion
 

@@ -1,5 +1,5 @@
 ﻿// Library needed to connect to the Windows Phone X Emulator
-namespace Winium.StoreApps.Driver.EmulatorHelpers
+namespace Winium.Mobile.Connectivity
 {
     #region
 
@@ -15,6 +15,10 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
     using Microsoft.SmartDevice.MultiTargeting.Connectivity;
 
     using Winium.StoreApps.Common.Exceptions;
+    using Winium.StoreApps.Logging;
+
+    using DeviceInfo = Microsoft.Phone.Tools.Deploy.Patched.DeviceInfo;
+    using Utils = Microsoft.Phone.Tools.Deploy.Patched.Utils;
 
     #endregion
 
@@ -22,32 +26,26 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
     /// App Deploy for 8.1 or greater (uses  Microsoft.Phone.Tools.Deploy shipped with Microsoft SDKs\Windows Phone\v8.1\Tools\AppDeploy)
     /// </summary>
     /// TODO: do not copy Microsoft.Phone.Tools.Deploy assembly on build. Set Copy Local to false and use specified path to assembly.
-    public class Deployer
+    public class Deployer : IDeployer
     {
+        #region Constants
+
+        private const int MaxRetries = 3;
+
+        #endregion
+
         #region Fields
-
-        private readonly string appPath;
-
-        private readonly ConnectableDevice connectableDevice;
 
         private readonly DeviceInfo deviceInfo;
 
-        private IAppManifestInfo appManifestInfo;
-
-        private IDevice device;
-
         private bool installed;
-
-        private IRemoteApplication remoteApplication;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public Deployer(string desiredDevice, bool strict, string appPath)
+        public Deployer(string desiredDevice, bool strict)
         {
-            this.appPath = appPath;
-
             this.deviceInfo = Devices.Instance.GetMatchingDevice(desiredDevice, strict);
 
             if (this.deviceInfo == null)
@@ -61,9 +59,9 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
             var propertyInfo = this.deviceInfo.GetType().GetTypeInfo().GetDeclaredProperty("DeviceId");
             var deviceId = (string)propertyInfo.GetValue(this.deviceInfo);
-            this.connectableDevice =
+            var connectableDevice =
                 new MultiTargetingConnectivity(CultureInfo.CurrentUICulture.LCID).GetConnectableDevice(deviceId);
-
+            this.Device = connectableDevice.Connect(true);
             Logger.Info("Target emulator: '{0}'", this.DeviceName);
         }
 
@@ -83,49 +81,30 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
 
         #region Properties
 
-        private IAppManifestInfo AppManifestInfo
-        {
-            get
-            {
-                return this.appManifestInfo
-                       ?? (this.appManifestInfo = Utils.ReadAppManifestInfoFromPackage(this.appPath));
-            }
-        }
+        private IDevice Device { get; set; }
 
-        private IDevice Device
-        {
-            get
-            {
-                return this.device ?? (this.device = this.connectableDevice.Connect(true));
-            }
-        }
-
-        private IRemoteApplication RemoteApplication
-        {
-            get
-            {
-                return this.remoteApplication
-                       ?? (this.remoteApplication = this.Device.GetApplication(this.AppManifestInfo.ProductId));
-            }
-        }
+        private IRemoteApplication RemoteApplication { get; set; }
 
         #endregion
 
         #region Public Methods and Operators
 
-        public void Install()
+        public void Install(string appPath, List<string> dependencies)
         {
-            Utils.InstallApplication(this.deviceInfo, this.AppManifestInfo, DeploymentOptions.None, this.appPath);
-            this.installed = true;
+            this.InstallDependencies(dependencies);
+            this.InstallApp(appPath);
+        }
 
-            Logger.Info("Successfully deployed using Microsoft.Phone.Tools.Deploy");
+        public void UsePreInstalledApplication(string appPath)
+        {
+            var appManifest = Utils.ReadAppManifestInfoFromPackage(appPath);
+            this.RemoteApplication = this.Device.GetApplication(appManifest.ProductId);
         }
 
         public void Launch()
         {
             this.Device.Activate();
-
-            this.RemoteApplication.Launch();
+            Retry.WithRetry(() => this.RemoteApplication.Launch(), MaxRetries);
         }
 
         public void ReceiveFile(string isoStoreRoot, string sourceDeviceFilePath, string targetDesktopFilePath)
@@ -134,7 +113,7 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
                 .ReceiveFile(sourceDeviceFilePath, targetDesktopFilePath, true);
         }
 
-        public void SendFiles(Dictionary<string, string> files)
+        public void SendFiles(List<KeyValuePair<string, string>> files)
         {
             if (files == null || !files.Any())
             {
@@ -144,14 +123,8 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
             var isolatedStore = this.RemoteApplication.GetIsolatedStore("Local");
             foreach (var file in files)
             {
-                var phoneDirectoryName = Path.GetDirectoryName(file.Value);
-                var phoneFileName = Path.GetFileName(file.Value);
-                if (string.IsNullOrEmpty(phoneFileName))
-                {
-                    phoneFileName = Path.GetFileName(file.Key);
-                }
-
-                isolatedStore.SendFile(file.Key, Path.Combine(phoneDirectoryName, phoneFileName), true);
+                Logger.Debug("Sending file \"{0}\" to \"{1}\"", file.Key, file.Value);
+                isolatedStore.SendFile(file.Key, file.Value, true);
             }
         }
 
@@ -187,10 +160,30 @@ namespace Winium.StoreApps.Driver.EmulatorHelpers
                 return;
             }
 
-            this.remoteApplication.Uninstall();
-            this.remoteApplication = null;
+            this.RemoteApplication.Uninstall();
+            this.RemoteApplication = null;
 
-            this.device.Disconnect();
+            this.Device.Disconnect();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void InstallApp(string appPath)
+        {
+            var appManifestInfo = this.InstallApplicationPackage(appPath);
+            this.installed = true;
+            this.RemoteApplication = this.Device.GetApplication(appManifestInfo.ProductId);
+        }
+
+        private IAppManifestInfo InstallApplicationPackage(string path)
+        {
+            var appManifest = Utils.ReadAppManifestInfoFromPackage(path);
+            Utils.InstallApplication(this.deviceInfo, appManifest, DeploymentOptions.None, path);
+
+            Logger.Info("{0} was successfully deployed using Microsoft.Phone.Tools.Deploy", appManifest.Name);
+            return appManifest;
         }
 
         #endregion

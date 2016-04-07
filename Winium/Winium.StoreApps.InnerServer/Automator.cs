@@ -113,6 +113,10 @@
             {
                 commandToExecute = new DisplayedCommand { ElementId = elementId };
             }
+            else if (command.Equals(DriverCommand.IsElementEnabled))
+            {
+                commandToExecute = new IsElementEnabledCommand { ElementId = elementId };
+            }
             else if (command.Equals(DriverCommand.GetElementLocation))
             {
                 commandToExecute = new LocationCommand { ElementId = elementId };
@@ -160,6 +164,16 @@
             else
             {
                 throw new NotImplementedException("Not implemented: " + command);
+            }
+
+            JToken sessionIdObject;
+            if (parameters.TryGetValue("SESSIONID", out sessionIdObject))
+            {
+                commandToExecute.Session = sessionIdObject.ToString();
+            }
+            else
+            {
+                commandToExecute.Session = string.Empty;
             }
 
             // TODO: Replace passing Automator to command with passing some kind of configuration

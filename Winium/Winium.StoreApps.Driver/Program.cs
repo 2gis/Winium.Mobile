@@ -4,11 +4,11 @@
 
     using System;
     using System.Collections.Generic;
-    using System.IO;
 
+    using Winium.Mobile.Connectivity.Emulator;
     using Winium.StoreApps.Driver.Automator;
     using Winium.StoreApps.Driver.CommandHelpers;
-    using Winium.StoreApps.Driver.EmulatorHelpers;
+    using Winium.StoreApps.Logging;
 
     #endregion
 
@@ -51,6 +51,7 @@
                 }
 
                 Capabilities.BoundDeviceName = options.BoundDeviceName;
+                Capabilities.DefaultPingTimeout = options.PingTimeout;
 
                 Logger.Info(versionInfo);
 
@@ -59,18 +60,17 @@
                     Logger.Warn("Colud not set OnExit cleanup handlers.");
                 }
 
-                var listeningPort = options.Port;
                 AppLifetimeDisposables.Add(EmulatorFactory.Instance);
-                listener = new Listener(listeningPort);
-                Listener.UrnPrefix = options.UrlBase;
 
-                Console.WriteLine("Starting {0} on port {1}\n", appName, listeningPort);
+                listener = new Listener(options.Port, options.UrlBase, options.NodeConfig);
+
+                Console.WriteLine("Starting {0} on port {1}\n", appName, listener.Port);
 
                 listener.StartListening();
             }
             catch (Exception ex)
             {
-                Logger.Fatal("Failed to start driver: {0}", ex);
+                Logger.Fatal(ex.ToString());
                 Environment.Exit(ex.HResult);
             }
         }

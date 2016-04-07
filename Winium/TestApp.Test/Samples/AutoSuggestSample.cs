@@ -3,19 +3,17 @@
     #region
 
     using System;
-    using System.Globalization;
     using System.IO;
     using System.Threading;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using OpenQA.Selenium;
-    using OpenQA.Selenium.Interactions;
     using OpenQA.Selenium.Remote;
 
     #endregion
 
-    [TestClass]
+    [TestFixture]
     public class AutoSuggestSample
     {
         #region Fields
@@ -26,13 +24,13 @@
 
         #region Public Methods and Operators
 
-        [TestCleanup]
+        [TearDown]
         public void CleanUp()
         {
             this.driver.Quit();
         }
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             var capabillities = new DesiredCapabilities();
@@ -47,7 +45,7 @@
             this.driver = new WpDriver(new Uri("http://localhost:9999"), capabillities);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAutoSuggest()
         {
             this.driver.ExecuteScript("mobile: OnScreenKeyboard.Disable");
