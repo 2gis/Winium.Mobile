@@ -74,6 +74,7 @@
     <Compile Include="Element\Helpers\AutomationPropertiesAccessor.cs" />
     <Compile Include="Element\Helpers\AutomationPropertiesHelper.cs" />
     <Compile Include="Element\Helpers\DependencyPropertiesAccessor.cs" />
+    <Compile Include="Element\Helpers\ExtensionPropertyAccessor.cs" />
     <Compile Include="Element\Helpers\PropertiesAccessor.cs" />
     <Compile Include="Element\ISearchable.cs" />
     <Compile Include="Element\WiniumElement.GetText.cs" />
