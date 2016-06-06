@@ -49,6 +49,8 @@
     <Compile Include="Commands\GetElementRectCommand.cs" />
     <Compile Include="Commands\ClickCommand.cs" />
     <Compile Include="Commands\GetElementSizeCommand.cs" />
+    <Compile Include="Commands\Helpers\IDictionaryExtensions.cs" />
+    <Compile Include="Commands\IsElementEnabledCommand.cs" />
     <Compile Include="ElementsRegistry.cs" />
     <Compile Include="Commands\AlertCommand.cs" />
     <Compile Include="Commands\AlertTextCommand.cs" />
@@ -69,11 +71,15 @@
     <Compile Include="Commands\GetElementTagNameCommand.cs" />
     <Compile Include="Commands\TextCommand.cs" />
     <Compile Include="Commands\ValueCommand.cs" />
+    <Compile Include="Element\Helpers\AutomationPropertiesAccessor.cs" />
+    <Compile Include="Element\Helpers\AutomationPropertiesHelper.cs" />
+    <Compile Include="Element\Helpers\DependencyPropertiesAccessor.cs" />
+    <Compile Include="Element\Helpers\ExtensionPropertyAccessor.cs" />
+    <Compile Include="Element\Helpers\PropertiesAccessor.cs" />
     <Compile Include="Element\ISearchable.cs" />
     <Compile Include="Element\WiniumElement.GetText.cs" />
     <Compile Include="Element\WiniumElement.Find.cs" />
     <Compile Include="Element\WiniumElement.Location.cs" />
-    <Compile Include="Element\WiniumElement.GetSetAttribute.cs" />
     <Compile Include="Element\WiniumElement.cs" />
     <Compile Include="Element\WiniumElement.IsUserVisible.cs" />
     <Compile Include="Element\WiniumVirtualRoot.cs" />

@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DA38085E-F3DB-46EF-8889-D89283924917}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Winium.Mobile.Connectivity</RootNamespace>
+    <AssemblyName>Winium.Mobile.Connectivity</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Phone.Tools.Deploy, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v8.1\Tools\AppDeploy\Microsoft.Phone.Tools.Deploy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SmartDevice.Connectivity.Interface, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SmartDevice.MultiTargeting.Connectivity, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xde.Common, Version=8.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xde.Interface, Version=8.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft XDE\8.1\Microsoft.Xde.Interface.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xde.Wmi">
+      <HintPath>C:\Program Files (x86)\Microsoft XDE\8.1\Microsoft.Xde.Wmi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Deployer.cs" />
+    <Compile Include="DeployerFactory.cs" />
+    <Compile Include="Gestures\FlickGesture.cs" />
+    <Compile Include="Gestures\IGesture.cs" />
+    <Compile Include="Emulator\EmulatorController.cs" />
+    <Compile Include="Emulator\EmulatorFactory.cs" />
+    <Compile Include="Gestures\ScrollGesture.cs" />
+    <Compile Include="Gestures\TapGesture.cs" />
+    <Compile Include="Emulator\VirtualMachine.cs" />
+    <Compile Include="Devices.cs" />
+    <Compile Include="IDeployer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Emulator\VirtualMachineException.cs" />
+    <Compile Include="Retry.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Phone.Tools.Deploy.Patched\Microsoft.Phone.Tools.Deploy.Patched.csproj">
+      <Project>{13B4DF5C-E542-4A7A-8F00-929D423B522C}</Project>
+      <Name>Microsoft.Phone.Tools.Deploy.Patched</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Winium.StoreApps.Common\Winium.StoreApps.Common.csproj">
+      <Project>{3C8D0B9C-576B-4778-97B1-6839AA944AEE}</Project>
+      <Name>Winium.StoreApps.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Winium.StoreApps.Logging\Winium.StoreApps.Logging.csproj">
+      <Project>{DAC0EAFE-2FE0-4F33-B173-736C1BAFD707}</Project>
+      <Name>Winium.StoreApps.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -13,6 +13,7 @@ Winium.StoreApps это open-source инструмент для автомати
 
 ## Поддерживаемые платформы
 - Windows Phone 8.1
+- Windows 10 Mobile
 
 Для автоматизации Windows Phone 8 Silverlight есть [Windows Phone Driver](https://github.com/2gis/winphonedriver).
 Для автоматизации Windows Desktop (WPF, WinForms) есть [Winium Desktop](https://github.com/2gis/Winium.Desktop).
@@ -29,7 +30,7 @@ Winium.StoreApps это open-source инструмент для автомати
 ## Требования
 * Windows 8 или выше
 * Visual Studio 2013 (Update 2 или выше)
-* Windows phone 8.1 SDK
+* Windows phone 8.1 SDK и/или Windows 10 SDK
 
 Вы можете взять Visual Studio и SDK с сайта Microsoft [здесь](https://dev.windows.com/en-us/develop/download-phone-sdk).
 
@@ -50,7 +51,9 @@ Winium.StoreApps это open-source инструмент для автомати
 	#endif // DEBUG
 	```
 
-3. Пишите тесты на удобном языке. В тесте используйте `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) для задания пакета (appx) приложения. Это пример на python:
+3. Убедитесь, что в манифесте пакета вашего тестируемого приложения включено разрешение для возможности `Internet (Client & Server)`. Эта возможность должна быть разрешена по умолчанию для Windows 8.1 приложений. Для UWP (Windows Mobile 10) приложений эта возможность отключена по умолчанию (включена только `Internet (Client)`).
+
+4. Пишите тесты на удобном языке. В тесте используйте `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) для задания пакета (appx) приложения. Это пример на python:
 	```python
 	# put it in setUp
 	self.driver = webdriver.Remote(command_executor='http://localhost:9999',
@@ -61,9 +64,9 @@ Winium.StoreApps это open-source инструмент для автомати
 	assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
 	```
 
-4. Запустите `Winium.StoreApps.Driver.exe` ([загрузить последнюю версию с github](https://github.com/2gis/Winium.StoreApps/releases) или соберите проект у себя)
+5. Запустите `Winium.StoreApps.Driver.exe` ([загрузить последнюю версию с github](https://github.com/2gis/Winium.StoreApps/releases) или соберите проект у себя)
 
-5. Запустите тесты и балдейте от происходящей магии
+6. Запустите тесты и балдейте от происходящей магии
 
 ## Написание тестов
 По сути, Winium.StoreApps поддерживает ограниченное подмножество команд из [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol), т.е. вы можете писать ваши тесты также, как если бы вы писали их под Selenium или Appium, см. например [документацию Selenium](http://docs.seleniumhq.org/docs/03_webdriver.jsp).

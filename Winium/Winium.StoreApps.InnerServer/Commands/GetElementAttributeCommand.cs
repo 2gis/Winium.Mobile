@@ -6,10 +6,12 @@
     using System.Reflection;
 
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json.Converters;
 
     using Winium.StoreApps.Common;
-    using Winium.StoreApps.Common.Exceptions;
+    using Winium.StoreApps.Common.CommandSettings;
+    using Winium.StoreApps.InnerServer.Commands.Helpers;
+    using Winium.StoreApps.InnerServer.Element;
 
     #endregion
 
@@ -21,43 +23,71 @@
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Methods
+
+        internal static object GetPropertyCascade(
+            WiniumElement element,
+            string key,
+            ElementAttributeAccessModifier options)
+        {
+            object propertyObject;
+            if (element.TryGetAutomationProperty(key, out propertyObject))
+            {
+                return propertyObject;
+            }
+
+            if (options == ElementAttributeAccessModifier.AutomationProperties)
+            {
+                return null;
+            }
+
+            if (element.TryGetDependencyProperty(key, out propertyObject))
+            {
+                return propertyObject;
+            }
+
+            if (options == ElementAttributeAccessModifier.DependencyProperties)
+            {
+                return null;
+            }
+
+            if (element.TryGetProperty(key, out propertyObject))
+            {
+                return propertyObject;
+            }
+
+            if (element.TryGetExtensionProperty(key, out propertyObject))
+            {
+                return propertyObject;
+            }
+
+            return null;
+        }
 
         protected override string DoImpl()
         {
             var element = this.Automator.ElementsRegistry.GetRegisteredElement(this.ElementId);
 
-            JToken value;
-            string attributeName = null;
-            if (this.Parameters.TryGetValue("NAME", out value))
-            {
-                attributeName = value.ToString();
-            }
-
-            if (attributeName == null)
+            string attributeName;
+            if (!this.Parameters.TryGetValue("NAME", out attributeName))
             {
                 return this.JsonResponse();
+            }
+
+            ElementAttributeCommandSettings settings;
+            if (!this.Parameters.TryGetValue(CommandSettings.ElementAttributeSettingsParameter, out settings))
+            {
+                settings = new ElementAttributeCommandSettings();
             }
 
             /* GetAttribute command should return: null if no property was found,
              * property value as plain string if property is scalar or string,
              * JSON encoded property if property is Lists, Dictionary or other nonscalar types 
              */
-            try
-            {
-                var propertyObject = element.GetAttribute(attributeName);
+            var value = GetPropertyCascade(element, attributeName, settings.AccessModifier);
 
-                return this.JsonResponse(ResponseStatus.Success, SerializeObjectAsString(propertyObject));
-            }
-            catch (AutomationException)
-            {
-                return this.JsonResponse();
-            }
+            return this.JsonResponse(ResponseStatus.Success, SerializeObjectAsString(value, settings.EnumAsString));
         }
-
-        #endregion
-
-        #region Methods
 
         private static bool IsTypeSerializedUsingToString(Type type)
         {
@@ -65,7 +95,7 @@
             return type == typeof(string) || type.GetTypeInfo().IsPrimitive;
         }
 
-        private static string SerializeObjectAsString(object obj)
+        private static string SerializeObjectAsString(object obj, bool enumAsString)
         {
             if (obj == null)
             {
@@ -78,8 +108,19 @@
                 return obj.ToString();
             }
 
+            if (obj is Enum)
+            {
+                return (obj as Enum).ToString(enumAsString ? "G" : "D");
+            }
+
             // Serialize other data types as JSON
-            return JsonConvert.SerializeObject(obj);
+            var settings = new JsonSerializerSettings();
+            if (enumAsString)
+            {
+                settings.Converters.Add(new StringEnumConverter());
+            }
+
+            return JsonConvert.SerializeObject(obj, settings);
         }
 
         #endregion

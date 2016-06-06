@@ -4,7 +4,7 @@
 
     using System;
 
-    using Winium.StoreApps.Driver.EmulatorHelpers;
+    using Winium.Mobile.Connectivity.Emulator;
 
     #endregion
 

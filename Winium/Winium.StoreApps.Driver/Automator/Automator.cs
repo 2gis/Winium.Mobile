@@ -7,16 +7,18 @@
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Threading;
-
-    using Microsoft.Xde.Wmi;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    using Winium.Mobile.Connectivity;
+    using Winium.Mobile.Connectivity.Emulator;
     using Winium.StoreApps.Common;
     using Winium.StoreApps.Common.Exceptions;
-    using Winium.StoreApps.Driver.EmulatorHelpers;
+    using Winium.StoreApps.Driver.CommandHelpers;
+    using Winium.StoreApps.Logging;
 
     #endregion
 
@@ -30,17 +32,13 @@
 
         #endregion
 
-        #region Constructors and Destructors
-
-        #endregion
-
         #region Public Properties
 
         public Capabilities ActualCapabilities { get; set; }
 
         public Requester CommandForwarder { get; set; }
 
-        public Deployer Deployer { get; set; }
+        public IDeployer Deployer { get; set; }
 
         public EmulatorController EmulatorController { get; set; }
 
@@ -101,7 +99,7 @@
             {
                 stopWatch.Restart();
                 Logger.Trace("Pinging InnerServer");
-                connected = this.TryConnectToApp();
+                connected = this.TryConnectToApp(this.ActualCapabilities.PingTimeout);
 
                 if (connected)
                 {
@@ -130,7 +128,7 @@
             // TODO throw AutomationException with SessionNotCreatedException if timeout and uninstall the app
         }
 
-        public void InitializeApp()
+        public void Deploy()
         {
             var appPath = this.ActualCapabilities.App;
             var debugDoNotDeploy = this.ActualCapabilities.DebugConnectToRunningApp;
@@ -140,11 +138,50 @@
                 throw new AutomationException("app capability is not set.", ResponseStatus.SessionNotCreatedException);
             }
 
+            this.InitializeDeployer();
+            this.ActualCapabilities.DeviceName = this.Deployer.DeviceName;
+
+            this.InitializeApplication(appPath);
+            
+            this.EmulatorController = this.CreateEmulatorController(debugDoNotDeploy);
+
+            this.InnerIp = this.EmulatorController.GetIpAddress();
+
+            this.LaunchAppIfNeeded();
+        }
+
+        private void LaunchAppIfNeeded()
+        {
+            if (!this.ActualCapabilities.AutoLaunch)
+            {
+                return;
+            }
+
+            this.Deployer.Launch();
+            this.ConnectToApp();
+        }
+
+        private void InitializeApplication(string appPath)
+        {
+            if (this.ActualCapabilities.DebugConnectToRunningApp)
+            {
+                this.Deployer.UsePreInstalledApplication(appPath);
+            }
+            else
+            {
+                this.Deployer.Install(appPath, this.ActualCapabilities.Dependencies);
+                var expandedFiles = new FilesCapabilityExpander().ExpandFiles(this.ActualCapabilities.Files).ToList();
+                this.Deployer.SendFiles(expandedFiles);
+            }
+        }
+
+        private void InitializeDeployer()
+        {
             var strictMatchDeviceName = Capabilities.BoundDeviceName != null;
             if (strictMatchDeviceName)
             {
                 if (Capabilities.BoundDeviceName.StartsWith(
-                    this.ActualCapabilities.DeviceName, 
+                    this.ActualCapabilities.DeviceName,
                     StringComparison.OrdinalIgnoreCase))
                 {
                     this.ActualCapabilities.DeviceName = Capabilities.BoundDeviceName;
@@ -153,32 +190,25 @@
                 {
                     throw new AutomationException(
                         string.Format(
-                            "Driver was bound to '{0}' at launch with --bound-device-name option, but another device '{1}' was requested by session.", 
-                            Capabilities.BoundDeviceName, 
+                            "Driver was bound to '{0}' at launch with --bound-device-name option, but another device '{1}' was requested by session.",
+                            Capabilities.BoundDeviceName,
                             this.ActualCapabilities.DeviceName));
                 }
             }
 
-            this.Deployer = new Deployer(this.ActualCapabilities.DeviceName, strictMatchDeviceName, appPath);
-            if (!debugDoNotDeploy)
-            {
-                this.Deployer.InstallDependencies(this.ActualCapabilities.Dependencies);
-                this.Deployer.Install();
-                this.Deployer.SendFiles(this.ActualCapabilities.Files);
-            }
+            var appFileInfo = new FileInfo(this.ActualCapabilities.App);
+            this.Deployer = DeployerFactory.DeployerForPackage(
+                appFileInfo,
+                this.ActualCapabilities.DeviceName,
+                strictMatchDeviceName);
 
             if (!this.ActualCapabilities.DeviceName.Equals(this.Deployer.DeviceName, StringComparison.OrdinalIgnoreCase))
             {
                 Logger.Warn(
                     "Device was found using partail deviceName '{0}',"
-                    + " this behavior might be deprecated in favor of specifying strict deviceName or platformVersion (when implemented).", 
+                    + " this behavior might be deprecated in favor of specifying strict deviceName or platformVersion (when implemented).",
                     this.ActualCapabilities.DeviceName);
             }
-
-            this.ActualCapabilities.DeviceName = this.Deployer.DeviceName;
-            this.EmulatorController = this.CreateEmulatorController(debugDoNotDeploy);
-
-            this.InnerIp = this.EmulatorController.GetIpAddress();
         }
 
         public Point? RequestElementLocation(JToken element)
@@ -259,7 +289,7 @@
             {
                 return new EmulatorController(this.ActualCapabilities.DeviceName);
             }
-            catch (XdeVirtualMachineException)
+            catch (VirtualMachineException)
             {
                 if (!withFallback)
                 {
@@ -284,7 +314,7 @@
             }
         }
 
-        private bool TryConnectToApp()
+        private bool TryConnectToApp(int timeout)
         {
             var usingFallbackPort = false;
             const string FallbackPort = "9998";
@@ -299,31 +329,38 @@
             }
             catch (Exception)
             {
+                if (this.ActualCapabilities.NoFallback)
+                {
+                    return false;
+                }
+
                 // TODO Limit catch clause from broad Exception, to specific ones
                 // We expect FileNotFound exception, but in rare cases other exceptions can be thrown by SmartDevice API
                 usingFallbackPort = true;
                 connectionInformation = new ConnectionInformation { RemotePort = FallbackPort };
             }
 
-            this.CommandForwarder = new Requester(this.InnerIp, connectionInformation.RemotePort);
+            var port = Convert.ToInt32(connectionInformation.RemotePort);
+            this.CommandForwarder = new Requester(this.InnerIp, port);
             var pingCommand = new Command("ping");
-            var responseBody = this.CommandForwarder.ForwardCommand(pingCommand, false, 1500);
-            if (responseBody.StartsWith("<pong>", StringComparison.Ordinal))
-            {
-                Logger.Info("Received connection information from device {0}.", connectionInformation);
-                if (usingFallbackPort)
-                {
-                    Logger.Warn(
-                        "DEPRICATION: ConnectionInformation file was not found."
-                        + " Make sure that you are using same versions of Driver and InnerServer."
-                        + " Fallback to standard innerPort == {0}. This will be depricated in later versions.", 
-                        FallbackPort);
-                }
 
-                return true;
+            var responseBody = this.CommandForwarder.ForwardCommand(pingCommand, false, timeout);
+            if (!responseBody.StartsWith("<pong>", StringComparison.Ordinal))
+            {
+                return false;
             }
 
-            return false;
+            Logger.Info("Received connection information from device {0}.", connectionInformation);
+            if (usingFallbackPort)
+            {
+                Logger.Warn(
+                    "DEPRICATION: ConnectionInformation file was not found."
+                    + " Make sure that you are using same versions of Driver and InnerServer."
+                    + " Fallback to standard innerPort == {0}. This will be depricated in later versions.", 
+                    FallbackPort);
+            }
+
+            return true;
         }
 
         #endregion

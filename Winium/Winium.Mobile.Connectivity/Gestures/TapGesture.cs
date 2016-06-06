@@ -1,4 +1,4 @@
-﻿namespace Winium.StoreApps.Driver.EmulatorHelpers
+﻿namespace Winium.Mobile.Connectivity.Gestures
 {
     #region
 
@@ -8,7 +8,7 @@
 
     #endregion
 
-    internal class TapGesture : IGesture
+    public class TapGesture : IGesture
     {
         #region Constructors and Destructors
 

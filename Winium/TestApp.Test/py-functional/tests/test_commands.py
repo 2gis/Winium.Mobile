@@ -1,4 +1,6 @@
 # coding: utf-8
+from time import sleep
+
 import pytest
 from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException, WebDriverException
 from selenium.webdriver import ActionChains
@@ -7,7 +9,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 
 from tests import WuaTestCase
-
 
 By.XNAME = 'xname'
 
@@ -108,7 +109,9 @@ class TestGetCommands(WuaTestCase):
     @pytest.mark.parametrize(("attr_name", "expected_value"), [
         ('Width', '300'),
         ('DesiredSize.Width', '300'),
-    ], ids=['simple property', 'nested property'])
+        ('AutomationProperties.AutomationId', 'MyTextBox'),
+        ('Visibility', '0'),
+    ], ids=['simple property', 'nested property', 'automation property', 'enum'])
     def test_get_element_attribute(self, attr_name, expected_value):
         """
         GET /session/:sessionId/element/:id/attribute/:name Get the value of an element's attribute.
@@ -169,9 +172,7 @@ class TestGetCommands(WuaTestCase):
         assert not self.driver.find_element_by_name('August').is_displayed()
 
 
-class TestAlert(WuaTestCase):
-    # __shared_session__ = False
-
+class UsesSecondTab(WuaTestCase):
     @pytest.fixture
     def second_tab(self, waiter):
         pivots = self.driver.find_elements_by_class_name("Windows.UI.Xaml.Controls.Primitives.PivotHeaderItem")
@@ -179,6 +180,16 @@ class TestAlert(WuaTestCase):
         tab = self.driver.find_element_by_id('SecondTab')
         waiter.until(EC.visibility_of(tab))
         return tab
+
+
+class TestGetCommandsEx(UsesSecondTab):
+    def test_is_element_enabled(self, second_tab):
+        assert second_tab.find_element_by_id('MsgBtn').is_enabled()
+        assert not second_tab.find_element_by_id('DisabledBtn').is_enabled()
+
+
+class TestAlert(UsesSecondTab):
+    __shared_session__ = False
 
     @pytest.fixture
     def alert(self, second_tab, waiter):
@@ -215,6 +226,7 @@ class TestExecuteScript(WuaTestCase):
     https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script
     Tested scripts do affect app interface, but test methods are made in such way that they can be run in one session.
     """
+    __shared_session__ = False
 
     @pytest.mark.parametrize("command_alias", ["automation: invoke", "automation: InvokePattern.Invoke"])
     def test_automation_invoke(self, command_alias):
@@ -242,7 +254,7 @@ class TestExecuteScript(WuaTestCase):
 
         assert start_state != end_state
 
-    @pytest.mark.parametrize(("attribute", "value"), [('Width', 10, ), ('Background.Opacity', 0, )],
+    @pytest.mark.parametrize(("attribute", "value"), [('Width', 10,), ('Background.Opacity', 0,)],
                              ids=["should set basic properties", "should set nested properties"])
     def test_attribute_set(self, attribute, value):
         element = self.driver.find_element_by_id('SetButton')
@@ -266,6 +278,7 @@ class TestBasicInput(WuaTestCase):
     def test_send_keys_to_active_element(self):
         element = self.driver.find_element_by_id('MyTextBox')
         element.click()
+        sleep(0.5)  # FIXME
         ActionChains(self.driver).send_keys(Keys.ENTER).perform()
         assert '\r\n' == element.text
 
@@ -275,6 +288,8 @@ class TestBasicInput(WuaTestCase):
         assert '\r\n' == element.text
 
     def test_back(self):
+        if self.desired_capabilities['deviceName'].startswith('Mobile'):
+            pytest.skip("Clicking GoAppBarButton does not open app bar on Mobile Emulators, need fix in test app")
         self.driver.find_element_by_id('GoAppBarButton').click()
         text_box = self.driver.find_element_by_id('MyTextBox')
         self.driver.back()
@@ -286,6 +301,7 @@ class TestBasicInput(WuaTestCase):
         assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
 
 
+@pytest.mark.skipif(True, reason="TODO")
 class TestInputChains(WuaTestCase):
     def test_action_chain(self):
         # TODO MouseMoveTo, MouseClick, MouseDown, MouseUp

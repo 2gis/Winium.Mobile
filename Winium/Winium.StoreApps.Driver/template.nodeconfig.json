@@ -1,0 +1,24 @@
+{
+    "capabilities": [
+        {
+            "browserName": "WindowsPhone",
+            "version": "ANY",
+            "maxInstances": 1,
+            "platform": "WINDOWS"
+        }
+    ],
+    "configuration": {
+        "cleanUpCycle": 2000,
+        "timeout": 30000,
+        "proxy": "org.openqa.grid.selenium.proxy.DefaultRemoteProxy",
+        "_comment": "this config is ready for use with local grid, if you want to connect winium to grid on a remote host, then you will need to remove undersocres from _url, _host and _port keys and specify correct values.",
+        "_url": "http://<host_name_winium_server_or_ip-address_winium_server>:<winium_port>/wd/hub",
+        "_host": "<host_name_winium_server_or_ip-address_winium_server>",
+        "_port": "<winium_port>",
+        "maxSession": 1,
+        "registerCycle": 5000,
+        "register": true,
+        "hubPort": 4444,
+        "hubHost": "localhost"
+    }
+}
