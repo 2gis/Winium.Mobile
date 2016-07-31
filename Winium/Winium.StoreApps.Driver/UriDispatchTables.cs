@@ -292,13 +292,25 @@
 
         private void InitializeWiniumCommandDictionary()
         {
-            this.commandDictionary.Add(DriverCommand.GetElementRect, new CommandInfo("GET", "/session/{sessionId}/element/{id}/rect"));
+            this.commandDictionary.Add(
+                DriverCommand.GetElementRect, 
+                new CommandInfo("GET", "/session/{sessionId}/element/{id}/rect"));
         }
 
         private void InitializeAppiumCommandDictionary()
         {
-            this.commandDictionary.Add(DriverCommand.LaunchApp, new CommandInfo("POST", "/session/{sessionId}/appium/app/launch"));
-            this.commandDictionary.Add(DriverCommand.CloseApp, new CommandInfo("POST", "/session/{sessionId}/appium/app/close"));
+            this.commandDictionary.Add(
+                DriverCommand.LaunchApp, 
+                new CommandInfo("POST", "/session/{sessionId}/appium/app/launch"));
+            this.commandDictionary.Add(
+                DriverCommand.CloseApp, 
+                new CommandInfo("POST", "/session/{sessionId}/appium/app/close"));
+            this.commandDictionary.Add(
+                DriverCommand.PullFile, 
+                new CommandInfo("POST", "/session/{sessionId}/appium/device/pull_file"));
+            this.commandDictionary.Add(
+                DriverCommand.PushFile, 
+                new CommandInfo("POST", "/session/{sessionId}/appium/device/push_file"));
         }
 
         #endregion

@@ -109,8 +109,14 @@ namespace Winium.Mobile.Connectivity
 
         public void ReceiveFile(string isoStoreRoot, string sourceDeviceFilePath, string targetDesktopFilePath)
         {
-            this.RemoteApplication.GetIsolatedStore(isoStoreRoot)
-                .ReceiveFile(sourceDeviceFilePath, targetDesktopFilePath, true);
+            var isolatedStore = this.RemoteApplication.GetIsolatedStore(isoStoreRoot);
+            isolatedStore.ReceiveFile(sourceDeviceFilePath, targetDesktopFilePath, true);
+        }
+
+        public void SendFile(string isoStoreRoot, string sourceDesktopFilePath, string targetDeviceFilePath)
+        {
+            var isolatedStore = this.RemoteApplication.GetIsolatedStore(isoStoreRoot);
+            isolatedStore.SendFile(sourceDesktopFilePath, targetDeviceFilePath, true);
         }
 
         public void SendFiles(List<KeyValuePair<string, string>> files)

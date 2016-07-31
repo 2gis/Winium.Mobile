@@ -1,6 +1,6 @@
 # coding: utf-8
 import pytest
-from selenium.webdriver import Remote
+from appium.webdriver import Remote
 from selenium.webdriver.support.wait import WebDriverWait
 import config
 

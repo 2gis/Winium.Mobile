@@ -481,6 +481,10 @@ namespace Winium.StoreApps.Common
 
         public static readonly string CloseApp = "closeApp";
 
+        public static readonly string PullFile = "pullFile";
+
+        public static readonly string PushFile = "pushFile";
+
         #endregion
 
         #endregion
