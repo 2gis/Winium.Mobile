@@ -272,7 +272,7 @@ class TestExecuteScript(WuaTestCase):
         assert str(value) == element.get_attribute(attribute)
 
 
-class TestBasicInput(WuaTestCase):
+class TestBasicInput(UsesSecondTab):
     __shared_session__ = False
 
     def test_send_keys_to_element(self):
@@ -284,6 +284,34 @@ class TestBasicInput(WuaTestCase):
         element = self.driver.find_element_by_id('MyTextBox')
         element.send_keys(actual_input)
         assert actual_input.replace(Keys.ENTER, '\r\n') == element.text
+
+    def test_send_keys_to_number_input(self, second_tab):
+        """
+        POST /session/:sessionId/element/:id/value Send a sequence of key strokes to an element.
+        TODO: test magic keys
+        """
+        actual_input = '123'
+        element = second_tab.find_element_by_id('NumericInput')
+        element.send_keys(actual_input)
+        assert actual_input == element.text
+
+    def test_clear_number_input(self, second_tab):
+        """
+        POST /session/:sessionId/element/:id/value Send a sequence of key strokes to an element.
+        TODO: test magic keys
+        """
+        actual_input = '123'
+        element = second_tab.find_element_by_id('NumericInput')
+        element.send_keys(actual_input)
+        element.clear()
+        assert '' == element.text
+
+    def test_clear_element(self):
+        actual_input = 'Some test string' + Keys.ENTER
+        element = self.driver.find_element_by_id('MyTextBox')
+        element.send_keys(actual_input)
+        element.clear()
+        assert '' == element.text
 
     def test_send_keys_to_active_element(self):
         element = self.driver.find_element_by_id('MyTextBox')
@@ -308,7 +336,8 @@ class TestBasicInput(WuaTestCase):
     def test_click_element(self):
         element = self.driver.find_element_by_id('SetButton')
         element.click()
-        assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
+        actual_value = self.driver.find_element_by_id('MyTextBox').text
+        assert 'CARAMBA' == actual_value
 
 
 @pytest.mark.skipif(True, reason="TODO")

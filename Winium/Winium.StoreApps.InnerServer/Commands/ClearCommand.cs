@@ -13,13 +13,11 @@
 
     #endregion
 
-    internal class ValueCommand : CommandBase
+    internal class ClearCommand : CommandBase
     {
         #region Public Properties
 
         public string ElementId { get; set; }
-
-        public string KeyString { get; set; }
 
         #endregion
 
@@ -34,7 +32,7 @@
                 throw new AutomationException("Element referenced is not of control type.", ResponseStatus.UnknownError);
             }
 
-            control.TrySetText(this.KeyString);
+            control.TrySetText(string.Empty);
             return this.JsonResponse();
         }
 
