@@ -105,6 +105,10 @@
 
                 commandToExecute = new ValueCommand { ElementId = elementId, KeyString = value };
             }
+            else if (command.Equals(DriverCommand.ClearElement))
+            {
+                commandToExecute = new ClearCommand { ElementId = elementId };
+            }
             else if (command.Equals(DriverCommand.GetElementText))
             {
                 commandToExecute = new TextCommand { ElementId = elementId };

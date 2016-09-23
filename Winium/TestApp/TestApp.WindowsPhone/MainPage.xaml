@@ -52,6 +52,7 @@
                 <Button Content="Disabled" 
                         IsEnabled="False"
                         AutomationProperties.AutomationId="DisabledBtn" />
+                <TextBox InputScope="Number" AutomationProperties.AutomationId="NumericInput"/>
             </StackPanel>
         </PivotItem>
     </Pivot>

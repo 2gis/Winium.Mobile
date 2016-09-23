@@ -46,8 +46,10 @@
     <Compile Include="AcceptedRequest.cs" />
     <Compile Include="AutomationServer.cs" />
     <Compile Include="Automator.cs" />
+    <Compile Include="Commands\ClearCommand.cs" />
     <Compile Include="Commands\GetElementRectCommand.cs" />
     <Compile Include="Commands\GetElementSizeCommand.cs" />
+    <Compile Include="Commands\Helpers\ControlExtensions.cs" />
     <Compile Include="Commands\Helpers\IDictionaryExtensions.cs" />
     <Compile Include="Commands\IsElementEnabledCommand.cs" />
     <Compile Include="ElementsRegistry.cs" />
