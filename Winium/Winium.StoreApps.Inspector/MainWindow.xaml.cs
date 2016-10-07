@@ -26,7 +26,7 @@
     {
         #region Constants
 
-        private const string WiniumStoreappsDriver = "Winium.StoreApps.Driver";
+        private const string WiniumStoreAppsDriver = "Winium.StoreApps.Driver";
 
         #endregion
 
@@ -215,7 +215,7 @@
 
         private static bool IsDriverRunning()
         {
-            var pname = Process.GetProcessesByName(WiniumStoreappsDriver);
+            var pname = Process.GetProcessesByName(WiniumStoreAppsDriver);
             return pname.Length != 0;
         }
 
@@ -257,7 +257,7 @@
                                   : string.Format(
                                       CultureInfo.CurrentCulture, 
                                       "It seems, {0} is not running on {1}.\n\n{2}", 
-                                      WiniumStoreappsDriver, 
+                                      WiniumStoreAppsDriver, 
                                       this.CommandExecutor, 
                                       e.Message);
                 this.Dispatcher.Invoke(
