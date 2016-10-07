@@ -8,7 +8,7 @@
   <mp:PhoneIdentity PhoneProductId="403a7f27-620f-4eb3-a1b5-909f9bc0eb25" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Winium.Storeapps.InnerServer.Tests</DisplayName>
+    <DisplayName>Winium.StoreApps.InnerServer.Tests</DisplayName>
     <PublisherDisplayName>n.abalov</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -25,10 +25,10 @@
         Executable="vstest.executionengine.appcontainer.exe" 
         EntryPoint="Microsoft.VisualStudio.TestPlatform.TestExecutor.AppContainer.App">
         <m3:VisualElements
-            DisplayName="Winium.Storeapps.InnerServer.Tests"
+            DisplayName="Winium.StoreApps.InnerServer.Tests"
             Square150x150Logo="Assets\Logo.png"
             Square44x44Logo="Assets\SmallLogo.png"
-            Description="Winium.Storeapps.InnerServer.Tests"
+            Description="Winium.StoreApps.InnerServer.Tests"
             ForegroundText="light"
             BackgroundColor="#464646">
             <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png"/>
