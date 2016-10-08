@@ -4,7 +4,6 @@ English description | <a href="README_RU.md">Описание на русско�
 
 # Winium for Store Apps
 [![Build Status](https://img.shields.io/jenkins/s/http/opensource-ci.2gis.ru/Winium.StoreApps.svg?style=flat-square)](http://opensource-ci.2gis.ru/job/Winium.StoreApps/)
-[![Inner Server NuGet downloads](https://img.shields.io/nuget/dt/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
 [![Inner Server NuGet version](https://img.shields.io/nuget/v/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
 [![GitHub release](https://img.shields.io/github/release/2gis/Winium.StoreApps.svg?style=flat-square)](https://github.com/2gis/Winium.StoreApps/releases/)
 [![GitHub license](https://img.shields.io/badge/license-MPL 2.0-blue.svg?style=flat-square)](LICENSE)
