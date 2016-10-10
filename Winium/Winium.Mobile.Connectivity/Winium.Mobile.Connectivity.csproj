@@ -72,13 +72,13 @@
       <Project>{13B4DF5C-E542-4A7A-8F00-929D423B522C}</Project>
       <Name>Microsoft.Phone.Tools.Deploy.Patched</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Winium.StoreApps.Common\Winium.StoreApps.Common.csproj">
+    <ProjectReference Include="..\Winium.Mobile.Common\Winium.Mobile.Common.csproj">
       <Project>{3C8D0B9C-576B-4778-97B1-6839AA944AEE}</Project>
-      <Name>Winium.StoreApps.Common</Name>
+      <Name>Winium.Mobile.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Winium.StoreApps.Logging\Winium.StoreApps.Logging.csproj">
+    <ProjectReference Include="..\Winium.Mobile.Logging\Winium.Mobile.Logging.csproj">
       <Project>{DAC0EAFE-2FE0-4F33-B173-736C1BAFD707}</Project>
-      <Name>Winium.StoreApps.Logging</Name>
+      <Name>Winium.Mobile.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

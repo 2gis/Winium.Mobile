@@ -12,7 +12,7 @@
     using Windows.UI.Core;
     using Windows.UI.Xaml;
 
-    using Winium.StoreApps.Common;
+    using Winium.Mobile.Common;
     using Winium.StoreApps.InnerServer.Commands;
 
     #endregion

@@ -8,8 +8,8 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
-    using Winium.StoreApps.Common;
-    using Winium.StoreApps.Common.CommandSettings;
+    using Winium.Mobile.Common;
+    using Winium.Mobile.Common.CommandSettings;
     using Winium.StoreApps.InnerServer.Commands.Helpers;
     using Winium.StoreApps.InnerServer.Element;
 

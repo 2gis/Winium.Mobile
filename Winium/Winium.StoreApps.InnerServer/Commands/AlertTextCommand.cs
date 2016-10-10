@@ -6,8 +6,8 @@
 
     using Windows.UI.Xaml.Controls;
 
-    using Winium.StoreApps.Common;
-    using Winium.StoreApps.Common.Exceptions;
+    using Winium.Mobile.Common;
+    using Winium.Mobile.Common.Exceptions;
     using Winium.StoreApps.InnerServer.Commands.Helpers;
     using Winium.StoreApps.InnerServer.Element;
 

@@ -14,8 +14,8 @@ namespace Winium.Mobile.Connectivity
     using Microsoft.SmartDevice.Connectivity.Interface;
     using Microsoft.SmartDevice.MultiTargeting.Connectivity;
 
-    using Winium.StoreApps.Common.Exceptions;
-    using Winium.StoreApps.Logging;
+    using Winium.Mobile.Common.Exceptions;
+    using Winium.Mobile.Logging;
 
     using DeviceInfo = Microsoft.Phone.Tools.Deploy.Patched.DeviceInfo;
     using Utils = Microsoft.Phone.Tools.Deploy.Patched.Utils;

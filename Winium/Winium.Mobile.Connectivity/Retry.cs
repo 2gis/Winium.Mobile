@@ -4,7 +4,7 @@
 
     using System;
 
-    using Winium.StoreApps.Logging;
+    using Winium.Mobile.Logging;
 
     #endregion
 

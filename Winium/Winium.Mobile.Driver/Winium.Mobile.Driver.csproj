@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B6BE579B-B008-45B2-9740-12F0E6223661}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Winium.Mobile.Driver</RootNamespace>
+    <AssemblyName>Winium.Mobile.Driver</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommandLine">
+      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Abstractions">
+      <HintPath>..\packages\System.IO.Abstractions.2.0.0.120\lib\net40\System.IO.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Automator\Automator.cs" />
+    <Compile Include="Automator\Capabilities.cs" />
+    <Compile Include="CommandExecutors\GetElementAttributeExecutor.cs" />
+    <Compile Include="CommandExecutors\CloseAppExecutor.cs" />
+    <Compile Include="CommandExecutors\LaunchAppExecutor.cs" />
+    <Compile Include="CommandExecutors\PullFileExecutor.cs" />
+    <Compile Include="CommandExecutors\PushFileExecutor.cs" />
+    <Compile Include="CommandExecutors\SetOrientationExecutor.cs" />
+    <Compile Include="CommandExecutors\SubmitElementExecutor.cs" />
+    <Compile Include="CommandExecutorDispatchTable.cs" />
+    <Compile Include="CommandExecutors\ClickElementExecutor.cs" />
+    <Compile Include="CommandExecutors\CloseExecutor.cs" />
+    <Compile Include="CommandExecutors\CommandExecutorBase.cs" />
+    <Compile Include="CommandExecutors\CommandExecutorForward.cs" />
+    <Compile Include="CommandExecutors\ExecuteScriptExecutor.cs" />
+    <Compile Include="CommandExecutors\GetCurrentWindowHandleExecutor.cs" />
+    <Compile Include="CommandExecutors\GetOrientationExecutor.cs" />
+    <Compile Include="CommandExecutors\GetWindowSizeExecutor.cs" />
+    <Compile Include="CommandExecutors\GoBackExecutor.cs" />
+    <Compile Include="CommandExecutors\MouseClickExecutor.cs" />
+    <Compile Include="CommandExecutors\MouseDownExecutor.cs" />
+    <Compile Include="CommandExecutors\MouseMoveToExecutor.cs" />
+    <Compile Include="CommandExecutors\MouseUpExecutor.cs" />
+    <Compile Include="CommandExecutors\NewSessionExecutor.cs" />
+    <Compile Include="CommandExecutors\QuitExecutor.cs" />
+    <Compile Include="CommandExecutors\ScreenshotExecutor.cs" />
+    <Compile Include="CommandExecutors\SendKeysToElementExecutor.cs" />
+    <Compile Include="CommandExecutors\StatusExecutor.cs" />
+    <Compile Include="CommandExecutors\TouchFlickExecutor.cs" />
+    <Compile Include="CommandExecutors\TouchScrollExecutor.cs" />
+    <Compile Include="CommandExecutors\TouchSingleTapExecutor.cs" />
+    <Compile Include="CommandHelpers\BuildInfo.cs" />
+    <Compile Include="CommandHelpers\FilesCapabilityExpander.cs" />
+    <Compile Include="CommandHelpers\SendKeysHelper.cs" />
+    <Compile Include="CommandLineOptions.cs" />
+    <Compile Include="HttpRequest.cs" />
+    <Compile Include="Listener.cs" />
+    <Compile Include="ExitHandler.cs" />
+    <Compile Include="NodeRegistrar.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requester.cs" />
+    <Compile Include="CommandExecutors\SendKeysToActiveElementExecutor.cs" />
+    <Compile Include="UriDispatchTables.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="template.nodeconfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Winium.Mobile.Common\Winium.Mobile.Common.csproj">
+      <Project>{3C8D0B9C-576B-4778-97B1-6839AA944AEE}</Project>
+      <Name>Winium.Mobile.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Winium.Mobile.Connectivity\Winium.Mobile.Connectivity.csproj">
+      <Project>{DA38085E-F3DB-46EF-8889-D89283924917}</Project>
+      <Name>Winium.Mobile.Connectivity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Winium.Mobile.Logging\Winium.Mobile.Logging.csproj">
+      <Project>{DAC0EAFE-2FE0-4F33-B173-736C1BAFD707}</Project>
+      <Name>Winium.Mobile.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="version.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <PreBuildEvent>git rev-parse HEAD &gt; "$(ProjectDir)\version.txt" || (echo version.txt:warning:  Could not write git revision for version.txt: GIT not found in PATH. Add git.exe to PATH &amp;&amp; exit 0)</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -4,7 +4,7 @@
 
     using System.Collections.Generic;
 
-    using Winium.StoreApps.Common;
+    using Winium.Mobile.Common;
 
     #endregion
 

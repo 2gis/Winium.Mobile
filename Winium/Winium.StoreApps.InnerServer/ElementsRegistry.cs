@@ -7,8 +7,8 @@
     using System.Linq;
     using System.Threading;
 
-    using Winium.StoreApps.Common;
-    using Winium.StoreApps.Common.Exceptions;
+    using Winium.Mobile.Common;
+    using Winium.Mobile.Common.Exceptions;
     using Winium.StoreApps.InnerServer.Element;
 
     #endregion
