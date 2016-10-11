@@ -1,4 +1,4 @@
-﻿namespace Winium.Silverlight.InnerDriver.Commands
+﻿namespace Winium.Silverlight.InnerServer.Commands
 {
     using System.Windows.Automation.Peers;
     using System.Windows.Automation.Provider;

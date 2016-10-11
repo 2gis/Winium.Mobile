@@ -1,4 +1,4 @@
-﻿namespace Winium.Silverlight.InnerDriver.Commands
+﻿namespace Winium.Silverlight.InnerServer.Commands
 {
     using Mobile.Common;
     using System.Collections.Generic;

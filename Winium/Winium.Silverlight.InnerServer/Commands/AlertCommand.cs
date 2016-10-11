@@ -1,4 +1,4 @@
-﻿namespace Winium.Silverlight.InnerDriver.Commands
+﻿namespace Winium.Silverlight.InnerServer.Commands
 {
     using System.Linq;
     using System.Windows;
@@ -9,7 +9,7 @@
 
     using Winium.Mobile.Common;
     using Winium.Mobile.Common.Exceptions;
-    using Winium.Silverlight.InnerDriver.Commands.FindByHelpers;
+    using Winium.Silverlight.InnerServer.Commands.FindByHelpers;
 
     internal class AlertCommand : CommandBase
     {

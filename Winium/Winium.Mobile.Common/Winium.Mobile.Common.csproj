@@ -43,7 +43,7 @@
     <Compile Include="ConnectionInformation.cs" />
     <Compile Include="DriverCommand.cs" />
     <Compile Include="Exceptions\AutomationException.cs" />
-    <Compile Include="Exceptions\InnerDriverRequestException.cs" />
+    <Compile Include="Exceptions\InnerServerRequestException.cs" />
     <Compile Include="ExtendedCommand.cs" />
     <Compile Include="HttpResponseHelper.cs" />
     <Compile Include="CommandSettings\CommandSettings.cs" />

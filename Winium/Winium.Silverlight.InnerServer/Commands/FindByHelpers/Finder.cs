@@ -1,4 +1,4 @@
-﻿namespace Winium.Silverlight.InnerDriver.Commands.FindByHelpers
+﻿namespace Winium.Silverlight.InnerServer.Commands.FindByHelpers
 {
     using System;
     using System.Collections.Generic;

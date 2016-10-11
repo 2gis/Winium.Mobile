@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Winium.Silverlight.InnerDriver")]
+[assembly: AssemblyTitle("Winium.Silverlight.InnerServer")]
 [assembly: AssemblyDescription("Inner driver. Part of Windows Phone Driver. Selenium Driver for automated testing of Windows Phone 8.1 Silverlight applications.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("2gis")]
-[assembly: AssemblyProduct("Winium.Silverlight.InnerDriver")]
+[assembly: AssemblyProduct("Winium.Silverlight.InnerServer")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

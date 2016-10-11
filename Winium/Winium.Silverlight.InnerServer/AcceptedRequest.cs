@@ -1,4 +1,4 @@
-﻿namespace Winium.Silverlight.InnerDriver
+﻿namespace Winium.Silverlight.InnerServer
 {
     using System;
     using System.Collections.Generic;

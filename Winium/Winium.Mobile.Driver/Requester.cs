@@ -43,7 +43,7 @@
                 return response.Value;
             }
 
-            throw new InnerDriverRequestException(response.Value, response.Key);
+            throw new InnerServerRequestException(response.Value, response.Key);
         }
 
         #endregion

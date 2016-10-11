@@ -1,4 +1,4 @@
-﻿namespace Winium.Silverlight.InnerDriver.Public
+﻿namespace Winium.Silverlight.InnerServer.Public
 {
     using System;
     using Microsoft.Phone.Shell;

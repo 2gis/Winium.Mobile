@@ -7,26 +7,26 @@
 
     #endregion
 
-    public class InnerDriverRequestException : Exception
+    public class InnerServerRequestException : Exception
     {
         #region Constructors and Destructors
 
-        public InnerDriverRequestException()
+        public InnerServerRequestException()
         {
         }
 
-        public InnerDriverRequestException(string message, HttpStatusCode statusCode)
+        public InnerServerRequestException(string message, HttpStatusCode statusCode)
             : base(message)
         {
             this.StatusCode = statusCode;
         }
 
-        public InnerDriverRequestException(string message, params object[] args)
+        public InnerServerRequestException(string message, params object[] args)
             : base(string.Format(message, args))
         {
         }
 
-        public InnerDriverRequestException(string message, Exception innerException)
+        public InnerServerRequestException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

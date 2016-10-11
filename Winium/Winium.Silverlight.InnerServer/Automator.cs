@@ -1,4 +1,4 @@
-﻿namespace Winium.Silverlight.InnerDriver
+﻿namespace Winium.Silverlight.InnerServer
 {
     using System;
     using System.Collections.Generic;
@@ -9,7 +9,7 @@
     using Newtonsoft.Json.Linq;
 
     using Winium.Mobile.Common;
-    using Winium.Silverlight.InnerDriver.Commands;
+    using Winium.Silverlight.InnerServer.Commands;
 
     internal class Automator
     {
