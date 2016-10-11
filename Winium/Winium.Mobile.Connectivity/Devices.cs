@@ -50,13 +50,12 @@
         public DeviceInfo GetMatchingDevice(string desiredName, bool strict)
         {
             DeviceInfo deviceInfo;
-            if (strict)
-            {
-                deviceInfo =
-                    this.AvailableDevices.FirstOrDefault(
-                        x => x.ToString().Equals(desiredName, StringComparison.OrdinalIgnoreCase));
-            }
-            else
+
+            deviceInfo =
+                this.AvailableDevices.FirstOrDefault(
+                    x => x.ToString().Equals(desiredName, StringComparison.OrdinalIgnoreCase));
+
+            if (!strict && deviceInfo == null)
             {
                 deviceInfo =
                     this.AvailableDevices.FirstOrDefault(
