@@ -11,19 +11,19 @@
     {
         public override string DoImpl()
         {
-            object typeParam;
+            JToken typeParam;
             if (!this.Parameters.TryGetValue("type", out typeParam))
             {
                 return "specify fully qualified type name in 'type' parameter";
             }
 
-            object methodParam;
+            JToken methodParam;
             if (!this.Parameters.TryGetValue("method", out methodParam))
             {
                 return "specify fully qualified type name in 'method' parameter";
             }
 
-            object argsParam;
+            JToken argsParam;
             var args = this.Parameters.TryGetValue("args", out argsParam)
                                 ? ((JArray)argsParam).ToObject<object[]>()
                                 : new object[] { };

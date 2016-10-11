@@ -34,7 +34,7 @@
                 throw new AutomationException("Element cannot be found", ResponseStatus.NoSuchElement);
             }
 
-            var webElement = new JsonWebElementContent(webObjectId);
+            var webElement = new JsonElementContent(webObjectId);
             return this.JsonResponse(ResponseStatus.Success, webElement);
         }
 

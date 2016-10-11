@@ -26,10 +26,10 @@
                                                    ? this.Automator.VisualRoot
                                                    : this.Automator.WebElements.GetRegisteredElement(this.ElementId);
 
-            var result = new List<JsonWebElementContent>();
+            var result = new List<JsonElementContent>();
             var searchStrategy = new By(searchPolicy, searchValue);
             var foundObjectsIdList = this.FindElementsBy(relativeElement, searchStrategy);
-            result.AddRange(foundObjectsIdList.Select(foundObjectId => new JsonWebElementContent(foundObjectId)));
+            result.AddRange(foundObjectsIdList.Select(foundObjectId => new JsonElementContent(foundObjectId)));
 
             return this.JsonResponse(ResponseStatus.Success, result.ToArray());
         }

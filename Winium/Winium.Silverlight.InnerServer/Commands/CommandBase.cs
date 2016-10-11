@@ -8,6 +8,7 @@
     using System.Windows;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     using Winium.Mobile.Common;
     using Winium.Mobile.Common.Exceptions;
@@ -20,7 +21,7 @@
 
         public Automator Automator { get; set; }
 
-        public Dictionary<string, object> Parameters { get; set; }
+        public IDictionary<string, JToken> Parameters { get; set; }
 
         public string Session { get; set; }
 

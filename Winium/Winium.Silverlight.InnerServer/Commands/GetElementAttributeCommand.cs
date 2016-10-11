@@ -3,6 +3,8 @@
     using System;
     using System.Linq;
 
+    using Newtonsoft.Json.Linq;
+
     using Winium.Mobile.Common;
 
     internal class GetElementAttributeCommand : CommandBase
@@ -19,7 +21,7 @@
         {
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
 
-            object value;
+            JToken value;
             var attributeName = (string)null;
             if (this.Parameters.TryGetValue("NAME", out value))
             {
