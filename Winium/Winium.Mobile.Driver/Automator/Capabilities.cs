@@ -37,6 +37,7 @@
             this.PingTimeout = DefaultPingTimeout;
             this.NoFallback = true;
             this.CommandSettings = new CommandSettings();
+            this.IsJavascriptEnabled = true;
         }
 
         #endregion
@@ -115,6 +116,9 @@
         [JsonProperty("commandSettings")]
         public CommandSettings CommandSettings { get; set; }
 
+        [JsonProperty("javascriptEnabled")]
+        public bool IsJavascriptEnabled { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -122,15 +126,15 @@
         public static Capabilities CapabilitiesFromJsonString(string jsonString)
         {
             var capabilities = JsonConvert.DeserializeObject<Capabilities>(
-                jsonString, 
+                jsonString,
                 new JsonSerializerSettings
-                    {
-                        Error =
-                            delegate(object sender, ErrorEventArgs args)
+                {
+                    Error =
+                            delegate (object sender, ErrorEventArgs args)
                                 {
                                     args.ErrorContext.Handled = true;
                                 }
-                    });
+                });
             return capabilities;
         }
 
