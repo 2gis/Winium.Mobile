@@ -4,7 +4,7 @@
     {
         #region Public Properties
 
-        public const string FileName = ".Winium.StoreApps.ConnectionInformation.json";
+        public const string FileName = ".Winium.Mobile.ConnectionInformation.json";
 
         public string RemotePort { get; set; }
 
