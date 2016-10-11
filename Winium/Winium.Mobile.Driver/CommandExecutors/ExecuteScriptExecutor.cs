@@ -21,6 +21,10 @@
 
         internal object ExecuteMobileScript(string command)
         {
+            string[] arguments;
+            Dictionary<string, JToken> parameters;
+            Command invokeCommand;
+
             switch (command)
             {
                 case "start":
@@ -41,8 +45,24 @@
                 case "App.Close":
                     CloseAppExecutor.CloseApp(this.Automator);
                     break;
+                case "invokeAppBarItem":
+                    arguments = (this.ExecutedCommand.Parameters["args"] as JArray).Select(jv => (string)jv).ToArray();
+                    if (arguments == null)
+                    {
+                        throw new AutomationException("Bad parameters", ResponseStatus.JavaScriptError);
+                    }
+
+                    var itemType = (string)arguments.GetValue(0);
+                    var index = (string)arguments.GetValue(1);
+
+                    parameters = new Dictionary<string, JToken>();
+                    parameters["itemType"] = itemType;
+                    parameters["index"] = index;
+
+                    invokeCommand = new Command(ExtendedDriverCommand.InvokeAppBarItemCommand, parameters);
+                    return this.Automator.CommandForwarder.ForwardCommand(invokeCommand); ;
                 case "invokeMethod":
-                    var arguments = (this.ExecutedCommand.Parameters["args"] as JArray).Select(jv => (string)jv).ToArray();
+                    arguments = (this.ExecutedCommand.Parameters["args"] as JArray).Select(jv => (string)jv).ToArray();
 
                     if (arguments == null)
                     {
@@ -52,7 +72,7 @@
                     var type = (string)arguments.GetValue(0);
                     var method = (string)arguments.GetValue(1);
 
-                    var parameters = new Dictionary<string, JToken>();
+                    parameters = new Dictionary<string, JToken>();
                     parameters["type"] = type;
                     parameters["method"] = method;
                     var args = arguments.OfType<object>().Skip(2).ToArray();
@@ -61,7 +81,7 @@
                         parameters["args"] = new JArray(args);
                     }
 
-                    var invokeCommand = new Command(DriverCommand.ExecuteScript, parameters);
+                    invokeCommand = new Command(DriverCommand.ExecuteScript, parameters);
                     return this.Automator.CommandForwarder.ForwardCommand(invokeCommand);
                 default:
                     const string Url =
