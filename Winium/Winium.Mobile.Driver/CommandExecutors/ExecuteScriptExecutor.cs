@@ -24,6 +24,7 @@
             string[] arguments;
             Dictionary<string, JToken> parameters;
             Command invokeCommand;
+            string response;
 
             switch (command)
             {
@@ -60,7 +61,8 @@
                     parameters["index"] = index;
 
                     invokeCommand = new Command(ExtendedDriverCommand.InvokeAppBarItemCommand, parameters);
-                    return this.Automator.CommandForwarder.ForwardCommand(invokeCommand); ;
+                    response = this.Automator.CommandForwarder.ForwardCommand(invokeCommand);
+                    return JObject.Parse(response).GetValue("value");
                 case "invokeMethod":
                     arguments = (this.ExecutedCommand.Parameters["args"] as JArray).Select(jv => (string)jv).ToArray();
 
@@ -82,7 +84,8 @@
                     }
 
                     invokeCommand = new Command(DriverCommand.ExecuteScript, parameters);
-                    return this.Automator.CommandForwarder.ForwardCommand(invokeCommand);
+                    response = this.Automator.CommandForwarder.ForwardCommand(invokeCommand);
+                    return JObject.Parse(response).GetValue("value");
                 default:
                     const string Url =
                         "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#press-hardware-button";
