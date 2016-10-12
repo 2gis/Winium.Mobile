@@ -59,7 +59,7 @@
                 return "<pong>";
             }
 
-            // TODO: Refactor similar to CommandExecutors in OuterDriver
+            // TODO: Refactor similar to CommandExecutors in Driver
             if (command.Equals(DriverCommand.GetAlertText))
             {
                 commandToExecute = new AlertTextCommand();

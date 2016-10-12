@@ -14,7 +14,7 @@
 
         public override string DoImpl()
         {
-            // Warning: this method does not actually click, it gets coordinates for use in outerdriver.
+            // Warning: this method does not actually click, it gets coordinates for use in driver.
             var element = this.Automator.WebElements.GetRegisteredElement(this.ElementId);
 
             // TODO: Replace with implementation using AutomationPeer

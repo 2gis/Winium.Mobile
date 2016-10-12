@@ -48,21 +48,21 @@
             }
             catch (InnerServerRequestException exception)
             {
-                // Bad status returned by Inner Driver when trying to forward command
+                // Bad status returned by Inner Server when trying to forward command
                 return CommandResponse.Create(
-                    exception.StatusCode, 
+                    exception.StatusCode,
                     this.JsonResponse(ResponseStatus.UnknownError, exception));
             }
             catch (NotImplementedException exception)
             {
                 return CommandResponse.Create(
-                    HttpStatusCode.NotImplemented, 
+                    HttpStatusCode.NotImplemented,
                     this.JsonResponse(ResponseStatus.UnknownCommand, exception));
             }
             catch (Exception exception)
             {
                 return CommandResponse.Create(
-                    HttpStatusCode.OK, 
+                    HttpStatusCode.OK,
                     this.JsonResponse(ResponseStatus.UnknownError, exception));
             }
         }
@@ -79,7 +79,7 @@
         protected string JsonResponse(ResponseStatus status = ResponseStatus.Success, object value = null)
         {
             return JsonConvert.SerializeObject(
-                new JsonResponse(this.Automator.Session, status, value), 
+                new JsonResponse(this.Automator.Session, status, value),
                 Formatting.Indented);
         }
 

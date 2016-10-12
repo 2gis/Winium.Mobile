@@ -19,7 +19,7 @@
 
         #region Static Fields
 
-        private static readonly NLog.Logger Log = LogManager.GetLogger("outerdriver");
+        private static readonly NLog.Logger Log = LogManager.GetLogger("driver");
 
         #endregion
 

@@ -28,7 +28,7 @@
 			* Fix error when `debugConnectToRunningApp` is set to `true`
 			+ Add support for accessing `AutomationProperties` with `GetElementAttribute` command
     </releaseNotes>
-    <copyright>Copyright ©  2015</copyright>
+    <copyright>Copyright ©  2016</copyright>
     <tags></tags>
   </metadata>
 </package>
