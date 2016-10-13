@@ -1,5 +1,5 @@
 echo %RELEASE%
-IF [%RELEASE%] == [1] (SET CONFIGURATION=Release) else (SET CONFIGURATION=Debug) 
+IF [%RELEASE%] == [1] (SET CONFIGURATION=Release) else (SET CONFIGURATION=Debug)
 
 echo %CONFIGURATION%
 
@@ -9,6 +9,7 @@ start ..\..\Winium.Mobile.Driver\bin\x86\%CONFIGURATION%\Winium.Mobile.Driver.ex
 REM Run tests
 pip install -r requirements.txt
 py.test tests --tb=native -s --junitxml=junit-result.xml
+py.test tests_silverlight --tb=native -s --junitxml=junit-result-silverlight.xml
 SET RV=%ERRORLEVEL%
 
 taskkill /im Winium.Mobile.Driver.exe /f
