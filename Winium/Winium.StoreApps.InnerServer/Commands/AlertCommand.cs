@@ -40,8 +40,14 @@
         {
             var buttonName = this.Action == With.Accept ? "Button1Host" : "Button2Host";
 
-            var popup = WiniumVirtualRoot.Current.OpenPopups.FirstOrDefault();
-            if (popup == null || !popup.ClassName.EndsWith(".ContentDialog"))
+            WiniumElement popup = null;
+            foreach (var winiumElement in WiniumVirtualRoot.Current.OpenPopups) {
+                if (winiumElement.ClassName.EndsWith(".ContentDialog")) {
+                    popup = winiumElement;
+                    break;
+                }
+            }
+            if (popup == null)
             {
                 throw new AutomationException("No alert is displayed", ResponseStatus.NoAlertOpenError);
             }

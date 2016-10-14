@@ -244,6 +244,41 @@
             return new Point(x, y);
         }
 
+        public Rectangle? RequestElementRect(JToken element)
+        {
+            var command = new Command(
+                DriverCommand.GetElementRect, 
+                new Dictionary<string, JToken> { { "ID", element } });
+
+            var responseBody = this.CommandForwarder.ForwardCommand(command);
+
+            var deserializeObject = JsonConvert.DeserializeObject<JsonResponse>(responseBody);
+
+            if (deserializeObject.Status != ResponseStatus.Success)
+            {
+                return null;
+            }
+
+            var locationObject = deserializeObject.Value as JObject;
+            if (locationObject == null)
+            {
+                return null;
+            }
+
+            var location = locationObject.ToObject<Dictionary<string, int>>();
+
+            if (location == null)
+            {
+                return null;
+            }
+
+            var x = location["x"];
+            var y = location["y"];
+            var width = location["width"];
+            var height = location["height"];
+            return new Rectangle(x, y, width, height);
+        }
+
         #endregion
 
         #region Methods

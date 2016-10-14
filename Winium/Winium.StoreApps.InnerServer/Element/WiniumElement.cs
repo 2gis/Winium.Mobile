@@ -170,6 +170,11 @@
             return PropertiesAccessor.TryGetProperty(this.Element, attributeName, out value);
         }
 
+        public bool TryGetExtensionProperty(string attributeName, out object value)
+        {
+            return ExtensionPropertyAccessor.TryGetProperty(this.Element, attributeName, out value);
+        }
+
         #endregion
     }
 }

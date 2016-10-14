@@ -134,6 +134,25 @@ namespace Winium.Mobile.Connectivity
             }
         }
 
+        public void InstallDependencies(List<string> dependencies )
+        {
+            if (dependencies == null || !dependencies.Any())
+            {
+                return;
+            }
+
+            foreach (var dependency in dependencies)
+            {
+                InstallDependency(dependency);
+            }
+        }
+
+        public void InstallDependency(string path)
+        {
+            var appManifest = Utils.ReadAppManifestInfoFromPackage(path);
+            Utils.InstallApplication(this.deviceInfo, appManifest, DeploymentOptions.None, path);
+        }
+
         public void Terminate()
         {
             throw new NotImplementedException("Deployer.Terminate");
@@ -171,19 +190,6 @@ namespace Winium.Mobile.Connectivity
 
             Logger.Info("{0} was successfully deployed using Microsoft.Phone.Tools.Deploy", appManifest.Name);
             return appManifest;
-        }
-
-        private void InstallDependencies(List<string> dependencies)
-        {
-            if (dependencies == null || !dependencies.Any())
-            {
-                return;
-            }
-
-            foreach (var dependency in dependencies)
-            {
-                this.InstallApplicationPackage(dependency);
-            }
         }
 
         #endregion

@@ -48,6 +48,7 @@
     <Compile Include="Automator.cs" />
     <Compile Include="Commands\ClearCommand.cs" />
     <Compile Include="Commands\GetElementRectCommand.cs" />
+    <Compile Include="Commands\ClickCommand.cs" />
     <Compile Include="Commands\GetElementSizeCommand.cs" />
     <Compile Include="Commands\Helpers\ControlExtensions.cs" />
     <Compile Include="Commands\Helpers\IDictionaryExtensions.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Element\Helpers\AutomationPropertiesAccessor.cs" />
     <Compile Include="Element\Helpers\AutomationPropertiesHelper.cs" />
     <Compile Include="Element\Helpers\DependencyPropertiesAccessor.cs" />
+    <Compile Include="Element\Helpers\ExtensionPropertyAccessor.cs" />
     <Compile Include="Element\Helpers\PropertiesAccessor.cs" />
     <Compile Include="Element\ISearchable.cs" />
     <Compile Include="Element\WiniumElement.GetText.cs" />

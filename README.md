@@ -1,3 +1,8 @@
+
+# Capture Winium tests
+
+The Capture specific SystemTest documentation can be found [here.](https://gist.github.com/ole-vegard/05ae46c2d7accd170f9f)
+
 <p align="right">
 English description | <a href="README_RU.md">Описание на русском</a>
 </p>

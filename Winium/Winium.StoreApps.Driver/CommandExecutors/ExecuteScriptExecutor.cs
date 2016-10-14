@@ -1,4 +1,6 @@
-﻿namespace Winium.StoreApps.Driver.CommandExecutors
+﻿using System.Collections.Generic;
+
+namespace Winium.StoreApps.Driver.CommandExecutors
 {
     #region
 
@@ -50,6 +52,17 @@
             return null;
         }
 
+        internal object ExecuteStorageScript(string command)
+        {
+            switch (command)
+            {
+                case "ReadLocalTextFile":
+                    return ReadLocalTextFileExecutor.ReadFile(this.Automator, ExecutedCommand);
+                default:
+                    throw new AutomationException("Unknown storage command: " + command, ResponseStatus.UnknownCommand);
+            }
+        }
+
         internal object ForwardCommand()
         {
             var responseBody = this.Automator.CommandForwarder.ForwardCommand(this.ExecutedCommand);
@@ -86,6 +99,9 @@
             {
                 case "mobile:":
                     response = this.ExecuteMobileScript(command);
+                    break;
+                case "storage:":
+                    response = this.ExecuteStorageScript(command);
                     break;
                 default:
                     response = this.ForwardCommand();

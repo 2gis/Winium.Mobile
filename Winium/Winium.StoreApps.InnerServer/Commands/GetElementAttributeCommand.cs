@@ -56,6 +56,11 @@
                 return propertyObject;
             }
 
+            if (element.TryGetExtensionProperty(key, out propertyObject))
+            {
+                return propertyObject;
+            }
+
             return null;
         }
 
