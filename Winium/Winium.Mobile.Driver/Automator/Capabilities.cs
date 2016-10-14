@@ -35,7 +35,6 @@
             this.TakesScreenshot = true;
             this.Dependencies = new List<string>();
             this.PingTimeout = DefaultPingTimeout;
-            this.NoFallback = true;
             this.CommandSettings = new CommandSettings();
             this.IsJavascriptEnabled = true;
         }
@@ -103,9 +102,6 @@
 
         [JsonProperty("launchTimeout")]
         public int LaunchTimeout { get; set; }
-
-        [JsonProperty("noFallback")]
-        public bool NoFallback { get; set; }
 
         [JsonProperty("pingTimeout")]
         public int PingTimeout { get; set; }

@@ -281,8 +281,6 @@
 
         private bool TryConnectToApp(int timeout)
         {
-            var usingFallbackPort = false;
-            const string FallbackPort = "9998";
             ConnectionInformation connectionInformation;
             try
             {
@@ -294,15 +292,9 @@
             }
             catch (Exception)
             {
-                if (this.ActualCapabilities.NoFallback)
-                {
-                    return false;
-                }
+                Logger.Warn("ConnectionInformation ({0}) was not found. Make sure that you are using same versions of Winium.Mobile.Driver and Winium.*.InnerServer.", ConnectionInformation.FileName);
 
-                // TODO Limit catch clause from broad Exception, to specific ones
-                // We expect FileNotFound exception, but in rare cases other exceptions can be thrown by SmartDevice API
-                usingFallbackPort = true;
-                connectionInformation = new ConnectionInformation { RemotePort = FallbackPort };
+                return false;
             }
 
             var port = Convert.ToInt32(connectionInformation.RemotePort);
@@ -316,15 +308,7 @@
             }
 
             Logger.Info("Received connection information from device {0}.", connectionInformation);
-            if (usingFallbackPort)
-            {
-                Logger.Warn(
-                    "DEPRICATION: ConnectionInformation file was not found."
-                    + " Make sure that you are using same versions of Driver and InnerServer."
-                    + " Fallback to standard innerPort == {0}. This will be depricated in later versions.", 
-                    FallbackPort);
-            }
-
+            
             return true;
         }
 
