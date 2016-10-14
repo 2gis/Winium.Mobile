@@ -14,6 +14,8 @@ namespace TestApp
 {
     using System.Windows.Automation;
 
+    using Winium.Silverlight.InnerServer;
+
     public partial class MainPage : PhoneApplicationPage
     {
         private readonly List<string> _monthsList = new List<string>
@@ -110,6 +112,11 @@ namespace TestApp
             {
                 TextBox.Text = clickableApplicationBarMenuItem.Text;
             }
+        }
+
+        private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            this.Pivot.Title = string.Format("{0} Silverlight", AutomationServer.Instance.Port);
         }
     }
 }

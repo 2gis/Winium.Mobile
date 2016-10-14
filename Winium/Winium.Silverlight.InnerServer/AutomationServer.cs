@@ -33,8 +33,16 @@
 
         #region Public Methods and Operators
 
+        public string Port
+        {
+            get
+            {
+                return this.listener.Information.LocalPort;
+            }
+        }
+
         /// <summary>
-        /// Initializes and starts <see cref="AutomationServer"/> on default port (9998) with specified parameters.
+        /// Initializes and starts <see cref="AutomationServer"/> with specified parameters.
         /// </summary>
         /// <remarks>
         /// Use it in conjuction with <see cref="Instance"/> to simplify inclusion of server in tested app.

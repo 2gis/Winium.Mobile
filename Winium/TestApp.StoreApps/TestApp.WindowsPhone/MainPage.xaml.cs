@@ -88,7 +88,7 @@ namespace TestApp
         private void MainPageOnLoaded(object sender, RoutedEventArgs e)
         {
             AutomationServer.Instance.InitializeAndStart();
-            Pivot.Title = AutomationServer.Instance.Port;
+            Pivot.Title = string.Format("{0} StoreApps", AutomationServer.Instance.Port);
         }
 
         private void GoAppBarButtonOnClick(object sender, RoutedEventArgs e)
