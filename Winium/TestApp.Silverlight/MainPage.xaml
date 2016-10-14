@@ -21,7 +21,7 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
 
         <!--Pivot Control-->
-        <phone:Pivot Title="MY APPLICATION">
+        <phone:Pivot Title="MY APPLICATION" x:Name="Pivot">
             <phone:PivotItem Header="first">
                 <Grid>
                     <Grid.RowDefinitions>
