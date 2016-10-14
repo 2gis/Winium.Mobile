@@ -5,13 +5,13 @@ import pytest
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-from tests import WuaTestCase
+from tests_silverlight import SilverlightTestCase
 
 
 By.XNAME = 'xname'
 
 
-class TestGetCommands(WuaTestCase):
+class TestGetCommands(SilverlightTestCase):
     """
     Test GET commands that do not change anything in app, meaning they can all be run in one session.
     """
@@ -172,7 +172,7 @@ class TestGetCommands(WuaTestCase):
         assert expected == rv
 
 
-class TestBasicInput(WuaTestCase):
+class TestBasicInput(SilverlightTestCase):
     __shared_session__ = False
 
     def test_send_keys_to_element(self):

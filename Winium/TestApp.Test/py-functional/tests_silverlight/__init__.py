@@ -5,7 +5,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import config_silverlight as config
 
 
-class WuaTestCase(object):
+class SilverlightTestCase(object):
     """
     If True, then new session is created when test class is being setup,
     i.e. one session is used for all test methods in class.
@@ -26,21 +26,21 @@ class WuaTestCase(object):
 
     def setup_method(self, _):
         if not self.__shared_session__:
-            WuaTestCase._create_session(self)
+            SilverlightTestCase._create_session(self)
 
     def teardown_method(self, _):
         if not self.__shared_session__:
-            WuaTestCase._destroy_session(self)
+            SilverlightTestCase._destroy_session(self)
 
     @classmethod
     def setup_class(cls):
         if cls.__shared_session__:
-            WuaTestCase._create_session(cls)
+            SilverlightTestCase._create_session(cls)
 
     @classmethod
     def teardown_class(cls):
         if cls.__shared_session__:
-            WuaTestCase._destroy_session(cls)
+            SilverlightTestCase._destroy_session(cls)
 
     @pytest.fixture
     def waiter(self):
