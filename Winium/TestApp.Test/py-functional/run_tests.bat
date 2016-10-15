@@ -8,10 +8,12 @@ start ..\..\Winium.Mobile.Driver\bin\x86\%CONFIGURATION%\Winium.Mobile.Driver.ex
 
 REM Run tests
 pip install -r requirements.txt
-py.test tests --tb=native -s --junitxml=junit-result.xml
+py.test tests --tb=native -s --junitxml=junit-result-storeapps.xml
+SET RV1=%ERRORLEVEL%
 py.test tests_silverlight --tb=native -s --junitxml=junit-result-silverlight.xml
-SET RV=%ERRORLEVEL%
+SET RV2=%ERRORLEVEL%
 
 taskkill /im Winium.Mobile.Driver.exe /f
 
+SET /A RV=%RV1%+%RV2%
 EXIT %RV% /B
