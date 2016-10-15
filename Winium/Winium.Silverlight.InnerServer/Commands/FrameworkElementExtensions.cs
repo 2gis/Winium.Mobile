@@ -104,6 +104,27 @@
                     return true;
                 }
 
+                if (container.RenderSize.IsEmpty)
+                {
+                    // There are some currentElements in UI tree that always return zero size, e.g. ContentControl, etc.
+                    continue;
+                }
+
+                // FIXME we only check if currentElement is visible in parent and parent visible in his parent and so on
+                // we do not actually check if any part of original currentElement is visible in grandparents
+                elementSize = new Size(element.ActualWidth, element.ActualHeight);
+                rect = new Rect(zero, elementSize);
+                bound = element.TransformToVisual(container).TransformBounds(rect);
+                var containerRect = new Rect(zero, container.RenderSize);
+
+                containerRect.Intersect(bound);
+
+                // Check if currentElement is offscreen
+                if (containerRect.IsEmpty)
+                {
+                    return false;
+                }
+
                 element = container;
             }
         }
