@@ -18,7 +18,7 @@
     {
         public override string DoImpl()
         {
-            var index = Convert.ToInt32(this.Parameters["index"]);
+            var index = this.Parameters["index"].ToObject<int>();
             BarItemType itemType;
 
             if (!Enum.TryParse(this.Parameters["itemType"].ToString(), true, out itemType))

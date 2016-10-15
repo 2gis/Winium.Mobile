@@ -19,13 +19,8 @@
     {
         #region Methods
 
-        internal object ExecuteMobileScript(string command)
+        private object ExecuteMobileScript(string command)
         {
-            string[] arguments;
-            Dictionary<string, JToken> parameters;
-            Command invokeCommand;
-            string response;
-
             switch (command)
             {
                 case "start":
@@ -47,45 +42,9 @@
                     CloseAppExecutor.CloseApp(this.Automator);
                     break;
                 case "invokeAppBarItem":
-                    arguments = (this.ExecutedCommand.Parameters["args"] as JArray).Select(jv => (string)jv).ToArray();
-                    if (arguments == null)
-                    {
-                        throw new AutomationException("Bad parameters", ResponseStatus.JavaScriptError);
-                    }
-
-                    var itemType = (string)arguments.GetValue(0);
-                    var index = (string)arguments.GetValue(1);
-
-                    parameters = new Dictionary<string, JToken>();
-                    parameters["itemType"] = itemType;
-                    parameters["index"] = index;
-
-                    invokeCommand = new Command(ExtendedDriverCommand.InvokeAppBarItemCommand, parameters);
-                    response = this.Automator.CommandForwarder.ForwardCommand(invokeCommand);
-                    return JObject.Parse(response).GetValue("value");
+                    return this.InvokeAppBarItem();
                 case "invokeMethod":
-                    arguments = (this.ExecutedCommand.Parameters["args"] as JArray).Select(jv => (string)jv).ToArray();
-
-                    if (arguments == null)
-                    {
-                        throw new AutomationException("Bad parameters", ResponseStatus.JavaScriptError);
-                    }
-
-                    var type = (string)arguments.GetValue(0);
-                    var method = (string)arguments.GetValue(1);
-
-                    parameters = new Dictionary<string, JToken>();
-                    parameters["type"] = type;
-                    parameters["method"] = method;
-                    var args = arguments.OfType<object>().Skip(2).ToArray();
-                    if (args.Any())
-                    {
-                        parameters["args"] = new JArray(args);
-                    }
-
-                    invokeCommand = new Command(DriverCommand.ExecuteScript, parameters);
-                    response = this.Automator.CommandForwarder.ForwardCommand(invokeCommand);
-                    return JObject.Parse(response).GetValue("value");
+                    return this.InvokeMethod();
                 default:
                     const string Url =
                         "https://github.com/2gis/windows-universal-app-driver/wiki/Command-Execute-Script#press-hardware-button";
@@ -99,7 +58,65 @@
             return null;
         }
 
-        internal object ForwardCommand()
+        private object InvokeMethod()
+        {
+            if (!(this.ExecutedCommand.Parameters["args"] is JArray))
+            {
+                throw new AutomationException("Bad parameters", ResponseStatus.JavaScriptError);
+            }
+            var arguments = ((JArray)this.ExecutedCommand.Parameters["args"]).Select(jv => (string)jv).ToArray();
+
+            var type = (string)arguments.GetValue(0);
+            var method = (string)arguments.GetValue(1);
+
+            var parameters = new Dictionary<string, JToken>();
+            parameters["type"] = type;
+            parameters["method"] = method;
+            var args = arguments.OfType<object>().Skip(2).ToArray();
+            if (args.Any())
+            {
+                parameters["args"] = new JArray(args);
+            }
+
+            var invokeCommand = new Command(DriverCommand.ExecuteScript, parameters);
+            var response = this.Automator.CommandForwarder.ForwardCommand(invokeCommand);
+            var rv = JsonConvert.DeserializeObject<JsonResponse>(response);
+            if (rv.Status != ResponseStatus.Success)
+            {
+                throw new AutomationException(rv.Value.ToString(), ResponseStatus.JavaScriptError);
+            }
+
+            return rv.Value;
+        }
+
+        private object InvokeAppBarItem()
+        {
+            if (!(this.ExecutedCommand.Parameters["args"] is JArray))
+            {
+                throw new AutomationException("Bad parameters", ResponseStatus.JavaScriptError);
+            }
+            var arguments = ((JArray)this.ExecutedCommand.Parameters["args"]).Select(jv => (string)jv).ToArray();
+
+            var itemType = (string)arguments.GetValue(0);
+            var index = (string)arguments.GetValue(1);
+
+            var parameters = new Dictionary<string, JToken>();
+            parameters["itemType"] = itemType;
+            parameters["index"] = index;
+
+            var invokeCommand = new Command(ExtendedDriverCommand.InvokeAppBarItemCommand, parameters);
+            var response = this.Automator.CommandForwarder.ForwardCommand(invokeCommand);
+
+            var rv = JsonConvert.DeserializeObject<JsonResponse>(response);
+            if (rv.Status != ResponseStatus.Success)
+            {
+                throw new AutomationException(rv.Value.ToString(), ResponseStatus.JavaScriptError);
+            }
+
+            return rv.Value;
+        }
+
+        private object ForwardCommand()
         {
             var responseBody = this.Automator.CommandForwarder.ForwardCommand(this.ExecutedCommand);
             var deserializeObject = JsonConvert.DeserializeObject<JsonResponse>(responseBody);
