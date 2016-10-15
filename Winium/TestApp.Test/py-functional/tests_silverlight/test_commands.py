@@ -156,8 +156,9 @@ class TestGetCommands(SilverlightTestCase):
         assert expected_value == element.is_displayed()
 
     def test_file_ops(self):
-        with open(__file__) as f:
-            encoded = base64.b64encode(f.read())
+        encoding = 'utf-8'
+        with open(__file__, encoding=encoding) as f:
+            encoded = base64.b64encode(f.read().encode(encoding)).decode(encoding)
         self.driver.push_file(r"test\sample.dat", encoded)
         data = self.driver.pull_file(r"test\sample.dat")
         assert encoded == data
