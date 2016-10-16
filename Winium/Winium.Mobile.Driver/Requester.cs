@@ -84,7 +84,7 @@
 
                 if (verbose)
                 {
-                    Logger.Debug("Sending request to inner driver: {0}", uri);
+                    Logger.Debug("Sending request to inner server: {0}", uri);
                 }
 
                 var request = CreateWebRequest(uri, requestContent, timeout);
@@ -117,7 +117,7 @@
                 if (verbose)
                 {
                     // No need to log exceptions raised when sending service commands like ping.
-                    Logger.Error("Error occurred while trying to send request to inner driver: {0}", ex);
+                    Logger.Error("Error occurred while trying to send request to inner server: {0}", ex);
                     throw;
                 }
             }

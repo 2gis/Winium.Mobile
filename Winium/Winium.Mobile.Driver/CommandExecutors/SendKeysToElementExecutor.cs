@@ -19,10 +19,10 @@
         protected override string DoImpl()
         {
             /* TODO does not complie with standard and does not allow to type magic keys between other characters, only at the end
-             * if the text has the magic keys in it, type them after sending the rest of the text to the inner driver
+             * if the text has the magic keys in it, type them after sending the rest of the text to the inner server
              * It is not recommended to use SendKeys for simulation of hardware buttons, use GoBack command or ExecuteScript with 'mobile:' prefixed commands.
              * hardware buttons:
-             * F1 - back 
+             * F1 - back
              * F2 - start/windows
              * F3 - search
              */
