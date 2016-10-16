@@ -8,13 +8,12 @@
 <img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.StoreApps это реализация Selenium Remote WebDriver для автоматизации тестирования Windows Store приложений">
 </p>
 
-Winium.StoreApps это open-source инструмент для автоматизации Windows Store приложений, тестируемых на эмуляторах (пока поддерживаются только Windows Phone приложения).
+Winium.StoreApps это open-source инструмент для автоматизации как Windows Store, так и Silverlight приложений тестируемых на эмуляторах.
 
 ## Поддерживаемые платформы
-- Windows Phone 8.1
+- Windows Phone 8.1 (Windows Store и Silverlight)
 - Windows 10 Mobile
 
-Для автоматизации Windows Phone 8 Silverlight есть [Windows Phone Driver](https://github.com/2gis/winphonedriver).
 Для автоматизации Windows Desktop (WPF, WinForms) есть [Winium Desktop](https://github.com/2gis/Winium.Desktop).
 
 ## Почему Winium?
@@ -34,19 +33,27 @@ Winium.StoreApps это open-source инструмент для автомати
 Вы можете взять Visual Studio и SDK с сайта Microsoft [здесь](https://dev.windows.com/en-us/develop/download-phone-sdk).
 
 ## Быстрый старт
-1. Добавить ссылку на `Winium.StoreApps.InnerServer` в проекте тестируемого приложения ([через NuGet пакет](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/) или соберите проект у себя)
+1. Добавить ссылку на `Winium.StoreApps.InnerServer` или на `Winium.Silverlight.InnerServer` в проекте тестируемого приложения ([через NuGet пакет для Windows Store](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/) / [через NuGet пакет для Silverlight](https://www.nuget.org/packages/Winium.Silverlight.InnerServer/) или соберите проект у себя)
 
 2. В тестовом приложении добавьте следующий код для исполнения на UI потоке после того, как был создан коде где корневой элемент визуального дерева (обычно в `MainPageOnLoaded` для чистых приложений или в `PrepareApplication`, если вы используете `Caliburn.Micro`)
 
 	```cs
-	AutomationServer.Instance.InitializeAndStart(Frame);
+	// Для Windows Store приложения
+	AutomationServer.Instance.InitializeAndStart();
+
+	// Для Silverlight приложения
+	AutomationServer.Instance.InitializeAndStart(RootFrame);
 	```
 
 	или (если вы хотите включить драйвер только при debug сборке)
 
 	```cs
 	#if DEBUG
-		AutomationServer.Instance.InitializeAndStart(Frame);
+		// Для Windows Store приложения
+		AutomationServer.Instance.InitializeAndStart();
+
+		// Для Silverlight приложения
+		AutomationServer.Instance.InitializeAndStart(RootFrame);
 	#endif // DEBUG
 	```
 
@@ -55,15 +62,19 @@ Winium.StoreApps это open-source инструмент для автомати
 4. Пишите тесты на удобном языке. В тесте используйте `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) для задания пакета (appx) приложения. Это пример на python:
 	```python
 	# put it in setUp
-	self.driver = webdriver.Remote(command_executor='http://localhost:9999',
-	                               desired_capabilities={'app': 'C:\\testApp.appx'})
+	app_path = 'C:\\path\\to\\testApp.appx' # For StoreApps
+	app_path = 'C:\\path\\to\\testApp.xap' # For Silverlight apps
+	self.driver = webdriver.Remote(
+			command_executor='http://localhost:9999',
+	    desired_capabilities={'app': app_path}
+	)
 	# put it in test method body
 	element = self.driver.find_element_by_id('SetButton')
 	element.click()
 	assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
 	```
 
-5. Запустите `Winium.StoreApps.Driver.exe` ([загрузить последнюю версию с github](https://github.com/2gis/Winium.StoreApps/releases) или соберите проект у себя)
+5. Запустите `Winium.Mobile.Driver.exe` ([загрузить последнюю версию с github](https://github.com/2gis/Winium.StoreApps/releases) или соберите проект у себя)
 
 6. Запустите тесты и балдейте от происходящей магии
 
@@ -74,9 +85,9 @@ Winium.StoreApps это open-source инструмент для автомати
 ## Как это работает
 Winium.StoreApps состоит из двух основных частей:
 
-1. **Winium.StoreApps.Driver** реализует Selenium Remote WebDriver и слушает команды в формате JsonWireProtocol. Он отвечает за запуск эмулятора, деплой тестируемого приложения, эмуляцию ввода, перенаправление команд в `Winium.StoreApps.InnerServer`, и т.д.
+1. **Winium.Mobile.Driver** реализует Selenium Remote WebDriver и слушает команды в формате JsonWireProtocol. Он отвечает за запуск эмулятора, деплой тестируемого приложения, эмуляцию ввода, перенаправление команд в `Winium.StoreApps.InnerServer`, и т.д.
 
-2. **Winium.StoreApps.InnerServer** (должен быть встроен в тестируемое приложение) взаимодействует с `Winium.StoreApps.Driver.exe` и исполняет различные команды, например поиск элементов, задание и установку текстовых значений, свойств, и т.д.
+2. **Winium.StoreApps.InnerServer** / **Winium.Silverlight.InnerServer** (должен быть встроен в тестируемое приложение) взаимодействует с `Winium.Mobile.Driver.exe` и исполняет различные команды, например поиск элементов, задание и установку текстовых значений, свойств, и т.д.
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium-storeapps-struct.png" alt="Winium.StoreApps structure">
