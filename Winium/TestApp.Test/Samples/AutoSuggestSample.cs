@@ -37,7 +37,7 @@
 
             var basePath = Directory.GetCurrentDirectory();
             const string FilePath =
-                "..\\..\\..\\..\\TestApp\\TestApp.WindowsPhone\\AppPackages\\TestApp.WindowsPhone_1.0.0.0_AnyCPU_Debug_Test\\TestApp.WindowsPhone_1.0.0.0_AnyCPU_Debug.appx";
+                "..\\..\\..\\..\\TestApp.StoreApps\\TestApp.WindowsPhone\\AppPackages\\TestApp.WindowsPhone_1.0.0.0_AnyCPU_Debug_Test\\TestApp.WindowsPhone_1.0.0.0_AnyCPU_Debug.appx";
             var autPath = Path.GetFullPath(Path.Combine(basePath, FilePath));
 
             capabillities.SetCapability("app", autPath);

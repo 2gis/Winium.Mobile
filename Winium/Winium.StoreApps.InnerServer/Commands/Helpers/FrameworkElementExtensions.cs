@@ -6,7 +6,7 @@
     using Windows.UI.Xaml.Automation;
     using Windows.UI.Xaml.Automation.Peers;
 
-    using Winium.StoreApps.Common.Exceptions;
+    using Winium.Mobile.Common.Exceptions;
 
     #endregion
 

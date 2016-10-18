@@ -8,7 +8,7 @@
     using System.Text;
     using System.Xml;
 
-    using Winium.StoreApps.Common;
+    using Winium.Mobile.Common;
     using Winium.StoreApps.InnerServer.Element;
 
     #endregion

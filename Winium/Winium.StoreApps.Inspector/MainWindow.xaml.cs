@@ -26,7 +26,7 @@
     {
         #region Constants
 
-        private const string WiniumStoreAppsDriver = "Winium.StoreApps.Driver";
+        private const string WiniumStoreAppsDriver = "Winium.Mobile.Driver";
 
         #endregion
 

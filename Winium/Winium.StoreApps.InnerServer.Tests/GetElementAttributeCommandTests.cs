@@ -7,7 +7,7 @@
     using Windows.UI.Xaml.Automation;
     using Windows.UI.Xaml.Controls;
 
-    using Winium.StoreApps.Common.CommandSettings;
+    using Mobile.Common.CommandSettings;
     using Winium.StoreApps.InnerServer.Commands;
     using Winium.StoreApps.InnerServer.Element;
 

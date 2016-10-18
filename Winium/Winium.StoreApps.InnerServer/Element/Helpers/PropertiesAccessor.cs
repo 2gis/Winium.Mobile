@@ -10,7 +10,7 @@
 
     using Windows.UI.Xaml;
 
-    using Winium.StoreApps.Common.Exceptions;
+    using Winium.Mobile.Common.Exceptions;
 
     #endregion
 

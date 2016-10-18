@@ -12,13 +12,12 @@ English description | <a href="README_RU.md">Описание на русско�
 <img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.StoreApps is Selenium Remote WebDriver implementation for automated testing of Windows Store apps">
 </p>
 
-Winium.StoreApps is an open source test automation tool for Windows Store apps, tested on emulators (currently it supports only testing of Windows Phone apps).
+Winium.StoreApps is an open source test automation tool for both Windows Store apps and Windwos Silverlight apps tested on emulators.
 
 ## Supported Platforms
-- Windows Phone 8.1
+- Windows Phone 8.1 (StoreApps and Silverlight)
 - Windows 10 Mobile
 
-For Windows Phone 8 Silverlight test automation tool see [Windows Phone Driver](https://github.com/2gis/winphonedriver).
 For Windows Desktop (WPF, WinForms) test automation tool see [Winium Desktop](https://github.com/2gis/cruciatus).
 
 ## Why Winium?
@@ -36,19 +35,27 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 ## Quick Start
 **App under test (AUT)** is application that you would like to test.
 
-1. Add reference to `Winium.StoreApps.InnerServer` in AUT project ([install NuGet package](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/) or build project yourself)
+1. Add reference to either `Winium.StoreApps.InnerServer` or `Winium.Silverlight.InnerServer` in AUT project ([install Winium.StoreApps.InnerServer NuGet package](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/) / [install Winium.Silverlight.InnerServer NuGet package](https://www.nuget.org/packages/Winium.Silverlight.InnerServer/) or build project yourself)
 
 2. In your AUT's source code add following lines to be called on UI thread after visual root is initialized (usually in `MainPageOnLoaded` for vanilla app or `PrepareApplication` if you use `Caliburn.Micro`)
 
 	```cs
+	// For StoreApps
 	AutomationServer.Instance.InitializeAndStart();
+
+	// For Silverlight apps
+	AutomationServer.Instance.InitializeAndStart(RootFrame);
 	```
 
 	or (will include driver only for debug build)
 
 	```cs
 	#if DEBUG
+		// For StoreApps
 		AutomationServer.Instance.InitializeAndStart();
+
+		// For Silverlight apps
+		AutomationServer.Instance.InitializeAndStart(RootFrame);
 	#endif // DEBUG
 	```
 3. Assure that `Internet (Client & Server)` capability is enabled in package manifest of your AUT. It should be enabled by default for Windows 8.1 apps. In UWP (Windows Mobile 10) it is disabled by default (only `Internet (Client)` is enabled).
@@ -56,8 +63,12 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 4. Write your tests using you favorite language. In your tests use `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) to set path to tested app's appx file. Here is python example:
 	```python
 	# put it in setUp
-	self.driver = webdriver.Remote(command_executor='http://localhost:9999',
-	                               desired_capabilities={'app': 'C:\\testApp.appx'})
+	app_path = 'C:\\path\\to\\testApp.appx' # For StoreApps
+	app_path = 'C:\\path\\to\\testApp.xap' # For Silverlight apps
+	self.driver = webdriver.Remote(
+			command_executor='http://localhost:9999',
+	    desired_capabilities={'app': app_path}
+	)
 	# put it in test method body
 	element = self.driver.find_element_by_id('SetButton')
 	element.click()
@@ -65,7 +76,7 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 	```
 	> Make sure to set `deviceName` capability to `Emulator` if you are using the driver on a system where Visula Studio 2015 or Winodws 10 SDK is installed.
 
-5. Start `Winium.StoreApps.Driver.exe` ([download release from github](https://github.com/2gis/Winium.StoreApps/releases) or build it yourself)
+5. Start `Winium.Mobile.Driver.exe` ([download release from github](https://github.com/2gis/Winium.StoreApps/releases) or build it yourself)
 
 6. Run your tests and watch the magic happening
 
@@ -79,9 +90,9 @@ For test samples look at [our functional tests](Winium/TestApp.Test/py-functiona
 ## How it works
 Winium.StoreApps consists of two essential parts:
 
-1. **Winium.StoreApps.Driver** implements Selenium Remote WebDriver and listens for JsonWireProtocol commands. It is responsible for launching emulator, deploying AUT, simulating input, forwarding commands to `Winium.StoreApps.InnerServer`, etc.
+1. **Winium.Mobile.Driver** implements Selenium Remote WebDriver and listens for JsonWireProtocol commands. It is responsible for launching emulator, deploying AUT, simulating input, forwarding commands to `Winium.StoreApps.InnerServer`, etc.
 
-2. **Winium.StoreApps.InnerServer** (the one that should be embedded into AUT) communicates with `Winium.StoreApps.Driver.exe` and executes different commands, like finding elements, getting or setting text values, properties, etc., inside your application.
+2. **Winium.StoreApps.InnerServer** / **Winium.Silverlight.InnerServer** (the one that should be embedded into AUT) communicates with `Winium.Mobile.Driver.exe` and executes different commands, like finding elements, getting or setting text values, properties, etc., inside your application.
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium-storeapps-struct.png" alt="Winium.StoreApps structure">

@@ -8,7 +8,7 @@
     using Microsoft.Xde.Common;
     using Microsoft.Xde.Wmi;
 
-    using Winium.StoreApps.Logging;
+    using Winium.Mobile.Logging;
 
     #endregion
 

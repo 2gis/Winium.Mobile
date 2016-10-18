@@ -4,7 +4,7 @@
 
     using Windows.Graphics.Display;
 
-    using Winium.StoreApps.Common;
+    using Winium.Mobile.Common;
 
     #endregion
 

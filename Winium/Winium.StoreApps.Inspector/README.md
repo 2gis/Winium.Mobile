@@ -4,7 +4,7 @@ Inspector is a tool for Winium.StoreApps.
 Its purpose is to let you inspect the current state of your app's UI.
 
 ## Notes
-- Running `Winium.StoreApps.Driver.exe`
+- Running `Winium.Mobile.Driver.exe`
 - There is no autorefresh
 Inspector does not start driver by itself, it is assumed that user will run driver before using Inspector.
 

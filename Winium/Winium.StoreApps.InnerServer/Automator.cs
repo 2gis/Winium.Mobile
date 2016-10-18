@@ -12,7 +12,7 @@
     using Windows.UI.Core;
     using Windows.UI.Xaml;
 
-    using Winium.StoreApps.Common;
+    using Winium.Mobile.Common;
     using Winium.StoreApps.InnerServer.Commands;
 
     #endregion
@@ -73,7 +73,7 @@
                 return "<pong>";
             }
 
-            // TODO: Refactor similar to CommandExecutors in OuterDriver
+            // TODO: Refactor similar to CommandExecutors in Driver
             if (command.Equals(DriverCommand.GetAlertText))
             {
                 commandToExecute = new AlertTextCommand();

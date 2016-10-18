@@ -13,8 +13,8 @@
     using Windows.UI.Xaml.Automation.Peers;
     using Windows.UI.Xaml.Automation.Provider;
 
-    using Winium.StoreApps.Common;
-    using Winium.StoreApps.Common.Exceptions;
+    using Winium.Mobile.Common;
+    using Winium.Mobile.Common.Exceptions;
     using Winium.StoreApps.InnerServer.Commands.Helpers;
 
     #endregion

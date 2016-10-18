@@ -1,0 +1,79 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="TestApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:InnerServer="clr-namespace:Winium.Silverlight.InnerServer;assembly=Winium.Silverlight.InnerServer"
+    xmlns:public="clr-namespace:Winium.Silverlight.InnerServer.Public;assembly=Winium.Silverlight.InnerServer"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    Loaded="MainPage_OnLoaded"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+
+        <!--Pivot Control-->
+        <phone:Pivot Title="MY APPLICATION" x:Name="Pivot">
+            <phone:PivotItem Header="first">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBox Name="TextBox" Grid.Row="0" Width="400" Height="100"
+                         AcceptsReturn="True"
+                         VerticalAlignment="Center"
+                         AutomationProperties.AutomationId="MyTextBox" AutomationProperties.Name="NonUniqueName"/>
+                    <Button Content="Set 'CARAMBA' text to TextBox" Grid.Row="1" 
+                        HorizontalAlignment="Center" 
+                        AutomationProperties.AutomationId="SetButton" AutomationProperties.Name="NonUniqueName" Click="Button_Click"/>
+                    <ListBox Name="ListBox" Height="200" Grid.Row="2" Width="400"
+                         AutomationProperties.AutomationId="MyListBox"/>
+                </Grid>
+            </phone:PivotItem>
+            <!--Pivot item one-->
+            <phone:PivotItem Header="second">
+                <StackPanel Orientation="Vertical">
+                    <TextBox
+                x:Name="SecondTabTextBox"
+                Text ="Nice swipe!"
+                AutomationProperties.AutomationId="SecondTabTextBox" />
+                    <PasswordBox AutomationProperties.AutomationId="MyPasswordBox"/>
+                    <Button Content="Show Msg" 
+                        AutomationProperties.AutomationId="MsgBtn" />
+                    <RichTextBox Height="150"
+                                 x:Name="Rich"
+                                 AutomationProperties.AutomationId="Rich">
+                        <Paragraph>
+                            My test 1
+                        </Paragraph>
+                        <Paragraph>
+                            My test 2
+                        </Paragraph>
+                    </RichTextBox>
+                </StackPanel>
+            </phone:PivotItem>
+        </phone:Pivot>
+        
+    </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <public:ClickableApplicationBarIconButton Click="ClickableApplicationBarIconButton_OnClick" IconUri="/Resources/save.png" Text="Button 1"/>
+            <public:ClickableApplicationBarIconButton Click="ClickableApplicationBarIconButton_OnClick" IconUri="/Resources/feature.settings.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <public:ClickableApplicationBarMenuItem Click="ClickableApplicationBarMenuItem_OnClick"  Text="MenuItem 1"/>
+                <public:ClickableApplicationBarMenuItem Click="ClickableApplicationBarMenuItem_OnClick" Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+</phone:PhoneApplicationPage>

@@ -10,8 +10,8 @@
 
     using Windows.UI.Core;
 
-    using Winium.StoreApps.Common;
-    using Winium.StoreApps.Common.Exceptions;
+    using Mobile.Common;
+    using Mobile.Common.Exceptions;
 
     #endregion
 

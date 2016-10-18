@@ -12,7 +12,7 @@
     using Windows.Storage;
     using Windows.Storage.Streams;
 
-    using Winium.StoreApps.Common;
+    using Winium.Mobile.Common;
 
     #endregion
 

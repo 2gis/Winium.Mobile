@@ -93,9 +93,9 @@
     <Content Include="Assets\WideLogo.scale-240.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Winium.StoreApps.Common\Winium.StoreApps.Common.csproj">
+    <ProjectReference Include="..\Winium.Mobile.Common\Winium.Mobile.Common.csproj">
       <Project>{3C8D0B9C-576B-4778-97B1-6839AA944AEE}</Project>
-      <Name>Winium.StoreApps.Common</Name>
+      <Name>Winium.Mobile.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Winium.StoreApps.InnerServer\Winium.StoreApps.InnerServer.csproj">
       <Project>{E8683025-E703-4293-AA7E-3A9A3555BC40}</Project>

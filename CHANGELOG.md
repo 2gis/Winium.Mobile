@@ -1,5 +1,8 @@
 # Change Log
 
+## vX.Y.Z
+-  Added Winium.Silverlight for Windows Phone 8.1 Silverlight apps (from https://github.com/2gis/winphonedriver) (kudos to [Badoo Development](https://github.com/badoo)) #164
+
 <!--## Unreleased-->
 
 ## v1.6.2
@@ -47,7 +50,7 @@
 
 ## v1.3.0
 
-- Add dynamic port assigment for InnerServer #39 
+- Add dynamic port assigment for InnerServer #39
 - Add `autoLaunch` capability: whether to launch the app automatically. Default `true`
 - Add `--version` option to a driver CLI. Fix exit codes
 - Add `SetOrientation` command (Note that orientation is preserved between sessions)
@@ -93,4 +96,3 @@
 ## v1.0.0
 
 - First official release.
-

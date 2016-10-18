@@ -15,8 +15,8 @@
     using Microsoft.Xde.Wmi;
 
     using Winium.Mobile.Connectivity.Gestures;
-    using Winium.StoreApps.Common;
-    using Winium.StoreApps.Common.Exceptions;
+    using Common;
+    using Common.Exceptions;
 
     #endregion
 
