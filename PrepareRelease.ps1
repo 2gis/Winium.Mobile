@@ -53,14 +53,14 @@ Function PackRelease()
 {
     Add-Type -assembly "system.io.compression.filesystem"
 
-    $driverSourcePath = Join-Path $solutionDir "Winium.StoreApps.Driver\bin\x86\Release"
+    $driverSourcePath = Join-Path $solutionDir "Winium.Mobile.Driver\bin\x86\Release"
     $storeappsInnerServerSourcePath = Join-Path $solutionDir "Winium.StoreApps.InnerServer\bin\Release"
     $silverlightInnerServerSourcePath = Join-Path $solutionDir "Winium.Silverlight.InnerServer\bin\Release"
     $inspectorSourcePath = Join-Path $solutionDir "Winium.StoreApps.Inspector\bin\Release"
 
     Get-ChildItem -Path $releaseDir -Filter "*.zip" | foreach ($_) { Remove-Item $_.FullName }
 
-    [IO.Compression.ZipFile]::CreateFromDirectory($driverSourcePath, "$releaseDir/Winium.StoreApps.Driver.zip")
+    [IO.Compression.ZipFile]::CreateFromDirectory($driverSourcePath, "$releaseDir/Winium.Mobile.Driver.zip")
     [IO.Compression.ZipFile]::CreateFromDirectory($storeappsInnerServerSourcePath, "$releaseDir/Winium.StoreApps.InnerServer.zip")
     [IO.Compression.ZipFile]::CreateFromDirectory($silverlightInnerServerSourcePath, "$releaseDir/Winium.Silverlight.InnerServer.zip")
     [IO.Compression.ZipFile]::CreateFromDirectory($inspectorSourcePath, "$releaseDir/Winium.StoreApps.Inspector.zip")
