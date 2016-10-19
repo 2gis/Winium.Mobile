@@ -4,18 +4,20 @@ English description | <a href="README_RU.md">Описание на русско�
 
 # Winium for Store Apps
 [![Build Status](https://img.shields.io/jenkins/s/http/opensource-ci.2gis.ru/Winium.StoreApps.svg?style=flat-square)](http://opensource-ci.2gis.ru/job/Winium.StoreApps/)
-[![Inner Server NuGet version](https://img.shields.io/nuget/v/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
+[![Winium.StoreApps.InnerServer Inner Server NuGet version](https://img.shields.io/nuget/v/Winium.StoreApps.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
+[![Winium.Silverlight.InnerServer NuGet version](https://img.shields.io/nuget/v/Winium.Silverlight.InnerServer.svg?style=flat-square)](https://www.nuget.org/packages/Winium.Silverlight.InnerServer/)
 [![GitHub release](https://img.shields.io/github/release/2gis/Winium.StoreApps.svg?style=flat-square)](https://github.com/2gis/Winium.StoreApps/releases/)
 [![GitHub license](https://img.shields.io/badge/license-MPL 2.0-blue.svg?style=flat-square)](LICENSE)
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.StoreApps is Selenium Remote WebDriver implementation for automated testing of Windows Store apps">
+<img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.Mobile is Selenium Remote WebDriver implementation for automated testing of Windows StoreApps or Silverlight apps on Windows Phone 8.1 or Windows 10 Mobile">
 </p>
 
-Winium.StoreApps is an open source test automation tool for both Windows Store apps and Windwos Silverlight apps tested on emulators.
+Winium.Mobile is an open source test automation tool for both Windows StoreApps and Windows Silverlight apps tested on Windows Phone or Windows Mobile emulators.
 
 ## Supported Platforms
-- Windows Phone 8.1 (StoreApps and Silverlight)
+- StoreApps and Silverlight
+- Windows Phone 8.1
 - Windows 10 Mobile
 
 For Windows Desktop (WPF, WinForms) test automation tool see [Winium Desktop](https://github.com/2gis/cruciatus).
@@ -60,35 +62,35 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 	```
 3. Assure that `Internet (Client & Server)` capability is enabled in package manifest of your AUT. It should be enabled by default for Windows 8.1 apps. In UWP (Windows Mobile 10) it is disabled by default (only `Internet (Client)` is enabled).
 
-4. Write your tests using you favorite language. In your tests use `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) to set path to tested app's appx file. Here is python example:
+4. Write your tests using you favorite language. In your tests use `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) to set path to tested app's appx/xap file. Here is python example:
 	```python
 	# put it in setUp
 	app_path = 'C:\\path\\to\\testApp.appx' # For StoreApps
 	app_path = 'C:\\path\\to\\testApp.xap' # For Silverlight apps
 	self.driver = webdriver.Remote(
-			command_executor='http://localhost:9999',
-	    desired_capabilities={'app': app_path}
+		command_executor='http://localhost:9999',
+		desired_capabilities={'app': app_path}
 	)
 	# put it in test method body
 	element = self.driver.find_element_by_id('SetButton')
 	element.click()
 	assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
 	```
-	> Make sure to set `deviceName` capability to `Emulator` if you are using the driver on a system where Visula Studio 2015 or Winodws 10 SDK is installed.
+	> Make sure to set `deviceName` capability to `Emulator` to run on Windows Phone 8.1 if you are using the driver on a system where Visula Studio 2015 or Winodws 10 SDK is installed.
 
 5. Start `Winium.Mobile.Driver.exe` ([download release from github](https://github.com/2gis/Winium.StoreApps/releases) or build it yourself)
 
 6. Run your tests and watch the magic happening
 
 ## Writing tests
-Essentially, Winium.StoreApps supports limited subset of [WebDriver JSON Wire Protocol](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol), which means that you can write tests just like you would write for Selenium or Appium, here are some [docs](http://docs.seleniumhq.org/docs/03_webdriver.jsp).
+Essentially, Winium.Mobile supports limited subset of [WebDriver JSON Wire Protocol](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol), which means that you can write tests just like you would write for Selenium or Appium, here are some [docs](http://docs.seleniumhq.org/docs/03_webdriver.jsp).
 For test samples look at [our functional tests](Winium/TestApp.Test/py-functional) or [test samples page](https://github.com/2gis/Winium.StoreApps/wiki/Test-Samples).
 
-## Winium.StoreApps vs Winium.StoreApps.CodedUi
-[Winium.StoreApps vs Winium.StoreApps.CodedUi](https://github.com/2gis/Winium/wiki/Winium.StoreApps-vs-Winium.StoreApps.CodedUi)
+## Winium.Mobile vs Winium.StoreApps.CodedUi
+[Winium.Mobile vs Winium.StoreApps.CodedUi](https://github.com/2gis/Winium/wiki/Winium.StoreApps-vs-Winium.StoreApps.CodedUi)
 
 ## How it works
-Winium.StoreApps consists of two essential parts:
+Winium.Mobile consists of two essential parts:
 
 1. **Winium.Mobile.Driver** implements Selenium Remote WebDriver and listens for JsonWireProtocol commands. It is responsible for launching emulator, deploying AUT, simulating input, forwarding commands to `Winium.StoreApps.InnerServer`, etc.
 

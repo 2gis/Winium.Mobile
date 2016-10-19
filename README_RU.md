@@ -5,13 +5,14 @@
 [![GitHub license](https://img.shields.io/badge/license-MPL 2.0-blue.svg?style=flat-square)](LICENSE)
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.StoreApps это реализация Selenium Remote WebDriver для автоматизации тестирования Windows Store приложений">
+<img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.Mobile это реализация Selenium Remote WebDriver для автоматизации тестирования Windows StoreApps и Silverlight приложений на Windows Phone 8.1 и windows 10 Mobile">
 </p>
 
 Winium.StoreApps это open-source инструмент для автоматизации как Windows Store, так и Silverlight приложений тестируемых на эмуляторах.
 
 ## Поддерживаемые платформы
-- Windows Phone 8.1 (Windows Store и Silverlight)
+- Windows Store и Silverlight
+- Windows Phone 8.1
 - Windows 10 Mobile
 
 Для автоматизации Windows Desktop (WPF, WinForms) есть [Winium Desktop](https://github.com/2gis/Winium.Desktop).
@@ -59,13 +60,13 @@ Winium.StoreApps это open-source инструмент для автомати
 
 3. Убедитесь, что в манифесте пакета вашего тестируемого приложения включено разрешение для возможности `Internet (Client & Server)`. Эта возможность должна быть разрешена по умолчанию для Windows 8.1 приложений. Для UWP (Windows Mobile 10) приложений эта возможность отключена по умолчанию (включена только `Internet (Client)`).
 
-4. Пишите тесты на удобном языке. В тесте используйте `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) для задания пакета (appx) приложения. Это пример на python:
+4. Пишите тесты на удобном языке. В тесте используйте `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) для задания пакета (appx/xap) приложения. Это пример на python:
 	```python
 	# put it in setUp
 	app_path = 'C:\\path\\to\\testApp.appx' # For StoreApps
 	app_path = 'C:\\path\\to\\testApp.xap' # For Silverlight apps
 	self.driver = webdriver.Remote(
-			command_executor='http://localhost:9999',
+		command_executor='http://localhost:9999',
 	    desired_capabilities={'app': app_path}
 	)
 	# put it in test method body
@@ -76,14 +77,14 @@ Winium.StoreApps это open-source инструмент для автомати
 
 5. Запустите `Winium.Mobile.Driver.exe` ([загрузить последнюю версию с github](https://github.com/2gis/Winium.StoreApps/releases) или соберите проект у себя)
 
-6. Запустите тесты и балдейте от происходящей магии
+6. Запустите тесты и наслаждайтесь
 
 ## Написание тестов
-По сути, Winium.StoreApps поддерживает ограниченное подмножество команд из [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol), т.е. вы можете писать ваши тесты также, как если бы вы писали их под Selenium или Appium, см. например [документацию Selenium](http://docs.seleniumhq.org/docs/03_webdriver.jsp).
+По сути, Winium.Mobile поддерживает ограниченное подмножество команд из [WebDriver JSON Wire Protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol), т.е. вы можете писать ваши тесты также, как если бы вы писали их под Selenium или Appium, см. например [документацию Selenium](http://docs.seleniumhq.org/docs/03_webdriver.jsp).
 В качестве примеров можно использовать наши [функциональные тесты](Winium/TestApp.Test/py-functional) или [примеры с wiki](https://github.com/2gis/Winium.StoreApps/wiki/Test-Samples).
 
 ## Как это работает
-Winium.StoreApps состоит из двух основных частей:
+Winium.Mobile состоит из двух основных частей:
 
 1. **Winium.Mobile.Driver** реализует Selenium Remote WebDriver и слушает команды в формате JsonWireProtocol. Он отвечает за запуск эмулятора, деплой тестируемого приложения, эмуляцию ввода, перенаправление команд в `Winium.StoreApps.InnerServer`, и т.д.
 
