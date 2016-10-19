@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Command.cs" />
     <Compile Include="CommandInfo.cs" />
     <Compile Include="CommandResponse.cs" />

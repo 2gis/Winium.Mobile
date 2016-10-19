@@ -17,6 +17,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7142A195-B911-4D94-B674-FBF4E896E6A3}"
 	ProjectSection(SolutionItems) = preProject
 		Settings.StyleCop = Settings.StyleCop
+		SolutionInfo.cs = SolutionInfo.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestApp.StoreApps", "TestApp.StoreApps", "{FFEB6900-C198-494F-A915-4F6B23D942A1}"

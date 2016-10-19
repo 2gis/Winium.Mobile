@@ -92,6 +92,9 @@
     <PlatformTarget />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="AcceptedRequest.cs" />
     <Compile Include="Automator.cs" />
     <Compile Include="AutomatorElements.cs" />

@@ -1,9 +1,11 @@
 # Change Log
 
-## vX.Y.Z
--  Added Winium.Silverlight for Windows Phone 8.1 Silverlight apps (from https://github.com/2gis/winphonedriver) (kudos to [Badoo Development](https://github.com/badoo)) #164
+## v1.7.0
+- Fix driver crashing on empty incoming request
+- Add Winium.Silverlight.InnerServer for Windows Phone 8.1 Silverlight apps (from https://github.com/2gis/winphonedriver) (kudos to [Badoo Development](https://github.com/badoo)) #164
+- Add Clear command support #160
+- Add PushFile and PullFile commands (see tests or Appium bindings for usage) #140
 
-<!--## Unreleased-->
 
 ## v1.6.2
 - Fix `PageSource` failing to serialize nested classes
@@ -14,7 +16,7 @@
 
 
 ## v1.6.0
-- Addd path expansion for files capability to make it easier to deploy folders to app's local storage #128
+- Add path expansion for files capability to make it easier to deploy folders to app's local storage #128
 - Add setting to limit access to Automation, Dependency or CLR properties for `GetElementAttribute` command #120
 - Add setting to serialize `Enums` by name, not value for `GetElementAttribute` command #120
 - Change the way Automation Properties names are handled by `GetElementAttribute` command #123
