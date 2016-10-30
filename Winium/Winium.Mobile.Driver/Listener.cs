@@ -191,7 +191,7 @@
         private CommandResponse ProcessCommand(Command command)
         {
             Logger.Info("COMMAND {0}\r\n{1}", command.Name, command.Parameters.ToString());
-            var executor = this.executorDispatcher.GetExecutor(command.Name);
+            var executor = this.executorDispatcher.GetExecutor(command);
             executor.ExecutedCommand = command;
             var response = executor.Do();
             Logger.Debug("RESPONSE:\r\n{0}", response);

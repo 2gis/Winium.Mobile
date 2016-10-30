@@ -62,6 +62,9 @@
     </Compile>
     <Compile Include="Automator\Automator.cs" />
     <Compile Include="Automator\Capabilities.cs" />
+    <Compile Include="CommandExecutors\CommandExecutorWebContextForward.cs" />
+    <Compile Include="CommandExecutors\GetContextExecutor.cs" />
+    <Compile Include="CommandExecutors\SetContextExecutor.cs" />
     <Compile Include="CommandExecutors\GetElementAttributeExecutor.cs" />
     <Compile Include="CommandExecutors\CloseAppExecutor.cs" />
     <Compile Include="CommandExecutors\LaunchAppExecutor.cs" />
@@ -104,6 +107,8 @@
     <Compile Include="Requester.cs" />
     <Compile Include="CommandExecutors\SendKeysToActiveElementExecutor.cs" />
     <Compile Include="UriDispatchTables.cs" />
+    <Compile Include="Web\DriverCommandToAtomMapping.cs" />
+    <Compile Include="Web\WebDriverAtoms.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

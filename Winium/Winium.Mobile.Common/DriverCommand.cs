@@ -1,6 +1,8 @@
 ﻿// Copied from OpenQA
 namespace Winium.Mobile.Common
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Values describing the list of commands understood by a remote server using the JSON wire protocol.
     /// 
@@ -484,6 +486,12 @@ namespace Winium.Mobile.Common
         public static readonly string PullFile = "pullFile";
 
         public static readonly string PushFile = "pushFile";
+
+        public static readonly string Contexts = "contexts";
+
+        public static readonly string GetContext = "getContext";
+
+        public static readonly string SetContext = "setContext";
 
         #endregion
 

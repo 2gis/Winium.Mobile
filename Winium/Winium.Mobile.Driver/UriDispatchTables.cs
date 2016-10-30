@@ -311,6 +311,15 @@
             this.commandDictionary.Add(
                 DriverCommand.PushFile, 
                 new CommandInfo("POST", "/session/{sessionId}/appium/device/push_file"));
+            this.commandDictionary.Add(
+                DriverCommand.Contexts,
+                new CommandInfo("GET", "/session/{sessionId}/contexts"));
+            this.commandDictionary.Add(
+                DriverCommand.GetContext,
+                new CommandInfo("GET", "/session/{sessionId}/context"));
+            this.commandDictionary.Add(
+                DriverCommand.SetContext,
+                new CommandInfo("POST", "/session/{sessionId}/context"));
         }
 
         #endregion

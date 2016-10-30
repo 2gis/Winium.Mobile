@@ -33,6 +33,8 @@
             this.Name = name;
         }
 
+
+        // ReSharper disable once UnusedMember.Global
         public Command()
         {
         }
@@ -58,6 +60,12 @@
         /// </summary>
         [JsonProperty("sessionId")]
         public string SessionId { get; set; }
+
+        [JsonProperty("context")]
+        public string Context { get; set; }
+
+        [JsonProperty("atom")]
+        public string Atom { get; set; }
 
         #endregion
     }

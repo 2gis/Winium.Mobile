@@ -15,7 +15,18 @@
 
     #endregion
 
-    internal class CommandBase
+    internal interface ICommandBase
+    {
+        string Do();
+
+        Automator Automator { get; set; }
+
+        IDictionary<string, JToken> Parameters { get; set; }
+
+        string Session { get; set; }
+    }
+
+    internal abstract class CommandBase : ICommandBase
     {
         #region Public Properties
 
@@ -57,10 +68,7 @@
 
         #region Methods
 
-        protected virtual string DoImpl()
-        {
-            throw new NotImplementedException();
-        }
+        protected abstract string DoImpl();
 
         protected string JsonResponse(ResponseStatus status = ResponseStatus.Success, object value = null)
         {
@@ -77,6 +85,7 @@
             Exception exception = null;
 
             // TODO Research dispatcher.RunIdleAsync
+
             dispatcher.RunAsync(
                 CoreDispatcherPriority.Normal, 
                 () =>
