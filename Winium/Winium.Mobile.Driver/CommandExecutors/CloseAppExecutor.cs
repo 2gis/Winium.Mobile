@@ -1,5 +1,6 @@
 ﻿namespace Winium.Mobile.Driver.CommandExecutors
 {
+    using Connectivity;
     using System;
     using System.Threading;
 
@@ -12,9 +13,16 @@
 
         public static void CloseApp(Automator automator)
         {
-            var remoteCommand = new Command(DriverCommand.CloseApp);
-            automator.CommandForwarder.ForwardCommand(remoteCommand);
-            Thread.Sleep(TimeSpan.FromMilliseconds(500));
+            if (automator.Deployer.AppType == AppType.XAP)
+            {
+                automator.Deployer.Terminate();
+            }
+            else
+            {
+                var remoteCommand = new Command(DriverCommand.CloseApp);
+                automator.CommandForwarder.ForwardCommand(remoteCommand);
+                Thread.Sleep(TimeSpan.FromMilliseconds(500));
+            }
         }
 
         #endregion

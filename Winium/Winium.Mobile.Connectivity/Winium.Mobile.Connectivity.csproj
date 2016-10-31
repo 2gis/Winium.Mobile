@@ -67,6 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Emulator\VirtualMachineException.cs" />
     <Compile Include="Retry.cs" />
+    <Compile Include="AppType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Phone.Tools.Deploy.Patched\Microsoft.Phone.Tools.Deploy.Patched.csproj">

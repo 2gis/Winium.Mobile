@@ -105,6 +105,24 @@ namespace Microsoft.Phone.Tools.Deploy.Patched
             }
         }
 
+        public static TypeOfApp DetermineAppType(string packagePath)
+        {
+            var extension = Path.GetExtension(packagePath);
+            if (!string.IsNullOrEmpty(extension))
+            {
+                switch (extension.ToLower(CultureInfo.InvariantCulture))
+                {
+                    case ".appxbundle":
+                        return TypeOfApp.APPXBUNDLE;
+                    case ".appx":
+                        return TypeOfApp.APPX;
+                    case ".xap":
+                        return TypeOfApp.XAP;
+                }
+            }
+
+            throw new NotImplementedException("This file extension is not supported by the tool.");
+        }
         #endregion
 
         #region Methods
@@ -125,25 +143,6 @@ namespace Microsoft.Phone.Tools.Deploy.Patched
 
                 deploymentOptions &= ~DeploymentOptions.Sideload;
             }
-        }
-
-        internal static TypeOfApp DetermineAppType(string packagePath)
-        {
-            var extension = Path.GetExtension(packagePath);
-            if (!string.IsNullOrEmpty(extension))
-            {
-                switch (extension.ToLower(CultureInfo.InvariantCulture))
-                {
-                    case ".appxbundle":
-                        return TypeOfApp.APPXBUNDLE;
-                    case ".appx":
-                        return TypeOfApp.APPX;
-                    case ".xap":
-                        return TypeOfApp.XAP;
-                }
-            }
-
-            throw new NotImplementedException("This file extension is not supported by the tool.");
         }
 
         internal static string GenerateNDeployMdil(

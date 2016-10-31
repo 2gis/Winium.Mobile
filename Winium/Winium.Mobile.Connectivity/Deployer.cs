@@ -52,8 +52,8 @@ namespace Winium.Mobile.Connectivity
             {
                 throw new AutomationException(
                     string.Format(
-                        "Could not find a device to launch. You requested '{0}', but the available devices were:\n{1}", 
-                        desiredDevice, 
+                        "Could not find a device to launch. You requested '{0}', but the available devices were:\n{1}",
+                        desiredDevice,
                         Devices.Instance));
             }
 
@@ -77,6 +77,8 @@ namespace Winium.Mobile.Connectivity
             }
         }
 
+        public AppType AppType { get; private set; }
+
         #endregion
 
         #region Properties
@@ -99,6 +101,7 @@ namespace Winium.Mobile.Connectivity
         {
             var appManifest = Utils.ReadAppManifestInfoFromPackage(appPath);
             this.RemoteApplication = this.Device.GetApplication(appManifest.ProductId);
+            this.AppType = (AppType)((int)Utils.DetermineAppType(appPath));
         }
 
         public void Launch()
@@ -136,7 +139,14 @@ namespace Winium.Mobile.Connectivity
 
         public void Terminate()
         {
-            throw new NotImplementedException("Deployer.Terminate");
+            if (this.AppType == AppType.XAP)
+            {
+                this.RemoteApplication.TerminateRunningInstances();
+            }
+            else
+            {
+                throw new NotImplementedException("Deployer.Terminate");
+            }
         }
 
         public void Uninstall()
@@ -162,6 +172,7 @@ namespace Winium.Mobile.Connectivity
             var appManifestInfo = this.InstallApplicationPackage(appPath);
             this.installed = true;
             this.RemoteApplication = this.Device.GetApplication(appManifestInfo.ProductId);
+            this.AppType = (AppType)((int)Utils.DetermineAppType(appPath));
         }
 
         private IAppManifestInfo InstallApplicationPackage(string path)
