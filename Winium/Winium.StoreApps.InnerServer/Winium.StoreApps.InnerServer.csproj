@@ -85,6 +85,7 @@
     <Compile Include="Element\WiniumElement.IsUserVisible.cs" />
     <Compile Include="Element\WiniumVirtualRoot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Commands\SendKeysCommandHandler.cs" />
     <Compile Include="Web\Commands\ClickElementCommandHandler.cs" />
     <Compile Include="Web\Response.cs" />
     <Compile Include="Web\Commands\GetActiveElementCommandHandler.cs" />

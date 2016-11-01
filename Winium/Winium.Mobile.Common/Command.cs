@@ -31,6 +31,7 @@
         {
             this.Parameters = new JObject();
             this.Name = name;
+            this.Context = DefaultContextNames.NativeAppContextName;
         }
 
 

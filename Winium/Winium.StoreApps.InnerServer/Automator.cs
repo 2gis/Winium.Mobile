@@ -146,6 +146,10 @@
             {
                 commandToExecute = new ClickElementCommandHandler();
             }
+            else if (command.Equals(DriverCommand.SendKeysToElement))
+            {
+                commandToExecute = new SendKeysCommandHandler();
+            }
             else
             {
                 throw new NotImplementedException("Not implemented: " + command);
