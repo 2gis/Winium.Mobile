@@ -91,6 +91,25 @@ namespace Winium.Mobile.Connectivity
 
         #region Public Methods and Operators
 
+        public static AppType DetermineAppType(string packagePath)
+        {
+            var extension = Path.GetExtension(packagePath);
+            if (!string.IsNullOrEmpty(extension))
+            {
+                switch (extension.ToLower(CultureInfo.InvariantCulture))
+                {
+                    case ".appxbundle":
+                        return AppType.APPXBUNDLE;
+                    case ".appx":
+                        return AppType.APPX;
+                    case ".xap":
+                        return AppType.XAP;
+                }
+            }
+
+            throw new NotImplementedException("This file extension is not supported by the tool.");
+        }
+
         public void Install(string appPath, List<string> dependencies)
         {
             this.InstallDependencies(dependencies);
@@ -101,7 +120,7 @@ namespace Winium.Mobile.Connectivity
         {
             var appManifest = Utils.ReadAppManifestInfoFromPackage(appPath);
             this.RemoteApplication = this.Device.GetApplication(appManifest.ProductId);
-            this.AppType = (AppType)((int)Utils.DetermineAppType(appPath));
+            this.AppType = DetermineAppType(appPath);
         }
 
         public void Launch()
@@ -162,7 +181,6 @@ namespace Winium.Mobile.Connectivity
 
             this.Device.Disconnect();
         }
-
         #endregion
 
         #region Methods
@@ -172,7 +190,7 @@ namespace Winium.Mobile.Connectivity
             var appManifestInfo = this.InstallApplicationPackage(appPath);
             this.installed = true;
             this.RemoteApplication = this.Device.GetApplication(appManifestInfo.ProductId);
-            this.AppType = (AppType)((int)Utils.DetermineAppType(appPath));
+            this.AppType = DetermineAppType(appPath);
         }
 
         private IAppManifestInfo InstallApplicationPackage(string path)
