@@ -104,9 +104,10 @@
                     return true;
                 }
 
-                if (container.RenderSize.IsEmpty)
+                if (container.RenderSize.Width == 0 && container.RenderSize.Height == 0)
                 {
                     // There are some currentElements in UI tree that always return zero size, e.g. ContentControl, etc.
+                    element = container;
                     continue;
                 }
 
