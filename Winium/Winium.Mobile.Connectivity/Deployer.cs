@@ -137,15 +137,17 @@ namespace Winium.Mobile.Connectivity
             }
         }
 
-        public void Terminate()
+        public bool Terminate()
         {
             if (this.AppType == AppType.XAP)
             {
                 this.RemoteApplication.TerminateRunningInstances();
+                return true;
             }
             else
             {
-                throw new NotImplementedException("Deployer.Terminate");
+                Logger.Debug("Could not terminate application from outside.");
+                return false;
             }
         }
 

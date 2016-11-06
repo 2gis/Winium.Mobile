@@ -13,11 +13,8 @@
 
         public static void CloseApp(Automator automator)
         {
-            if (automator.Deployer.AppType == AppType.XAP)
-            {
-                automator.Deployer.Terminate();
-            }
-            else
+            var terminated = automator.Deployer.Terminate();
+            if (!terminated)
             {
                 var remoteCommand = new Command(DriverCommand.CloseApp);
                 automator.CommandForwarder.ForwardCommand(remoteCommand);

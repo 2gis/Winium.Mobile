@@ -30,7 +30,7 @@ namespace Winium.Mobile.Connectivity
 
         void SendFile(string isoStoreRoot, string sourceDesktopFilePath, string targetDeviceFilePath);
 
-        void Terminate();
+        bool Terminate();
 
         void Uninstall();
 
