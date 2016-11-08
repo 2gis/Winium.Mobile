@@ -1,6 +1,6 @@
 ﻿namespace Winium.Mobile.Driver.CommandExecutors
 {
-    using StoreApps.Driver.Web;
+    using Web;
 
     internal class CommandExecutorWebContextForward : CommandExecutorBase
     {

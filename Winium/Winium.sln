@@ -54,6 +54,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestApp.Silverlight", "Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp.Silverlight\TestApp.csproj", "{8A202F60-6343-4FEF-B838-FB7C668BA29D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebViewApp", "WebViewApp\WebViewApp.csproj", "{D305A69D-1852-4CE9-B0A6-90B610A66E4A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TestApp.StoreApps\TestApp.Shared\TestApp.Shared.projitems*{10a0b15d-ca68-4a4f-83bc-639a62b5ef1e}*SharedItemsImports = 4
@@ -123,6 +125,12 @@ Global
 		{8A202F60-6343-4FEF-B838-FB7C668BA29D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A202F60-6343-4FEF-B838-FB7C668BA29D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8A202F60-6343-4FEF-B838-FB7C668BA29D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D305A69D-1852-4CE9-B0A6-90B610A66E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D305A69D-1852-4CE9-B0A6-90B610A66E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D305A69D-1852-4CE9-B0A6-90B610A66E4A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D305A69D-1852-4CE9-B0A6-90B610A66E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D305A69D-1852-4CE9-B0A6-90B610A66E4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D305A69D-1852-4CE9-B0A6-90B610A66E4A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

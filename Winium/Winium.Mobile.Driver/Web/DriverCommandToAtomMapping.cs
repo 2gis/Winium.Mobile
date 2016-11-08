@@ -1,4 +1,4 @@
-﻿namespace Winium.StoreApps.Driver.Web
+﻿namespace Winium.Mobile.Driver.Web
 {
     #region
 
