@@ -62,7 +62,7 @@ You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/
 	```
 3. Assure that `Internet (Client & Server)` capability is enabled in package manifest of your AUT. It should be enabled by default for Windows 8.1 apps. In UWP (Windows Mobile 10) it is disabled by default (only `Internet (Client)` is enabled).
 
-4. Write your tests using you favorite language. In your tests use `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) to set path to tested app's appx/xap file. Here is python example:
+4. Write your tests using your favorite language. In your tests use `app` [desired capability](https://github.com/2gis/Winium.StoreApps/wiki/Capabilities) to set path to tested app's appx/xap file. Here is python example:
 	```python
 	# put it in setUp
 	app_path = 'C:\\path\\to\\testApp.appx' # For StoreApps
