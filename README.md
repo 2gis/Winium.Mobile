@@ -32,7 +32,7 @@ You have Selenium WebDriver for testing of web apps, Appium for testing of iOS a
 * Visual Studio 2013 with Update 2 or higher
 * Windows phone 8.1 SDK and/or Windows 10 SDK
 
-You can get Visual Studio and SDK from Microsoft [here](https://dev.windows.com/en-us/develop/download-phone-sdk).
+You can get Visual Studio and SDK from Microsoft [here](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive).
 
 ## Quick Start
 **App under test (AUT)** is application that you would like to test.
