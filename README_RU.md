@@ -31,7 +31,7 @@ Winium.StoreApps это open-source инструмент для автомати
 * Visual Studio 2013 (Update 2 или выше)
 * Windows phone 8.1 SDK и/или Windows 10 SDK
 
-Вы можете взять Visual Studio и SDK с сайта Microsoft [здесь](https://dev.windows.com/en-us/develop/download-phone-sdk).
+Вы можете взять Visual Studio и SDK с сайта Microsoft [здесь](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive).
 
 ## Быстрый старт
 1. Добавить ссылку на `Winium.StoreApps.InnerServer` или на `Winium.Silverlight.InnerServer` в проекте тестируемого приложения ([через NuGet пакет для Windows Store](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/) / [через NuGet пакет для Silverlight](https://www.nuget.org/packages/Winium.Silverlight.InnerServer/) или соберите проект у себя)
