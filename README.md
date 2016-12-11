@@ -20,7 +20,7 @@ Winium.Mobile is an open source test automation tool for both Windows StoreApps 
 - Windows Phone 8.1
 - Windows 10 Mobile
 
-For Windows Desktop (WPF, WinForms) test automation tool see [Winium Desktop](https://github.com/2gis/cruciatus).
+For Windows Desktop (WPF, WinForms) test automation tool see [Winium Desktop](https://github.com/2gis/Winium.Desktop).
 
 ## Why Winium?
 You have Selenium WebDriver for testing of web apps, Appium for testing of iOS and Android apps. And now you have Selenium-based tools for testing of Windows apps too. What are some of the benefits? As said by Appium:
