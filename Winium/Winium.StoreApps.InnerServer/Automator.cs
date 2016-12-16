@@ -161,6 +161,10 @@
             {
                 commandToExecute = new CloseAppCommand();
             }
+            else if (command.Equals(ExtendedDriverCommand.InvokeMethodCommand))
+            {
+                commandToExecute = new InvokeMethodCommand();
+            }
             else
             {
                 throw new NotImplementedException("Not implemented: " + command);

@@ -3,30 +3,30 @@
     using System;
     using System.Linq;
 
-    using Winium.Mobile.Common;
-
     using Newtonsoft.Json.Linq;
 
-    internal class ExecuteScriptCommand : CommandBase
+    using Winium.Mobile.Common;
+
+    internal class InvokeMethodCommand : CommandBase
     {
         public override string DoImpl()
         {
             JToken typeParam;
             if (!this.Parameters.TryGetValue("type", out typeParam))
             {
-                return "specify fully qualified type name in 'type' parameter";
+                return this.JsonResponse(ResponseStatus.JavaScriptError, "specify fully qualified type name in 'type' parameter");
             }
 
             JToken methodParam;
             if (!this.Parameters.TryGetValue("method", out methodParam))
             {
-                return "specify fully qualified type name in 'method' parameter";
+                return this.JsonResponse(ResponseStatus.JavaScriptError, "specify fully qualified type name in 'method' parameter");
             }
 
             JToken argsParam;
             var args = this.Parameters.TryGetValue("args", out argsParam)
-                                ? ((JArray)argsParam).ToObject<object[]>()
-                                : new object[] { };
+                           ? ((JArray)argsParam).ToObject<object[]>()
+                           : new object[] { };
 
             var typeName = typeParam.ToString();
             var type = FindType(typeName);

@@ -135,9 +135,9 @@
             {
                 commandToExecute = new InvokeAppBarItemCommand();
             }
-            else if (command.Equals(DriverCommand.ExecuteScript))
+            else if (command.Equals(ExtendedDriverCommand.InvokeMethodCommand))
             {
-                commandToExecute = new ExecuteScriptCommand();
+                commandToExecute = new InvokeMethodCommand();
             }
             else
             {

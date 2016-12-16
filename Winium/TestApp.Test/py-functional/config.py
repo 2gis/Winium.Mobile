@@ -9,6 +9,6 @@ APPX_PATH = '..\\TestApp.StoreApps\\TestApp.WindowsPhone\\AppPackages\\TestApp.W
 
 DESIRED_CAPABILITIES = {
     "app": os.path.abspath(os.path.join(BASE_DIR, APPX_PATH)),
-    "deviceName": "Emulator 8.1"
-    # "debugConnectToRunningApp": True
+    "deviceName": "Emulator 8.1",
+    "debugConnectToRunningApp": False
 }

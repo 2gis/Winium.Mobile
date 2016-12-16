@@ -8,5 +8,5 @@ AUT_PATH = r"..\TestApp.Silverlight\bin\{0}\TestApp_{0}_AnyCPU.xap".format(CONFI
 DESIRED_CAPABILITIES = {
     "deviceName": "Emulator 8.1",
     "app": os.path.abspath(os.path.join(BASE_DIR, AUT_PATH)),
-    # "debugConnectToRunningApp": True,
+    "debugConnectToRunningApp": False
 }
