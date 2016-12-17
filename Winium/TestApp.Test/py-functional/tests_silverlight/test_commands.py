@@ -173,6 +173,28 @@ class TestGetCommands(SilverlightTestCase):
         assert expected == rv
 
 
+class TestExecuteScript(SilverlightTestCase):
+    __shared_session__ = False
+
+    @pytest.mark.parametrize("command_alias", ["automation: InvokePattern.Invoke"])
+    def test_automation_invoke(self, command_alias):
+        self.driver.find_element_by_id('MyTextBox').send_keys('')
+        element = self.driver.find_element_by_id('SetButton')
+        self.driver.execute_script(command_alias, element)
+        assert 'CARAMBA' == self.driver.find_element_by_id('MyTextBox').text
+
+    @pytest.mark.parametrize("command_alias", ["automation: ScrollPattern.Scroll"])
+    def test_automation_scroll(self, command_alias):
+        list_box = self.driver.find_element_by_id('MyListBox')
+        list_item = list_box.find_element_by_name('November')
+        start_location = list_item.location
+        scroll_info = {"v": "smallIncrement", "count": 10}
+        self.driver.execute_script(command_alias, list_box, scroll_info)
+        end_location = list_item.location
+
+        assert (end_location['y'] - start_location['y']) < 0
+
+
 class TestBasicInput(SilverlightTestCase):
     __shared_session__ = False
 

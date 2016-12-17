@@ -131,6 +131,10 @@
             {
                 commandToExecute = new GetElementAttributeCommand { ElementId = elementId };
             }
+            else if (command.Equals(DriverCommand.ExecuteScript))
+            {
+                commandToExecute = new ExecuteCommand();
+            }
             else if (command.Equals(ExtendedDriverCommand.InvokeAppBarItemCommand))
             {
                 commandToExecute = new InvokeAppBarItemCommand();

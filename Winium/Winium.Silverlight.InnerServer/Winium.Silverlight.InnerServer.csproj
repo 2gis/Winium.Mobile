@@ -98,6 +98,7 @@
     <Compile Include="AcceptedRequest.cs" />
     <Compile Include="Automator.cs" />
     <Compile Include="AutomatorElements.cs" />
+    <Compile Include="Commands\ExecuteCommand.cs" />
     <Compile Include="Commands\InvokeMethodCommand.cs" />
     <Compile Include="Commands\GetElementSizeCommand.cs" />
     <Compile Include="Commands\GetElementRectCommand.cs" />
