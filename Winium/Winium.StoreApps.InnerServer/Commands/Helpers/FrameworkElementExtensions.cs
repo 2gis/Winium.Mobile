@@ -37,7 +37,7 @@
 
         internal static AutomationPeer GetAutomationPeer(this FrameworkElement element)
         {
-            var peer = FrameworkElementAutomationPeer.FromElement(element);
+            var peer = FrameworkElementAutomationPeer.CreatePeerForElement(element);
             if (peer == null)
             {
                 throw new AutomationException("Element does not support AutomationPeer.");
@@ -49,7 +49,7 @@
         internal static T GetProviderOrDefault<T>(this FrameworkElement element, PatternInterface patternInterface)
             where T : class
         {
-            var peer = FrameworkElementAutomationPeer.FromElement(element);
+            var peer = GetAutomationPeer(element);
 
             return peer == null ? null : peer.GetPattern(patternInterface) as T;
         }
