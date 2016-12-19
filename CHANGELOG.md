@@ -1,5 +1,12 @@
 # Change Log
 
+## v1.7.1
+- Fix IsDisplayed for Silverlight. Driver considired elements invisible when container size was (0, 0), which is notm for some containers like canvas. (Thanks to @bayandin)
+- Fix links to SDK in READMEs. (Thanks to @sargissargsyan)
+- Fix possible `Element does not support ... control pattern interface.`
+- Add `ExecuteScript` `mobile: invokeMethod` support to StoreApps. Lets you execute any public static method in AUT from your tests. See `py-functional` tests for usage example.
+- Add `ExecuteScript` `automation` sub-commands support. See [wiki](https://github.com/2gis/Winium.Mobile/wiki/Command-Execute-Script#use-automationpeerspatterninterface-on-element). Fixes https://github.com/2gis/winphonedriver/issues/83
+
 ## v1.7.0
 - Fix driver crashing on empty incoming request
 - Add Winium.Silverlight.InnerServer for Windows Phone 8.1 Silverlight apps (from https://github.com/2gis/winphonedriver) (kudos to [Badoo Development](https://github.com/badoo)) #164
