@@ -5,6 +5,9 @@ namespace Winium.Mobile.Common
         #region Static Fields
 
         public static readonly string InvokeAppBarItemCommand = "invokeAppBarItem";
+
+        public static readonly string InvokeMethodCommand = "invokeMethod";
+
         #endregion
     }
 }

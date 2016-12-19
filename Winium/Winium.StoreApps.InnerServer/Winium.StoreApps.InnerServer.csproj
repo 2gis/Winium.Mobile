@@ -47,6 +47,7 @@
     <Compile Include="Commands\GetElementSizeCommand.cs" />
     <Compile Include="Commands\Helpers\ControlExtensions.cs" />
     <Compile Include="Commands\Helpers\IDictionaryExtensions.cs" />
+    <Compile Include="Commands\InvokeMethodCommand.cs" />
     <Compile Include="Commands\IsElementEnabledCommand.cs" />
     <Compile Include="ElementsRegistry.cs" />
     <Compile Include="Commands\AlertCommand.cs" />

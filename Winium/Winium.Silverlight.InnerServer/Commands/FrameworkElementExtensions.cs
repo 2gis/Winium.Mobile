@@ -4,8 +4,11 @@
     using System.Linq;
     using System.Windows;
     using System.Windows.Automation;
+    using System.Windows.Automation.Peers;
     using System.Windows.Controls;
     using System.Windows.Media;
+
+    using Winium.Mobile.Common.Exceptions;
 
     internal static class FrameworkElementExtensions
     {
@@ -128,6 +131,37 @@
 
                 element = container;
             }
+        }
+
+        internal static AutomationPeer GetAutomationPeer(this FrameworkElement element)
+        {
+            var peer = FrameworkElementAutomationPeer.CreatePeerForElement(element);
+            if (peer == null)
+            {
+                throw new AutomationException("Element does not support AutomationPeer.");
+            }
+
+            return peer;
+        }
+
+        internal static T GetProviderOrDefault<T>(this FrameworkElement element, PatternInterface patternInterface)
+            where T : class
+        {
+            var peer = GetAutomationPeer(element);
+
+            return peer == null ? null : peer.GetPattern(patternInterface) as T;
+        }
+
+        internal static T GetProvider<T>(this FrameworkElement element, PatternInterface patternInterface)
+            where T : class
+        {
+            var provider = element.GetProviderOrDefault<T>(patternInterface);
+            if (provider != null)
+            {
+                return provider;
+            }
+
+            throw new AutomationException(string.Format("Element does not support {0} control pattern interface.", typeof(T).Name));
         }
 
         #endregion

@@ -1,21 +1,19 @@
-﻿namespace Winium.StoreApps.InnerServer.Commands
+﻿namespace Winium.Silverlight.InnerServer.Commands
 {
     #region
 
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Windows;
+    using System.Windows.Automation;
+    using System.Windows.Automation.Peers;
+    using System.Windows.Automation.Provider;
 
     using Newtonsoft.Json.Linq;
 
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Automation;
-    using Windows.UI.Xaml.Automation.Peers;
-    using Windows.UI.Xaml.Automation.Provider;
-
     using Winium.Mobile.Common;
     using Winium.Mobile.Common.Exceptions;
-    using Winium.StoreApps.InnerServer.Commands.Helpers;
 
     #endregion
 
@@ -40,7 +38,7 @@
 
         #region Public Methods and Operators
 
-        protected override string DoImpl()
+        public override string DoImpl()
         {
             string command;
             var prefix = string.Empty;
@@ -63,9 +61,6 @@
             {
                 case "automation:":
                     response = this.ExecuteAutomationScript(command);
-                    break;
-                case "attribute:":
-                    response = this.ExecuteAttributeScript(command);
                     break;
                 default:
                     var msg = string.Format(HelpUnknownScriptMsg, prefix, command, HelpUrlScript);
@@ -158,37 +153,10 @@
             return peer.IsOffscreen();
         }
 
-        private string ExecuteAttributeScript(string command)
-        {
-            if (command != "set")
-            {
-                var msg = string.Format(HelpUnknownScriptMsg, "attribute:", command, HelpUrlAttributeScript);
-                throw new AutomationException(msg, ResponseStatus.JavaScriptError);
-            }
-
-            /* 'attribute: set' is used to set property value on element
-             * script parameters:
-             *      element - WebElement on wich attribute will be set
-             *      attribute name - property to be set, nested property can be set using dot syntax
-             *      value - value to be set
-             */
-            var args = (JArray)this.Parameters["args"];
-
-            var elementId = args[0]["ELEMENT"].ToString();
-            var element = this.Automator.ElementsRegistry.GetRegisteredElement(elementId);
-
-            var attributeName = args[1].ToString();
-            var value = args[2];
-
-            element.SetProperty(attributeName, value);
-
-            return null;
-        }
-
         private object ExecuteAutomationScript(string command)
         {
             var elementId = ((JArray)this.Parameters["args"])[0]["ELEMENT"].ToString();
-            var element = this.Automator.ElementsRegistry.GetRegisteredElement(elementId).Element;
+            var element = this.Automator.WebElements.GetRegisteredElement(elementId);
 
             switch (command)
             {

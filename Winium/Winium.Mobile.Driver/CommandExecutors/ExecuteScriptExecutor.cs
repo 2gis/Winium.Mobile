@@ -78,7 +78,7 @@
                 parameters["args"] = new JArray(args);
             }
 
-            var invokeCommand = new Command(DriverCommand.ExecuteScript, parameters);
+            var invokeCommand = new Command(ExtendedDriverCommand.InvokeMethodCommand, parameters);
             var response = this.Automator.CommandForwarder.ForwardCommand(invokeCommand);
             var rv = JsonConvert.DeserializeObject<JsonResponse>(response);
             if (rv.Status != ResponseStatus.Success)
