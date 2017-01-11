@@ -122,7 +122,11 @@
 
             var context = this.ContextsRegistry.GetContext(this.CurrentContext);
 
-            if (command.Equals(DriverCommand.GetPageSource))
+            if (command.Equals(DriverCommand.Get))
+            {
+                commandToExecute = new GoToUrlCommandHandler();
+            }
+            else if (command.Equals(DriverCommand.GetPageSource))
             {
                 commandToExecute = new GetPageSourceCommandHandler();
             }
