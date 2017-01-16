@@ -30,7 +30,9 @@ namespace Winium.StoreApps.InnerServer
         public IEnumerable<string> GetAllContexts()
         {
             var webViews = WiniumVirtualRoot.Current.Find(TreeScope.Descendants, x => x is WebView);
-            return webViews.Select(this.RegisterContext);
+
+            // FIXME ToList is required here to actually register contexts, but it causes "The application called an interface that was marshalled for a different thread" later on
+            return webViews.Select(this.RegisterContext); 
         }
 
         private string RegisterContext(WiniumElement element)
