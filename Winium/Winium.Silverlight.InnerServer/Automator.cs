@@ -10,6 +10,9 @@
 
     using Winium.Mobile.Common;
     using Winium.Silverlight.InnerServer.Commands;
+    using Web.Commands;
+    using Web;
+    using Microsoft.Phone.Controls;
 
     internal class Automator
     {
@@ -19,6 +22,8 @@
         {
             this.VisualRoot = visualRoot;
             this.WebElements = new AutomatorElements();
+            this.ContextsRegistry = new ContextsRegistry();
+            this.CurrentContext = ContextsRegistry.NativeAppContext;
         }
 
         #endregion
@@ -28,6 +33,13 @@
         public UIElement VisualRoot { get; private set; }
 
         public AutomatorElements WebElements { get; private set; }
+
+        public string CurrentContext { get; set; }
+
+        public WebBrowser browser { get; set; }
+
+        public ContextsRegistry ContextsRegistry { get; private set; }
+
 
         #endregion
 
@@ -51,7 +63,7 @@
                 elementId = elementIdObject.ToString();
             }
 
-            CommandBase commandToExecute;
+            CommandBase commandToExecute = null;
 
             if (command.Equals("ping"))
             {
@@ -59,6 +71,82 @@
                 return "<pong>";
             }
 
+            if (command.Equals(DriverCommand.Contexts))
+            {
+                commandToExecute = new GetWebContextsCommand();
+            }
+            else if (command.Equals(DriverCommand.SetContext))
+            {
+                commandToExecute = new SetContextCommand();
+            }
+
+            // TODO: Refactor similar to CommandExecutors in OuterDriver
+            // TODO: Refactor similar to CommandExecutors in Driver
+            if (commandToExecute == null)
+            {
+                commandToExecute = this.CurrentContext == ContextsRegistry.NativeAppContext
+                                       ? GetNativeAppCommandToExecute(command, elementId, parameters)
+                                       : this.GetWebCommandToExecute(requestData);
+            }
+
+           
+
+            JToken sessionIdObject;
+            commandToExecute.Session = parameters.TryGetValue("SESSIONID", out sessionIdObject)
+                                           ? sessionIdObject.ToString()
+                                           : string.Empty;
+
+            // TODO: Replace passing Automator to command with passing some kind of configuration
+            commandToExecute.Automator = this;
+            commandToExecute.Parameters = parameters;
+
+            var response = commandToExecute.Do();
+
+            return response;
+        }
+
+        private CommandBase GetWebCommandToExecute(Command request)
+        {
+            var command = request.Name;
+            WebCommandHandler commandToExecute;
+
+            var context = this.ContextsRegistry.GetContext(this.CurrentContext);
+
+            if (command.Equals(DriverCommand.Get))
+            {
+                commandToExecute = new GoToUrlCommandHandler();
+            }
+            else if (command.Equals(DriverCommand.FindElement))
+            {
+                commandToExecute = new FindElementCommandHandler();
+            }
+            else if (command.Equals(DriverCommand.ClickElement))
+            {
+                commandToExecute = new ClickElementCommandHandler();
+            }
+            else if (command.Equals(DriverCommand.SendKeysToElement))
+            {
+                commandToExecute = new SendKeysCommandHandler();
+            }
+            else if (command.Equals(DriverCommand.GetPageSource))
+            {
+                commandToExecute = new GetPageSourceCommandHandler();
+            }
+            else
+            {
+                throw new NotImplementedException("Not implemented: " + command);
+            }
+
+            commandToExecute.Atom = request.Atom;
+            commandToExecute.Context = context;
+
+            return commandToExecute;
+
+        }
+
+        private CommandBase GetNativeAppCommandToExecute(string command, string elementId, IDictionary<string, JToken> parameters)
+        {
+            CommandBase commandToExecute;
             // TODO: Refactor similar to CommandExecutors in Driver
             if (command.Equals(DriverCommand.GetAlertText))
             {
@@ -148,13 +236,7 @@
                 throw new NotImplementedException("Not implemented: " + command);
             }
 
-            // TODO: Replace passing Automator to command with passing some kind of configuration
-            commandToExecute.Automator = this;
-            commandToExecute.Parameters = parameters;
-
-            var response = commandToExecute.Do();
-
-            return response;
+            return commandToExecute;
         }
 
         #endregion

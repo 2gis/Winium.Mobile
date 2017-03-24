@@ -47,10 +47,10 @@
         {
             var automator = Automator.Automator.InstanceForSession(command.SessionId);
 
-            if (automator.CurrentContext != DefaultContextNames.NativeAppContextName
-                && !DriverBoundCommands.Contains(command.Name))
+            if (automator.CurrentContext != null && automator.CurrentContext != DefaultContextNames.NativeAppContextName)
             {
-                return new CommandExecutorWebContextForward();
+                if (!DriverBoundCommands.Contains(command.Name))
+                    return new CommandExecutorWebContextForward();
             }
 
             // TODO inject dependencies into command executor

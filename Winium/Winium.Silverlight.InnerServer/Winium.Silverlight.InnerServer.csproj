@@ -102,6 +102,9 @@
     <Compile Include="Commands\InvokeMethodCommand.cs" />
     <Compile Include="Commands\GetElementSizeCommand.cs" />
     <Compile Include="Commands\GetElementRectCommand.cs" />
+    <Compile Include="ContextsRegistry.cs" />
+    <Compile Include="Commands\GetContextsCommand.cs" />
+    <Compile Include="ProtocolValueJsonConverter.cs" />
     <Compile Include="Public\ClickableApplicationBarMenuItem.cs" />
     <Compile Include="Public\ClickableApplicationBarIconButton.cs" />
     <Compile Include="Commands\AlertCommand.cs" />
@@ -124,11 +127,26 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AutomationServer.cs" />
     <Compile Include="Commands\FrameworkElementExtensions.cs" />
+    <Compile Include="Commands\SetContextCommand.cs" />
+    <Compile Include="Web\CommandEnvironment.cs" />
+    <Compile Include="Web\Commands\ClearElementCommandHandler.cs" />
+    <Compile Include="Web\Commands\ClickElementCommandHandler.cs" />
+    <Compile Include="Web\Commands\FindElementCommandHandler.cs" />
+    <Compile Include="Web\Commands\GetPageSourceCommandHandler.cs" />
+    <Compile Include="Web\Commands\GoToUrlCommandHandler.cs" />
+    <Compile Include="Web\Commands\SendKeysCommandHandler.cs" />
+    <Compile Include="Web\Commands\WebCommandHandler.cs" />
+    <Compile Include="Web\Response.cs" />
+    <Compile Include="Web\WebBrowserNavigationMonitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Winium.Mobile.Common\Winium.Mobile.Common.csproj">
       <Project>{a4248ec1-20ad-47b9-956f-a036e4d7425b}</Project>
       <Name>Winium.Mobile.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Winium.Mobile.Logging\Winium.Mobile.Logging.csproj">
+      <Project>{DAC0EAFE-2FE0-4F33-B173-736C1BAFD707}</Project>
+      <Name>Winium.Mobile.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

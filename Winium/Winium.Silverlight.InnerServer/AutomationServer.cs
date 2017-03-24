@@ -12,6 +12,7 @@
     using Newtonsoft.Json;
 
     using Winium.Mobile.Common;
+    using Microsoft.Phone.Controls;
 
     public class AutomationServer
     {
@@ -58,6 +59,11 @@
         public void SetAutomator(UIElement visualRoot)
         {
             this.automator = new Automator(visualRoot);
+        }
+
+        public void SetBrowser(WebBrowser browser)
+        {
+            this.automator.browser = browser;
         }
 
         public async void Start()
