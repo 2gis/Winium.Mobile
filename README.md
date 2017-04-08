@@ -7,7 +7,7 @@ English description | <a href="README_RU.md">Описание на русско�
 [![Winium.StoreApps.InnerServer Inner Server NuGet version](https://img.shields.io/nuget/v/Winium.StoreApps.InnerServer.svg?style=flat-square&label=nuget%20storeapps)](https://www.nuget.org/packages/Winium.StoreApps.InnerServer/)
 [![Winium.Silverlight.InnerServer NuGet version](https://img.shields.io/nuget/v/Winium.Silverlight.InnerServer.svg?style=flat-square&label=nuget%20silverlight)](https://www.nuget.org/packages/Winium.Silverlight.InnerServer/)
 [![GitHub release](https://img.shields.io/github/release/2gis/Winium.StoreApps.svg?style=flat-square)](https://github.com/2gis/Winium.StoreApps/releases/)
-[![GitHub license](https://img.shields.io/badge/license-MPL 2.0-blue.svg?style=flat-square)](LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MPL%202.0-blue.svg?style=flat-square)](LICENSE)
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/2gis/Winium.StoreApps/assets/winium.png" alt="Winium.Mobile is Selenium Remote WebDriver implementation for automated testing of Windows StoreApps or Silverlight apps on Windows Phone 8.1 or Windows 10 Mobile">
