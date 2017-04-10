@@ -55,6 +55,13 @@
                 <TextBox InputScope="Number" AutomationProperties.AutomationId="NumericInput"/>
             </StackPanel>
         </PivotItem>
+        <PivotItem Header="third" AutomationProperties.AutomationId="ThirdTab">
+            <StackPanel>
+                <WebView Height="400"
+                         DefaultBackgroundColor="Azure" 
+                         Source="https://google.com"></WebView>
+            </StackPanel>
+            </PivotItem>
     </Pivot>
     <Page.BottomAppBar>
         <CommandBar AutomationProperties.AutomationId="BottomAppBar" Opened="AppBarOnOpened" Closed="AppBarOnClosed">

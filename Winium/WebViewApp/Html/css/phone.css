@@ -1,0 +1,39 @@
+﻿@media all and (orientation:portrait) {
+    @-ms-viewport {
+        width:device-width;
+        user-zoom: fixed;
+        max-zoom: 1;
+        min-zoom: 1;
+    }
+}
+
+@media all and (orientation:landscape) {
+    @-ms-viewport {
+        width:device-height;
+        user-zoom: fixed;
+        max-zoom: 1;
+        min-zoom: 1;
+    }
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-size: 11pt;
+    font-family: "Segoe WP";
+    letter-spacing: 0.02em;
+    background-color: #000000;
+    color: #ffffff;
+    margin-left: 24px;
+    margin-top: 26px;
+}
+
+#page-title {
+    font-family: "Segoe WP SemiLight";
+    font-size: 41pt;
+}

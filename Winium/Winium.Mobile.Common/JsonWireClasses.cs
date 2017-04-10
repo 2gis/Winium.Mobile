@@ -45,6 +45,13 @@ namespace Winium.Mobile.Common
         {
             var result = new Dictionary<string, string> { { "error", JsonErrorCodes.Parse(this.Status) } };
 
+            if (value is Dictionary<string, object>)
+            {
+                if (((Dictionary<string, object>)value).ContainsKey("message"))
+                {
+                    return value;
+                }
+            }
             string message;
             var exception = value as Exception;
             if (exception != null)

@@ -44,6 +44,7 @@
     <Compile Include="CommandResponse.cs" />
     <Compile Include="CommandSettings\ElementAttributeCommandSettings.cs" />
     <Compile Include="ConnectionInformation.cs" />
+    <Compile Include="DefaultContextNames.cs" />
     <Compile Include="DriverCommand.cs" />
     <Compile Include="Exceptions\AutomationException.cs" />
     <Compile Include="Exceptions\InnerServerRequestException.cs" />

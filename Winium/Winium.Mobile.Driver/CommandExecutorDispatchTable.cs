@@ -16,6 +16,18 @@
     {
         #region Fields
 
+        private static HashSet<string> DriverBoundCommands = new HashSet<string>
+                                                          {
+                                                              DriverCommand.Status,
+                                                              DriverCommand.NewSession,
+                                                              DriverCommand.Close,
+                                                              DriverCommand.Quit,
+                                                              DriverCommand.GetOrientation,
+                                                              DriverCommand.Contexts,
+                                                              DriverCommand.GetContext,
+                                                              DriverCommand.SetContext
+                                                          };
+
         private Dictionary<string, Type> commandExecutorsRepository;
 
         #endregion
@@ -31,10 +43,19 @@
 
         #region Public Methods and Operators
 
-        public CommandExecutorBase GetExecutor(string commandName)
+        public CommandExecutorBase GetExecutor(Command command)
         {
+            var automator = Automator.Automator.InstanceForSession(command.SessionId);
+
+            if (automator.CurrentContext != DefaultContextNames.NativeAppContextName
+                && !DriverBoundCommands.Contains(command.Name))
+            {
+                return new CommandExecutorWebContextForward();
+            }
+
+            // TODO inject dependencies into command executor
             Type executorType;
-            if (this.commandExecutorsRepository.TryGetValue(commandName, out executorType))
+            if (this.commandExecutorsRepository.TryGetValue(command.Name, out executorType))
             {
             }
             else

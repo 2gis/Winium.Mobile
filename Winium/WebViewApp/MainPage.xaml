@@ -1,0 +1,36 @@
+﻿<Page
+    x:Class="WebViewApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WebViewApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="MainPageOnLoaded">
+
+    <WebView x:Name="WebViewControl"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             NavigationCompleted="BrowserNavigationCompleted" />
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton
+                    x:Name="ForwardAppBarButton"
+                    x:Uid="ForwardAppBarButton"
+                    Click="ForwardAppBarButtonClick"
+                    Icon="Forward"
+                    Label="forward"/>
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton
+                    x:Name="HomeAppBarButton"
+                    x:Uid="HomeAppBarButton"
+                    Click="HomeAppBarButtonClick"
+                    Label="home"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

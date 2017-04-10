@@ -50,6 +50,8 @@
 
         SessionNotCreatedException = 33, 
 
-        MoveTargetOutOfBounds = 34
+        MoveTargetOutOfBounds = 34,
+
+        MissingParameters = 400
     }
 }

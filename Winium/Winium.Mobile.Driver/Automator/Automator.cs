@@ -46,6 +46,8 @@
 
         public string Session { get; set; }
 
+        public string CurrentContext { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -214,7 +216,7 @@
         public Point? RequestElementLocation(JToken element)
         {
             var command = new Command(
-                DriverCommand.GetElementLocationOnceScrolledIntoView, 
+                DriverCommand.GetElementLocationOnceScrolledIntoView,
                 new Dictionary<string, JToken> { { "ID", element } });
 
             var responseBody = this.CommandForwarder.ForwardCommand(command);
