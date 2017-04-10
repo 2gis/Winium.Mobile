@@ -12,6 +12,8 @@ namespace Winium.Mobile.Connectivity
 
         string DeviceName { get; }
 
+        AppType AppType { get; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -28,7 +30,7 @@ namespace Winium.Mobile.Connectivity
 
         void SendFile(string isoStoreRoot, string sourceDesktopFilePath, string targetDeviceFilePath);
 
-        void Terminate();
+        bool Terminate();
 
         void Uninstall();
 

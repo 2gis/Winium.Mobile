@@ -52,8 +52,8 @@ namespace Winium.Mobile.Connectivity
             {
                 throw new AutomationException(
                     string.Format(
-                        "Could not find a device to launch. You requested '{0}', but the available devices were:\n{1}", 
-                        desiredDevice, 
+                        "Could not find a device to launch. You requested '{0}', but the available devices were:\n{1}",
+                        desiredDevice,
                         Devices.Instance));
             }
 
@@ -77,6 +77,8 @@ namespace Winium.Mobile.Connectivity
             }
         }
 
+        public AppType AppType { get; private set; }
+
         #endregion
 
         #region Properties
@@ -99,6 +101,7 @@ namespace Winium.Mobile.Connectivity
         {
             var appManifest = Utils.ReadAppManifestInfoFromPackage(appPath);
             this.RemoteApplication = this.Device.GetApplication(appManifest.ProductId);
+            this.AppType = DetermineAppType(appPath);
         }
 
         public void Launch()
@@ -134,9 +137,18 @@ namespace Winium.Mobile.Connectivity
             }
         }
 
-        public void Terminate()
+        public bool Terminate()
         {
-            throw new NotImplementedException("Deployer.Terminate");
+            if (this.AppType == AppType.XAP)
+            {
+                this.RemoteApplication.TerminateRunningInstances();
+                return true;
+            }
+            else
+            {
+                Logger.Debug("Could not terminate application from outside.");
+                return false;
+            }
         }
 
         public void Uninstall()
@@ -152,16 +164,35 @@ namespace Winium.Mobile.Connectivity
 
             this.Device.Disconnect();
         }
-
         #endregion
 
         #region Methods
+
+        private static AppType DetermineAppType(string packagePath)
+        {
+            var extension = Path.GetExtension(packagePath);
+            if (!string.IsNullOrEmpty(extension))
+            {
+                switch (extension.ToLower(CultureInfo.InvariantCulture))
+                {
+                    case ".appxbundle":
+                        return AppType.APPXBUNDLE;
+                    case ".appx":
+                        return AppType.APPX;
+                    case ".xap":
+                        return AppType.XAP;
+                }
+            }
+
+            throw new NotImplementedException("This file extension is not supported by the tool.");
+        }
 
         private void InstallApp(string appPath)
         {
             var appManifestInfo = this.InstallApplicationPackage(appPath);
             this.installed = true;
             this.RemoteApplication = this.Device.GetApplication(appManifestInfo.ProductId);
+            this.AppType = DetermineAppType(appPath);
         }
 
         private IAppManifestInfo InstallApplicationPackage(string path)
