@@ -12,6 +12,8 @@ namespace Winium.Mobile.Connectivity
 
         string DeviceName { get; }
 
+        AppType AppType { get; }
+
         #endregion
 
         #region Public Methods and Operators

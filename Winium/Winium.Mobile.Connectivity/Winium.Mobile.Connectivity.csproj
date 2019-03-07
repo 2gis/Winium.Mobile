@@ -52,6 +52,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppType.cs" />
     <Compile Include="Deployer.cs" />
     <Compile Include="DeployerFactory.cs" />
     <Compile Include="Gestures\FlickGesture.cs" />
